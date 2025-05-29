@@ -1,0 +1,18 @@
+曲だけじゃなく、ユーザーアイコン等でもファイルアップロードがしやすいように、アップロードに関するミドルウェア名はuploadFiles.jsにした。
+
+controllerの最後はres.jsonで締めないと動作が終わらない
+
+propsの中での処理でキャッシュを書き換えたいとき(useDispatch)は、そのpropを呼び出している親の中でuseDispatchに関するコードを記述する
+
+invalidatesTags / providesTagsはdispatchと同じようにキャッシュを更新することでリロードなしでページの内容を更新できる。
+・providesTags → このデータにタグを貼る（GET）
+・invalidatesTags → このタグのデータを無効にする（POST/PUT/DELETE）
+
+🧠 会話の流れ（フロント的にも）
+1. /api/conversations → 自分が関わってる会話一覧を取得（XのDM一覧みたいな画面）
+
+2. 一つの会話をクリック
+
+3. /api/messages/:conversationId → その会話内のメッセージ取得
+
+4. 新しいメッセージを POST /api/messages で送信
