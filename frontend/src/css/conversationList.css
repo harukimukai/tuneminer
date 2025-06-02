@@ -1,0 +1,6 @@
+.conversation-list {
+  height: calc(100vh - 200px); /* ヘッダー分を引く！ */
+  overflow-y: auto;
+  padding: 8px;
+  border-right: 1px solid #666;
+}

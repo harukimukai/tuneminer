@@ -1,0 +1,37 @@
+.message-thread {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.message-list {
+  flex: 1;
+  overflow-y: auto; /* ✅ メッセージ部分だけスクロール可能にする */
+  padding: 10px;
+
+  display: flex;        /* これを追加！！ */
+  flex-direction: column; /* 縦並びにする */
+}
+  
+.message-item {
+  max-width: 60%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  margin: 6px 0;
+  display: inline-block;
+}
+  
+.message-item.self {
+  background-color: #4f46e5; /* Indigo系 */
+  color: white;
+  align-self: flex-end;
+  margin-left: auto;
+}
+  
+.message-item.other {
+  background-color: #e5e7eb; /* Gray系 */
+  color: black;
+  align-self: flex-start;
+  margin-right: auto;
+}
+  

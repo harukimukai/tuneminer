@@ -1,0 +1,53 @@
+.now-playing-bar {
+    /* position: fixed; */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    width: 100%;
+    background-color: #1f1f1f;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    z-index: 50;
+    border-radius: 8px;
+  }
+  
+  .now-playing-image {
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    object-fit: cover;
+    margin-right: 12px;
+  }
+  
+  .now-playing-info {
+    flex: 1;
+    overflow: hidden;
+  }
+  
+  .now-playing-title {
+    font-weight: bold;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .now-playing-artist {
+    font-size: 12px;
+    color: #aaa;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .now-playing-button {
+    font-size: 20px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  

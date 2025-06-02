@@ -1,0 +1,201 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.941); /* 少し暗くしてもOK */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 550;
+  min-height: 100vh; /* 追加ポイント */
+}
+
+.modal-container {
+  background-color: #787878;
+  width: 70%;
+  max-height: 90vh; /* ← height → max-height */
+  overflow-y: auto; /* スクロール可能に */
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-lite-container {
+  background-color: #0c0c0c;
+  width: 30%;
+  max-height: 90vh; /* ← height → max-height */
+  overflow-y: auto; /* スクロール可能に */
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-close {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  color: rgb(255, 255, 255);
+  font-size: 18px;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-content {
+  display: flex;
+  gap: 32px;
+}
+
+.modal-left, .modal-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.createdAt {
+  color: #484848;
+}
+
+.song-modal-image-box {
+  background-color: #4a4a4a;
+  margin-top: 10px;
+  width: 80%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 10px solid #4a4a4a;
+}
+
+.song-modal-lite-image-box {
+  background-color: #f5f5f5;
+  margin-top: 10px;
+  width: 80%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 5px solid #f5f5f5;
+  margin: auto;
+}
+
+.song-modal-image {
+  border-radius: 8px;/*内側の枠にborder-radius*/
+  text-align: center;
+  margin: auto;
+  display: flex;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.song-modal-lite-image {
+  border-radius: 8px;/*内側の枠にborder-radius*/
+  text-align: center;
+  margin: auto;
+  display: flex;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.song-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 12px;
+}
+
+.links {
+  display: flex;
+  gap: 200px;
+  
+}
+
+.song-artist {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 要素間のスペース */
+  color: #484848;
+  margin-bottom: 8px;
+}
+
+.song-artist img {
+  width: 35px;
+  height: 35px;
+  border-radius: 9999px;
+  object-fit: cover;
+}
+
+.likes {
+  display: flex;
+  gap: 8px;
+}
+
+.like-button {
+  background-color: rgba(250, 45, 45, 0.837);
+  color: white;
+  padding: 0px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.button {
+  background-color: rgb(161, 112, 6);
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.right-side_top-text {
+  font-size: 23px;
+}
+
+.lyrics-box {
+  width:  90%;
+  aspect-ratio: 1 / 1;
+}
+
+.lyrics-text {
+  white-space: pre-line;
+}
+
+.audio-player {
+  width: 100%;
+}
+
+/* ToggleTabs.css */
+
+.tab-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 5px;
+}
+
+.tab-button {
+  padding: 3px 5px;
+  border-radius: 0.375rem;
+  background-color: #d1d5db; /* gray-300 */
+  color: black;
+  transition: background-color 0.2s ease;
+  font-weight: 500;
+}
+
+.tab-button.active {
+  background-color: #374151; /* gray-700 */
+  color: white;
+}
+
+

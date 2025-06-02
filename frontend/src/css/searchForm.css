@@ -1,0 +1,17 @@
+.form {
+  margin-top: 5%;
+  margin: 5% auto;
+  width: 100%;
+}
+
+.search-button {
+  background-color: rgb(86, 89, 255);
+  color: white;
+  border-radius: 8px;
+  padding: 1px 8px;
+}
+
+.search-form {
+  width: calc(100% / 4);
+  text-align: center;
+}

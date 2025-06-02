@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.926);
+  background-color: rgba(0, 0, 0, 0.787);
+  font-family: "Special Gothic Condensed One", 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 900;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* background-color: #c3623e; */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.no-scroll {
+  overflow: hidden;
+}

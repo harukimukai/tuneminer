@@ -1,0 +1,41 @@
+.custom-audio-player {
+  margin-top: 5px;
+  background-color: #2e2e2e;
+  color: white;
+  padding: 5px 16px;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.current-time,
+.duration {
+  font-size: 14px;
+  width: 50px;
+  text-align: center;
+}
+
+.play-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+}
+
+.play-button:hover {
+  color: #ccc;
+}
+
+.volume-slider {
+  width: 100%;
+  accent-color: #3b82f6;
+  height: 4px;
+  border-radius: 2px;
+}

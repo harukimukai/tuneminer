@@ -1,0 +1,91 @@
+.header {
+  background-color: rgb(105, 105, 105);
+  width: 100%;
+  position: fixed;
+  display: flex;
+  max-height: 200px;
+}
+
+.header-nav {
+  width: 100%;
+  display: flex;
+}
+
+.header-left {
+  width: calc(100% / 3);
+}
+
+.header-welcome {
+  padding-left: 15px;
+}
+
+.header-center {
+  margin: auto;
+  width: calc(100% / 3);
+}
+
+#now-playing-bar {
+  margin: auto;
+}
+
+.header-right {
+  padding-left: 8px;
+  gap: 8px;
+  width: calc(100% / 3);
+}
+
+.header-head {
+  display: flex;
+  width: 100%;
+}
+
+#now-playing-bar {
+  height: auto;
+}
+
+#logo {
+  width: 100px;
+}
+
+#title {
+  margin-top: 25px;
+  font-size: 40px;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 0 auto;
+  padding-right: 8px;
+  height: 70%;
+}
+
+.header-buttons-below {
+  height: 10%;
+  padding-right: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.user-page-button {
+  display: flex;
+  gap: 8px;
+}
+
+.header-links {
+  display: flex;
+  padding-left: 10px;
+  gap: 8px; /* 要素間のスペース */
+  padding-bottom: 10px;
+}
+
+.header-button {
+  background-color: rgb(86, 89, 255);
+  color: white;
+  padding: 0px 12px;
+  border: none;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  text-align: center;
+}

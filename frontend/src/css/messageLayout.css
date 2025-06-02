@@ -1,0 +1,13 @@
+.message-layout {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .message-layout > * {
+    flex: 1;
+    border: 1px solid #ccc;
+    overflow-y: auto;
+  }
+
+
+  

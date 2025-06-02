@@ -1,0 +1,35 @@
+.user-page_user-info-container {
+  margin-left: 20px;
+}
+.user-page_user-info {
+  display: flex;
+  gap: 16px;
+}
+
+.user-page_username {
+  font-size: 40px;
+}
+
+.user-page_user-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 9999px;
+  object-fit: cover;
+}
+
+.user-page-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 要素間のスペース */
+  margin-bottom: 10px;
+}
+
+.user-page-button {
+  background-color: rgb(86, 89, 255);
+  color: white;
+  padding: 0px 12px;
+  border: none;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+}
