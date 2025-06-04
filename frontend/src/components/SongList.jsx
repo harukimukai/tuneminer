@@ -18,9 +18,9 @@ const SongList = ({ songs }) => {
   console.log('[SongList.songs]: ', songs)
 
   return (
-    <ul className='song-list'>
+    <div className='song-list'>
       {songs.map(song => (
-        <li key={song._id}>
+        <div key={song._id} className='song-card'>
           {console.log('[描画中のsong]', song)}
           {song.imageFile && (
             <button
@@ -33,7 +33,6 @@ const SongList = ({ songs }) => {
               />
             </button>
           )}
-          <br />
           <div className='song-info'>
             <p className='song-info-title'>{song.title}</p>
             <div>
@@ -62,9 +61,9 @@ const SongList = ({ songs }) => {
               ): null}
             </div>
           </div>
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   )
 }
 

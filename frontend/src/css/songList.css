@@ -1,34 +1,59 @@
 .song-list {
   margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 200PX));
+  gap: 20px;
+  padding: 0 32px;
+  justify-items: center;
+}
+
+.song-card {
   display: flex;
-  padding-left: 25px;
-  gap: 8px; /* 要素間のスペース */
-  flex-wrap: wrap; /* 折返し指定 */
+  flex-direction: column;
+  align-items: center;
+  max-width: 200px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #f2f2f2;
 }
 
 .song-image {
-  width: 250px;
-  aspect-ratio: 1/1;
-  border-radius: 8px;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  image-rendering: auto;
+  filter: brightness(0.98) contrast(0.98);
+  transition: transform 0.2s ease;
+}
+
+.song-image:hover {
+  transform: scale(1.03);
 }
 
 .song-info-title {
-  font-size: 25px;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
   text-align: center;
 }
+
 .song-info-user {
   display: flex;
-  gap: 4px;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #aaa;
+  margin-top: 4px;
 }
 
 .user-icon {
-  width: 35px;
-  height: 35px;
+  width: 26px;
+  height: 26px;
   border-radius: 9999px;
   object-fit: cover;
-}
-
-.song-info-username {
-  margin-top: 4px
 }

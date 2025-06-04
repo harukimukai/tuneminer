@@ -1,9 +1,10 @@
 .header {
-  background-color: rgb(105, 105, 105);
+  background-color: rgb(32, 32, 32);
   width: 100%;
   position: fixed;
   display: flex;
   max-height: 200px;
+  z-index: 999; /* ← 追加 */
 }
 
 .header-nav {

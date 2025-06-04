@@ -1,17 +1,18 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.941); /* 少し暗くしてもOK */
+  background-color: rgba(0, 0, 0, 0.719); /* 少し暗くしてもOK */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 550;
+  z-index: 9999;
   min-height: 100vh; /* 追加ポイント */
 }
 
 .modal-container {
-  background-color: #787878;
-  width: 70%;
+  background-color: #000000;
+  width: 100%;              /* 画面いっぱい */
+  max-width: 1000px;  
   max-height: 90vh; /* ← height → max-height */
   overflow-y: auto; /* スクロール可能に */
   border-radius: 8px;
@@ -19,6 +20,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  border: 3px solid #f5f5f5ad;
+  z-index: 10000;
 }
 
 .modal-lite-container {
