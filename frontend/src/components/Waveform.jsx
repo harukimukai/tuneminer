@@ -29,7 +29,7 @@ const Waveform = ({ audioUrl, songId }) => {
       progressColor: '#f43f5e',
       cursorColor: '#000',
       barWidth: 2,
-      height: 60,
+      height: 40,
       responsive: true,
       interact: true,           // ← ✅ これがないとクリック無効な場合がある
       cursorWidth: 2

@@ -140,7 +140,7 @@ const SongDetail = ({ modalMode = false, onClose }) => {
                 <button className={`tab-button ${viewMode === 'comments' ? 'active' : ''}`} onClick={() => setViewMode('comments')}>Comments</button>
               </div>
               <div className="lyrics-box">
-                <div className="w-full max-h-[400px] min-h-[400px] overflow-y-auto #4a4a4a rounded p-8 text-sm">
+                <div className="w-full max-h-[350px] min-h-[350px] overflow-y-auto #4a4a4a rounded p-8 text-sm">
                   {viewMode === 'lyrics' ? (
                     <pre className="whitespace-pre-wrap">{song.lyrics || 'No lyrics provided'}</pre>
                   ) : (

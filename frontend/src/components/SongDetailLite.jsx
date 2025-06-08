@@ -57,7 +57,7 @@ const SongDetailLite = ({ song, index, miningMode, onLikeToggle, onNext, onPrev,
                   <span>@{song.user.username}</span>
                 </Link>
             )}
-            <p className='song-artist'>Genre: {song.genre}</p>
+            <p className='song-artist'>{song.genre}</p>
           </div>
           <audio ref={audioRef} src={`http://localhost:3500/${song.audioFile}`} controls/>
         </div>

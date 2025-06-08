@@ -6,14 +6,17 @@ import SongList from '../../components/SongList'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../auth/authSlice'
 import '../../css/userPage.css'
+import { useGetLikedSongsQuery } from '../songs/songApiSlice'
 
 const UserPage = () => {
   const { id } = useParams()
   const { data, isLoading, isError, error } = useGetUserProfileQuery(id)
+  const {data: likedSongs} = useGetLikedSongsQuery(id)
   const [ createConversation ] = useCreateConversationMutation()
   const [followUser] = useFollowUserMutation()
   const currentUser = useSelector(selectCurrentUser)
   const navigate = useNavigate()
+  const [viewMode, setViewMode] = useState('uploadedSongs')
   console.log(currentUser)
 
   if (!data) return <p>Loading user...</p>
@@ -112,12 +115,31 @@ const UserPage = () => {
       </div>
       <>Followers: {user.followers.length} Following: {user.following.length}</>
       <br />
-      <>Bio: {user.bio}</>
-      <h3>Uploaded Songs</h3>
-      {songs.length === 0 ? (
-        <p>No songs yet</p>
+      <>Bio: {user.bio}</> <br />
+      <button className={`tab-button ${viewMode === 'uploadedSongs' ? '' : 'active'}`} onClick={() => setViewMode('uploadedSongs')}>Uploaded Songs</button>
+      <button className={`tab-button ${viewMode === 'likedSongs' ? '' : 'active'}`} onClick={() => setViewMode('likedSongs')}>Liked Songs</button>
+      {viewMode === 'uploadedSongs' ? (
+        <div>
+          {songs.length === 0 ? (
+            <p>No songs yet</p>
+          ) : (
+            <SongList songs={songs} />
+          )}
+        </div>
       ) : (
-        <SongList songs={songs} />
+        <div>
+          {sameUser && (
+            likedSongs.length === 0 ? (
+              <div>
+                <p>No songs yet</p>
+              </div>
+            ) : (
+              <div>
+                <SongList songs={likedSongs} />
+              </div>
+            )
+          )}
+        </div>
       )}
     </section>
   )
