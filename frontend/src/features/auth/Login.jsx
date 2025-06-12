@@ -72,9 +72,9 @@ const Login = () => {
         </button>
       </form>
       <div className="auth-links">
-        <button onClick={handleGoogleLogin}>Sign in with Google</button>
-        <Link to='/'>Home</Link><br />
-        <Link to='/register'>Register</Link>
+        <button onClick={handleGoogleLogin}>Sign in with Google</button><br />
+        <Link to='/register'>Register</Link><br />
+        <Link to='/'>Home</Link>
       </div>
     </div>
   )

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { connectSocket } from './features/messages/socketSlice'
 import './index.css'
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
@@ -26,12 +26,15 @@ import AdminDashboard from './pages/AdminDashboard'
 import SongList from './components/SongList'
 import Modal from './components/Modal'
 import SongDetail from './components/SongDetail'
-import { setCredentials } from './features/auth/authSlice'
+import { selectAuthChecked, setChecked, setCredentials } from './features/auth/authSlice'
+import OAuthSuccess from './features/auth/oauthSuccess'
+import LoadingScreen from './components/LoadingScreen'
 
 const App = () => {
   useConversationSocket() // 🎯 アプリ起動したら常にsocket待機する！
   useGlobalMessageSocket()
   const dispatch = useDispatch()
+  const checked = useSelector(selectAuthChecked)
   const location = useLocation()
   const background = location.state?.background
   const navigate = useNavigate()
@@ -43,9 +46,15 @@ const App = () => {
           credentials: 'include'
         })
         const data = await res.json()
-        dispatch(setCredentials({ user: data.user})) // Reduxに保存
+        if (data.user) {
+          dispatch(setCredentials({ user: data.user }))
+        } else {
+          dispatch(setChecked(true))
+        }
       } catch (err) {
+        dispatch(setCredentials({ user: null, accessToken: null })) // 失敗しても checked=true にしたい
         console.error('No user logged in')
+        dispatch(setChecked(true)) // ← ログインしてなくてもチェック完了
       }
     };
     fetchUser();
@@ -55,6 +64,8 @@ const App = () => {
     dispatch(connectSocket())
   }, [dispatch])
 
+  if (!checked) return <LoadingScreen />
+
   const isModalPath = location.pathname.startsWith('/songs/modal/')
 
   return (
@@ -63,6 +74,7 @@ const App = () => {
         <Route path="/" element={<Home />} />             {/* 任意 */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/oauth-success" element={<OAuthSuccess />} />
         
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth />}>

@@ -3,9 +3,17 @@ import Header from '../components/Header'
 import Sidebar from '../components/Sidebar'
 import { Outlet } from 'react-router-dom'
 import GlobalAudioPlayer from '../features/player/GlobalAudioPlayer'
+import { useSelector } from 'react-redux'
+import { selectAuthChecked } from '../features/auth/authSlice'
+import LoadingScreen from '../components/LoadingScreen'
 
 const AppLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false)
+  const checked = useSelector(selectAuthChecked)
+
+  if (!checked) {
+    return <LoadingScreen />
+  }
 
   return (
     <>

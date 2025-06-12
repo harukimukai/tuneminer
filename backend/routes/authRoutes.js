@@ -60,7 +60,7 @@ router.get('/google/callback',
     console.log(`accessToken: ${accessToken}`)
 
     const refreshToken = jwt.sign(
-        { 'username': foundUser.username},
+        { 'username': user.username},
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: '7d' }
     )
@@ -76,32 +76,19 @@ router.get('/google/callback',
 
     console.log('Cookie! Login process DONE')
 
-    // Send accessToken containing id, username, bio, icon
-    // いずれマイページを消して普通のユーザーページから自分のアカウントのみ編集ボタンを表示させるようにするから、そのときはidとusernameのみにしていい気がする。
-    res
-        .json(
-            { 
-                accessToken, 
-                user: {
-                    _id: user._id, 
-                    username: user.username, 
-                    bio: user.bio, 
-                    icon: user.icon, 
-                    isAdmin: user.isAdmin
-                }  
-            }
-        )
-        .redirect('http://localhost:3000/dash')
+    res.redirect(`http://localhost:3000/oauth-success?accessToken=${accessToken}`)
   }
 );
 
-// 現在ログイン中のユーザー取得
-router.get('/google-me', async (req, res) => {
+router.get('/me', verifyJWT, async (req, res) => {
     try {
-        const user = await User.findById(req.user._id).select('-password')
+        const user = await User.findById(req._id).select('-password')
+        if (!user) return res.status(404).json({ message: 'User not found' })
         res.json({ user })
-    } catch (error) {
-        console.error(error)
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ message: 'Server error' })
     }
-});
+})
+
 module.exports = router;

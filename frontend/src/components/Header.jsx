@@ -8,6 +8,14 @@ import NowPlayingBar from './NowPlayingBar'
 
 const Header = () => {
   const currentUser = useSelector(selectCurrentUser)
+
+  if (!currentUser) {
+    return (
+      <header className="header">
+        <p style={{ color: 'white', padding: '10px' }}>Loading user info...</p>
+      </header>
+    )
+  }
   console.log(currentUser)
 
   return (

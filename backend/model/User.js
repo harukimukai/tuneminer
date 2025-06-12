@@ -12,8 +12,11 @@ const userSchema = new Schema({
     },
     pwd: {
         type: String,
-        required: true
+        required: function() {
+        return !this.googleId; // Googleログインでなければ必要
+        }
     },
+    googleId: { type: String },
     email: {
         type: String,
         required: true
