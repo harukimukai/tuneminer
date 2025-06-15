@@ -12,27 +12,34 @@ router.route('/register')
 router.route('/login')
     .post(authController.handleLogin)
 
+
+// パスワードリセットリクエスト（メール送信）
+router.post('/forgot-password', authController.forgotPassword);
+
+// トークン付きリンクから新しいパスワードに変更
+router.post('/reset-password/:token', authController.resetPassword);
+
 router.route('/refresh')
     .get(authController.handleRefresh)
 
 router.route('/logout')
     .post(authController.handleLogout)
 
-    router.get('/me', verifyJWT, async (req, res) => {
-        try {
-            console.log('[Server] /auth/me hit. req._id =', req._id)
+router.get('/me', verifyJWT, async (req, res) => {
+    try {
+        console.log('[Server] /auth/me hit. req._id =', req._id)
 
-            const user = await User.findById(req._id).select('-password')
-            if (!user) {
-                console.log('[Server] User not found')
-                return res.status(404).json({ message: 'User not found' })
-            }
-                res.json(user)
-            } catch (err) {
-                console.error('[Server] Error in /auth/me:', err)
-                res.status(500).json({ message: 'Internal server error' })
-            }
-      })
+        const user = await User.findById(req._id).select('-password')
+        if (!user) {
+            console.log('[Server] User not found')
+            return res.status(404).json({ message: 'User not found' })
+        }
+        res.json(user)
+    } catch (err) {
+        console.error('[Server] Error in /auth/me:', err)
+        res.status(500).json({ message: 'Internal server error' })
+    }
+})
 
 
 
@@ -90,5 +97,6 @@ router.get('/me', verifyJWT, async (req, res) => {
         res.status(500).json({ message: 'Server error' })
     }
 })
+
 
 module.exports = router;

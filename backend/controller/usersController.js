@@ -58,12 +58,14 @@ const updateUser = asyncHandler(async (req, res) => {
         }
         user.email = req.body.email
     }
-    if (req.body?.pwd) {
-        const hashedPwd = await bcrypt.hash(req.body.pwd, 10)
-        user.pwd = hashedPwd
-    }
     if (req.body?.bio) {
         user.bio = req.body.bio
+    }
+    if (req.body.socials) {
+        user.socials = {
+            ...user.socials.toObject?.(), // 既存を残す 
+            ...req.body.socials
+        }
     }
     if (req.files?.icon) {
         console.log('req.file: ', req.files.icon)

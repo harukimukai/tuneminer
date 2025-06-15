@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../auth/authSlice'
 import '../../css/userPage.css'
 import { useGetLikedSongsQuery } from '../songs/songApiSlice'
+import SocialLinks from '../../components/SocialLinks'
 
 const UserPage = () => {
   const { id } = useParams()
@@ -116,6 +117,7 @@ const UserPage = () => {
       <>Followers: {user.followers.length} Following: {user.following.length}</>
       <br />
       <>Bio: {user.bio}</> <br />
+      <SocialLinks socials={user.socials} />
       <button className={`tab-button ${viewMode === 'uploadedSongs' ? '' : 'active'}`} onClick={() => setViewMode('uploadedSongs')}>Uploaded Songs</button>
       <button className={`tab-button ${viewMode === 'likedSongs' ? '' : 'active'}`} onClick={() => setViewMode('likedSongs')}>Liked Songs</button>
       {viewMode === 'uploadedSongs' ? (

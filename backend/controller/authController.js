@@ -1,9 +1,13 @@
-// register, log-in/out, refresh token
+// register, log-in/out, refresh token, resetPwd
 
 const User = require('../model/User')
 const bcrypt = require('bcrypt')
 const asyncHandler = require('express-async-handler')
 const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
+const sendEmail = require('../utils/sendEmail')
+
+//pwd, passwordの混在注意
 
 const handleRegister = asyncHandler(async (req, res) => {
     console.log('Register request')
@@ -35,6 +39,7 @@ const handleLogin = asyncHandler(async (req, res) => {
     if (!foundUser) return res.status(401).json({ message: 'The username is not used'})
 
     const pwdMatch = await bcrypt.compare(pwd, foundUser.pwd)
+    console.log(pwdMatch)
     if(!pwdMatch) return res.status(401).json({ message: 'Wrong Password'})
 
     // token
@@ -146,9 +151,53 @@ const handleLogout = (req, res) => {
     console.log('Logout Process DONE')
 }
 
+
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ message: 'User not found' });
+
+  const token = crypto.randomBytes(32).toString('hex');
+  user.resetPasswordToken = token;
+  user.resetPasswordTokenExpires = Date.now() + 1000 * 60 * 15; // 15分有効
+  await user.save();
+
+  const resetLink = `http://localhost:3000/reset-password/${token}`;
+  await sendEmail({
+    to: user.email,
+    subject: 'Reset Password',
+    html: `<p>Access the link below to reset your password (15mins)</p><a href="${resetLink}">${resetLink}</a>`
+  });
+
+  res.json({ message: 'パスワードリセットリンクを送信しました' });
+};
+
+const resetPassword = asyncHandler(async (req, res) => {
+    console.log('resetPassword Start')
+    const { token } = req.params;
+    const { password } = req.body;
+    console.log('New Password:', password)
+    const user = await User.findOne({ resetPasswordToken: token, resetPasswordTokenExpires: { $gt: Date.now() } });
+    console.log('user: ', user)
+    if (!user) return res.status(400).json({ message: 'Token is invalid or expired' });
+
+    user.pwd = await bcrypt.hash(password, 10);
+    console.log('user.password: ', user.password)
+    user.resetPasswordToken = undefined;
+    user.resetPasswordTokenExpires = undefined;
+    await user.save()
+
+    console.log('New Pwd: ', user)
+
+    res.json({ message: 'Updated Password' });
+})
+
+
 module.exports = {
     handleRegister,
     handleLogin,
     handleLogout,
-    handleRefresh
+    handleRefresh,
+    forgotPassword,
+    resetPassword
 }

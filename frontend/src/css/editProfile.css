@@ -1,0 +1,64 @@
+.edit-profile-form {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #1e1e1e;
+  border: 2px solid #444;
+  border-radius: 12px;
+  color: #f5f5f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.edit-profile-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.edit-profile-form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+  color: #ddd;
+}
+
+.edit-profile-form input[type="text"],
+.edit-profile-form input[type="url"],
+.edit-profile-form input[type="email"],
+.edit-profile-form input[type="password"],
+.edit-profile-form input[type="file"],
+.edit-profile-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: #333;
+  border: 1px solid #666;
+  border-radius: 6px;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.edit-profile-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.edit-profile-form button[type="submit"] {
+  margin-top: 25px;
+  width: 100%;
+  padding: 12px;
+  background-color: #4f68ff;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.edit-profile-form button[type="submit"]:hover {
+  background-color: #3e54d3;
+}
+
+

@@ -67,6 +67,14 @@ const Login = () => {
           />
         </div>
 
+        <div>
+          <button>
+            <Link to='/forgot-password'>
+              <p style={{ fontSize: '12px'}}>Forgot your password?</p>
+            </Link>
+          </button>
+        </div>
+
         <button type="submit" disabled={isLoading} id='login-button'>
           {isLoading ? 'Logging in...' : 'Login'}
         </button>

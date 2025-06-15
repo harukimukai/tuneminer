@@ -24,6 +24,13 @@ const userSchema = new Schema({
     bio: {
         type: String
     },
+    socials: {
+        soundcloud: { type: String, default: '' },
+        bandcamp: { type: String, default: '' },
+        youtube: { type: String, default: '' },
+        instagram: { type: String, default: '' },
+        x: { type: String, default: '' }
+    },
     followers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
@@ -42,7 +49,9 @@ const userSchema = new Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    }
+    },
+    resetPasswordToken: String,
+    resetPasswordTokenExpires: Date,
 }, {
     timestamps: true
 })

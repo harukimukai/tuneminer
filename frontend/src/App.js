@@ -29,6 +29,8 @@ import SongDetail from './components/SongDetail'
 import { selectAuthChecked, setChecked, setCredentials } from './features/auth/authSlice'
 import OAuthSuccess from './features/auth/oauthSuccess'
 import LoadingScreen from './components/LoadingScreen'
+import ResetPassword from './components/ResetPassword'
+import ForgotPassword from './components/ForgotPassword'
 
 const App = () => {
   useConversationSocket() // 🎯 アプリ起動したら常にsocket待機する！
@@ -75,7 +77,9 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
-        
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth />}>
               <Route element={<AppLayout />}>
