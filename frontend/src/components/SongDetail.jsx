@@ -73,6 +73,11 @@ const SongDetail = ({ modalMode = false, onClose }) => {
   return (
     <div className={modalMode ? 'p-4' : 'p-8'}>
       <div className="modal-overlay">
+        <div>
+          <Link to={'/songs/mining'}>
+           <p className='modal-background-character'></p>
+          </Link>
+        </div>
         <div className="modal-container">
           <button className="modal-close" onClick={onClose}>✕</button>
           <div className="modal-content">

@@ -1,12 +1,28 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.719); /* 少し暗くしてもOK */
+  background-color: rgba(0, 0, 0, 0.89); /* 少し暗くしてもOK */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
   min-height: 100vh; /* 追加ポイント */
+}
+
+.modal-background-character {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 20vw;
+  height: 30vh;
+  background: url('../../public/tuneminer_char.png') no-repeat left bottom;
+  background-size: contain;
+  z-index: 0; /* モーダルより下に */
+  background-size: 300px auto; /* ← 実寸サイズに調整 */
+}
+
+.modal-background-character:hover {
+  transform: scale(1.03);
 }
 
 .modal-container {
