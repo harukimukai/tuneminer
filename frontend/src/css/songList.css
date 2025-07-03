@@ -1,59 +1,55 @@
-.song-list {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 200PX));
-  gap: 20px;
-  padding: 0 32px;
-  justify-items: center;
+
+.record-shelf-wall {
+  background-color: var(--tm-surface);
+  padding: 2rem 1rem;
+  border-radius: 6px;
 }
 
-.song-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 200px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  color: #f2f2f2;
+.record-shelf {
+  position: relative;
+  margin-bottom: 1rem;
 }
 
-.song-image {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  image-rendering: auto;
-  filter: brightness(0.98) contrast(0.98);
-  transition: transform 0.2s ease;
-}
-
-.song-image:hover {
-  transform: scale(1.03);
-}
-
-.song-info-title {
-  font-size: 15px;
-  font-weight: bold;
-  margin-top: 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.record-shelf-board {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 16px;
   width: 100%;
-  text-align: center;
+  background-image: url('/public/images/wood_board2.jpg'); /* ←パスに注意 */
+  background-size: cover;
+  filter: brightness(0.7);
+  background-position: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.575);
+  border-radius: 4px;
+  z-index: 100;
 }
 
-.song-info-user {
+.record-row {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: #aaa;
-  margin-top: 4px;
+  gap: 1.5rem;
+  padding: 11px;
+  justify-content: center;
+  z-index: 2;
+  position: relative;
 }
 
-.user-icon {
-  width: 26px;
-  height: 26px;
-  border-radius: 9999px;
-  object-fit: cover;
+.record-card {
+  width: 300px;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.record-card img {
+  width: 100%;          /* ← 明示的に正方形に近づける */
+  object-fit: cover;       /* ← はみ出さずに埋める */
+  border-radius: 6px;
+  aspect-ratio: 1;
+  box-shadow: 8px 8px 1px rgba(0, 0, 0, 0.459);
+  filter: blur(0.6px) contrast(0.95) brightness(1.05)
+}
+
+.record-card:hover {
+  transform: translateY(-4px);
 }

@@ -7,37 +7,51 @@ import { useRecordMiningMutation } from './miningApiSlice'
 import { setMiningActive } from './uiSlice'
 import { pauseAndSaveSnapshot, resumeFromSnapshot } from '../player/nowPlayingActions'
 
-
 const MiningPage = () => {
   const { data: miningSongs = [], isLoading } = useGetMiningSongsQuery()
   const [recordMining] = useRecordMiningMutation()
   const dispatch = useDispatch()
+  const currentUser = useSelector(selectCurrentUser)
+
   const [songs, setSongs] = useState([])
   const [index, setIndex] = useState(0)
   const [started, setStarted] = useState(false)
   const [finished, setFinished] = useState(false)
+
+  const [currentTime, setCurrentTime] = useState(0)
   const audioRef = useRef(null)
   const timeoutRef = useRef(null)
+  const rafRef = useRef(null)
   const recordMiningRef = useRef(recordMining)
-  const currentUser = useSelector(selectCurrentUser)
+
   const song = songs[index]
 
+  // 初回セット
   useEffect(() => {
     if (miningSongs.length && songs.length === 0) {
       setSongs(miningSongs)
     }
   }, [miningSongs, songs.length])
 
+  // currentTime初期化
+  useEffect(() => {
+    if (song?.highlight?.start != null) {
+      setCurrentTime(song.highlight.start)
+    }
+  }, [song])
+
+  // 再生処理
   useEffect(() => {
     if (!started || !song || !audioRef.current) return
 
-    const { start, end } = song.highlight
     const audio = audioRef.current
+    const { start, end } = song.highlight
     const waitTime = (end - start) * 1000
 
     const startPlayback = async () => {
       try {
         audio.currentTime = start
+        setCurrentTime(start)
         await audio.play()
         console.log('[▶] 再生開始 from', start)
       } catch (err) {
@@ -45,20 +59,42 @@ const MiningPage = () => {
       }
     }
 
-    const onPlay = () => {
-      console.log('[✅] onPlay → setTimeout を開始:', waitTime, 'ms')
+    const updateCurrentTime = () => {
+      if (audio && !audio.paused) {
+        const now = audio.currentTime
+        setCurrentTime(now)
 
-      timeoutRef.current = setTimeout(async () => {
-        console.log('[⌛] setTimeout 発動 → 停止')
-        audio.pause()
-        audio.currentTime = 0
-
-        try {
-          await recordMiningRef.current(song._id).unwrap()
-        } catch (err) {
-          console.error('[❌] recordMining失敗:', err)
+        // 🔥 end 時間を超えていたら次へ
+        if (now >= end) {
+          console.log('[⏩] highlight.end 到達 → 次の曲へ')
+          audio.pause()
+          audio.currentTime = 0
+          if (index >= songs.length - 1) {
+            setFinished(true)
+          } else {
+            setIndex(prev => prev + 1)
+          }
+          return
         }
 
+        rafRef.current = requestAnimationFrame(updateCurrentTime)
+      }
+    }
+
+    const onPlay = async() => {
+      console.log('[✅] 再生開始 → 時間監視と自動停止をセット')
+            
+      try {
+        await recordMiningRef.current(song._id).unwrap()
+      } catch (err) {
+        console.error('[❌] recordMining失敗:', err)
+      }
+
+      rafRef.current = requestAnimationFrame(updateCurrentTime)
+
+      timeoutRef.current = setTimeout(() => {
+        audio.pause()
+        audio.currentTime = 0
         if (index >= songs.length - 1) {
           setFinished(true)
         } else {
@@ -68,36 +104,36 @@ const MiningPage = () => {
     }
 
     const onPause = () => {
-      console.log('[🛑] audio が pause → setTimeout を解除')
       clearTimeout(timeoutRef.current)
+      cancelAnimationFrame(rafRef.current)
     }
 
+    // 再生開始
     startPlayback()
+
+    // イベントリスナー追加
     audio.addEventListener('play', onPlay)
     audio.addEventListener('pause', onPause)
 
     return () => {
-      console.log('[🧹 cleanup] timeout + event listener 削除')
       clearTimeout(timeoutRef.current)
+      cancelAnimationFrame(rafRef.current)
       audio.removeEventListener('play', onPlay)
       audio.removeEventListener('pause', onPause)
     }
   }, [started, index, song, songs.length])
 
+  // マイニングモード制御
   useEffect(() => {
     dispatch(setMiningActive(true))
     dispatch(pauseAndSaveSnapshot())
-
     return () => {
       dispatch(setMiningActive(false))
       dispatch(resumeFromSnapshot())
     }
   }, [dispatch])
 
-
-
-
-
+  // いいね制御
   const handleLikeToggle = (songId, wasLiked) => {
     setSongs(prev =>
       prev.map(song =>
@@ -114,21 +150,20 @@ const MiningPage = () => {
   }
 
   const handlePrev = () => {
-    if (index === 0) return
-    setIndex(prev => prev - 1)
+    if (index > 0) setIndex(prev => prev - 1)
   }
 
   const handleNext = () => {
-    if (index >= songs.length - 1) {
-      setFinished(true)
-    } else {
+    if (index < songs.length - 1) {
       setIndex(prev => prev + 1)
+    } else {
+      setFinished(true)
     }
   }
 
   if (isLoading) return <p>Loading Mining...</p>
   if (!songs.length) return <p>No mining tracks found.</p>
-  console.log('🎧 mining songs:', miningSongs)
+
   if (!started) {
     return (
       <div style={{ textAlign: 'center' }}>
@@ -138,31 +173,23 @@ const MiningPage = () => {
     )
   }
 
-  let content
-  if (!finished) {
-    content = (
-      <div style={{ textAlign: 'center' }}>
-        <h2>🎧 Now Mining...</h2>
-        <SongDetailLite 
+  return (
+    <div style={{ textAlign: 'center' }}>
+      {!finished ? (
+        <SongDetailLite
           song={song}
           index={index}
-          miningMode
+          miningMode={true}
           onLikeToggle={handleLikeToggle}
           onPrev={handlePrev}
           onNext={handleNext}
           audioRef={audioRef}
         />
-      </div>
-    )
-  } else {
-    content = (
-      <div style={{ textAlign: 'center' }}>
+      ) : (
         <p>No More Mining</p>
-      </div>
-    )
-  }
-
-  return content
+      )}
+    </div>
+  )
 }
 
 export default MiningPage

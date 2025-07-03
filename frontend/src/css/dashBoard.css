@@ -1,0 +1,25 @@
+.dash-board_container {
+  background-color: var(--tm-bg);
+  color: var(--tm-text);
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.dash-board_container h2,
+.dash-board_container h3 {
+  color: var(--tm-accent);
+  margin-bottom: 0.5rem;
+}
+
+.dash-board_container p {
+  color: var(--tm-muted);
+  margin-bottom: 1rem;
+}
+
+.section-block {
+  background-color: var(--tm-surface);
+  border: 1px solid var(--tm-border);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}

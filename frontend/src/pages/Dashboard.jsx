@@ -22,24 +22,25 @@ const Dashboard = () => {
   
 
     return (
-        <section className='dash-board_container'>
-            <h2>Dashboard</h2>
-            <div>
-                <p>Recommendations By Admin</p>
-                <p>
-                  <SongList songs={adminSongs} />
-                </p>
-            </div>
-            <p>
-                <Recommendations userId={currentUser._id}/>
-            </p>
-            <h3>Songs</h3>
-            <p>
-                <SongList songs={songs} />
-            </p>
-            
-        </section>
-  )
+  <section className="dash-board_container">
+    <h2>Dashboard</h2>
+
+    <div className="section-block">
+      <h3>Recommendations By Admin</h3>
+      <SongList songs={adminSongs} />
+    </div>
+
+    <div className="section-block">
+      <h3>Your Personalized Recommendations</h3>
+      <Recommendations userId={currentUser._id} />
+    </div>
+
+    <div className="section-block">
+      <SongList songs={songs} />
+    </div>
+  </section>
+);
+
 }
 
 export default Dashboard

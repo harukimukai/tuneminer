@@ -1,53 +1,131 @@
 .now-playing-bar {
-    /* position: fixed; */
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 64px;
-    width: 100%;
-    background-color: #1f1f1f;
-    color: white;
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    z-index: 50;
-    border-radius: 8px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  background-image: url('/public/images/wood.avif');  /* 木目画像を使用 */
+  background-size: cover;
+  background-position: center;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  margin: 1rem auto;
+  max-width: 90%;
+  color: var(--tm-text);
+  border: 3px solid #9b9b9bbe;
+}
+
+.now-playing-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35); /* ←ここで暗さを調整 */
+  z-index: 0;
+  border-radius: 8px;
+}
+
+.now-playing-bar * {
+  position: relative;
+  z-index: 1;
+  text-align: left;
+}
+
+
+.now-playing-bar img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 3px solid #36363694;
+  filter: blur(0.6px) contrast(0.9) brightness(1.05)
+}
   
-  .now-playing-image {
-    width: 48px;
-    height: 48px;
-    border-radius: 4px;
-    object-fit: cover;
-    margin-right: 12px;
+.now-playing-info {
+  flex: 1;
+  width: 100%;                 /* コンテナ幅 */
+  overflow: hidden;            /* はみ出した部分を隠す */
+  white-space: nowrap;
+  position: relative;
+}
+
+.scroll {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.scroll.animate {
+  animation: scroll-left 12s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
   }
-  
-  .now-playing-info {
-    flex: 1;
-    overflow: hidden;
+  100% {
+    transform: translateX(-100%);
   }
-  
-  .now-playing-title {
-    font-weight: bold;
-    font-size: 14px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .now-playing-artist {
-    font-size: 12px;
-    color: #aaa;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .now-playing-button {
-    font-size: 20px;
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-  }
-  
+}
+
+.now-playing-title {
+  color: #fefefe;  
+  font-weight: bold;
+  font-size: 1rem;
+  text-shadow: 3px 3px 1px rgba(0, 0, 0, 0.8);
+}
+
+.now-playing-artist {
+  font-size: 0.85rem;
+  color: #d3d3d3d2;
+  text-shadow: 3px 3px 1px rgba(0, 0, 0, 0.8);
+}
+
+.now-playing-button {
+  text-shadow: 3px 3px 1px rgba(0, 0, 0, 0.8);
+}
+
+.volume-knob-image {
+  width: 100%;
+  height: 100%;
+  background-image: url('/public/images/metal_knob.png'); /* 公開パスに置いてね */
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: transform 0.1s ease-in-out;
+  pointer-events: none;
+}
+
+.volume-knob-wrapper {
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+
+.volume-knob-wrapper input[type="range"] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.knob-markers {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 110%;
+  height: 110%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+
+  background: repeating-conic-gradient(
+    from 119deg,                /* 左下からスタート */
+    #b3b3b3 0deg,                   /* 白い目盛り */
+    #b3b3b3 2deg,
+    transparent 2deg,
+    transparent 120deg            /* 目盛り間隔 */
+  );
+
+  mask-image: conic-gradient(black 0deg 270deg, transparent 270deg 360deg);
+  mask-composite: intersect;
+  -webkit-mask-composite: destination-in;
+}

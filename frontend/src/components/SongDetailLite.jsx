@@ -1,14 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../features/auth/authSlice'
 import { useToggleLikeMutation } from '../features/songs/songApiSlice'
 import { Link } from 'react-router-dom'
 import '../css/modal.css'
+import MiningProgressBar from './MiningProgressBar'
 
-const SongDetailLite = ({ song, index, miningMode, onLikeToggle, onNext, onPrev, audioRef }) => {
+const SongDetailLite = 
+  ({ 
+    song, 
+    index, 
+    miningMode, 
+    onLikeToggle, 
+    onNext, 
+    onPrev, 
+    audioRef
+  }) => {
+  
   const currentUser = useSelector(selectCurrentUser)
   const [toggleLike] = useToggleLikeMutation()
   const liked = song.likes.includes(currentUser._id)
+  const highlight = (() => song.highlight, [song.highlight])
 
   const handleLike = async () => {
     try {
@@ -59,7 +71,13 @@ const SongDetailLite = ({ song, index, miningMode, onLikeToggle, onNext, onPrev,
             )}
             <p className='song-artist'>{song.genre}</p>
           </div>
-          <audio ref={audioRef} src={`http://localhost:3500/${song.audioFile}`} controls/>
+          <audio ref={audioRef} src={`http://localhost:3500/${song.audioFile}`} controls />
+          {miningMode && song.highlight && (
+            <MiningProgressBar 
+              highlight={song.highlight} 
+              audioRef={audioRef}
+            />
+          )}
         </div>
       </div>
       {/* {!song.likes.includes(currentUser._id) &&

@@ -1,12 +1,11 @@
 body {
   margin: 0;
-  color: rgba(255, 255, 255, 0.926);
-  background-color: rgba(0, 0, 0, 0.897);
-  font-family: "Special Gothic Condensed One", 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--tm-bg);
+  color: var(--tm-text);
+  font-family: 'IBM Plex Mono', sans-serif;
   font-weight: 900;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* background-color: #c3623e; */
 }
 
 code {
@@ -16,4 +15,24 @@ code {
 
 .no-scroll {
   overflow: hidden;
+}
+
+:root {
+  --tm-bg: #2a211c;           /* 焦げ茶 - 深いけど暖かい */
+  --tm-surface: #3f3027;      /* 木の棚っぽい色 */
+  --tm-accent: #c8751a;       /* くすんだ鉱石オレンジ */
+  --tm-accent-hover: #d9832c;
+  --tm-text: #eae3d2;         /* 真っ白すぎない柔らか白 */
+  --tm-muted: #a59b8f;        /* サブ情報・控えめテキスト */
+  --tm-card: #342821;         /* 曲カード・モーダル背景 */
+  --tm-border: #4a3c32;       /* 境界線（目立ちすぎない） */
+}
+
+
+body,
+#root,
+.App {
+  background-color: var(--tm-bg);
+  color: var(--tm-text);
+  min-height: 100vh;
 }

@@ -13,7 +13,6 @@ const Recommendations = () => {
 
   return (
     <div>
-      <h2>Recommendations</h2>
       {recommendedSongs?.length > 0 ? (
         <SongList songs={recommendedSongs} />
       ) : (

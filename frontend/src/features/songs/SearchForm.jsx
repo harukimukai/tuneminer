@@ -20,33 +20,12 @@ const SearchForm = () => {
   }
 
   return (
-      <form onSubmit={handleSubmit} className='form'>
-        <input
-          type="text"
-          style={{color: "grey"}}
-          className='search-form'
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <input
-          type="text"
-          style={{color: "grey"}}
-          className='search-form'
-          placeholder="Genre"
-          value={genre}
-          onChange={(e) => setGenre(e.target.value)}
-        />
-        <input
-          type="text"
-          style={{color: "grey"}}
-          className='search-form'
-          placeholder="Artist"
-          value={artist}
-          onChange={(e) => setArtist(e.target.value)}
-        />
-        <button type="submit" className='search-button search-form'>Search</button>
-      </form>
+    <form onSubmit={handleSubmit} className='form'>
+      <input type="text" className='search-form' placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+      <input type="text" className='search-form' placeholder="Genre" value={genre} onChange={(e) => setGenre(e.target.value)} />
+      <input type="text" className='search-form' placeholder="Artist" value={artist} onChange={(e) => setArtist(e.target.value)} />
+      <button type="submit" className='search-button'>Search</button>
+    </form>
   )
 }
 

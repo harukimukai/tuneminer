@@ -15,55 +15,39 @@ const SongList = ({ songs }) => {
     navigate(`/songs/modal/${id}`, { state: { background: location } }) // URLだけ変更
   }
 
-  console.log('[SongList.songs]: ', songs)
+  // 1段5枚ずつ区切る（例）
+  const chunked = [];
+  for (let i = 0; i < songs.length; i += 5) {
+    chunked.push(songs.slice(i, i + 5));
+  }
 
   return (
-    <div className='song-list'>
-      {songs.map(song => (
-        <div key={song._id} className='song-card'>
-          {console.log('[描画中のsong]', song)}
-          {song.imageFile && (
-            <button
-              onClick={() => handleOpenModal(song._id)}
-            >
-              <img
-                src={`http://localhost:3500/${song.imageFile}`}
-                alt={song.title}
-                className='song-image'
-              />
-            </button>
-          )}
-          <div className='song-info'>
-            <p className='song-info-title'>{song.title}</p>
-            <div>
-              {id === null || id !== song.user._id ? (
-                <Link
-                  to={`/users/${song.user._id}`}
-                  className='song-info-user'
-                >
-                  <p>
-                    {song.user.icon ? (
-                      <img 
-                        src={`http://localhost:3500/${song.user.icon}`} 
-                        alt="icon" 
-                        className='user-icon'
-                      />
-                    ) : (
-                      <img 
-                        src='http://localhost:3000/default_user_icon.jpg' 
-                        alt="icon"
-                        className='user-icon'
-                      />
-                    )}
-                  </p>
-                  <p className='song-info-username'>@{song.user.username}</p>
-                </Link>
-              ): null}
-            </div>
+    <>
+    <div className="record-shelf-wall">
+      {chunked.map((row, i) => (
+        <div className="record-shelf" key={i}>
+          <div className="record-shelf-board" />
+          <div className="record-row">
+            {row.map((song) => (
+              <div className="record-card" key={song._id}>
+                {song.imageFile && (
+                  <button
+                    onClick={() => handleOpenModal(song._id)}
+                  >
+                    <img
+                      src={`http://localhost:3500/${song.imageFile}`}
+                      alt={song.title}
+                      className='song-image'
+                    />
+                  </button>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       ))}
     </div>
+    </>
   )
 }
 

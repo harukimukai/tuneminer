@@ -1,4 +1,7 @@
 // get all songs, a specific song, my songs, upload, update, delete
+// ページネーション（曲数が多くなったときの負荷対策）：.skip() + .limit() を使えば、無限スクロールやページ切り替え対応も簡単にできる
+//  無限スクロールにしたい場合は？
+//ページ番号を state に持たせて、IntersectionObserver で一番下まで来たときに page++ していけばOK。
 
 const Song = require('../model/Song')
 const asyncHandler = require('express-async-handler')
@@ -216,11 +219,12 @@ const searchSongs = asyncHandler(async (req, res) => {
     }
 
     if (artist) {
-        const artistUser = await User.findOne({ username: { $regex: artist, $options: 'i'}, hidden: false }).lean()
-        if (artistUser) {
-            query.user = artistUser._id
+        const artistUsers = await User.find({ username: { $regex: artist, $options: 'i'}, hidden: false }).lean()
+        if (artistUsers.length > 0) {
+            const artistIds = artistUsers.map(user => user._id)
+            query.user = { $in: artistIds }
         } else {
-            return res.status(404).json({ message: 'Artist not found'})
+            return res.status(404).json({ message: 'Artist not found' })
         }
     }
 

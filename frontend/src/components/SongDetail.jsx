@@ -23,6 +23,8 @@ const SongDetail = ({ modalMode = false, onClose }) => {
   const [toggleAdminRecommendation] = useToggleAdminRecomMutation()
   const currentUser = useSelector(selectCurrentUser)
   const [viewMode, setViewMode] = useState('lyrics')
+  const [isOpen, setIsOpen] = useState(false)
+  const toggleMenu = () => setIsOpen(prev => !prev)
   const navigate = useNavigate()
 
   console.log('songId', id)
@@ -109,33 +111,45 @@ const SongDetail = ({ modalMode = false, onClose }) => {
                 )}
                 <p className='song-artist'>Genre: {song.genre}</p>
               </div>
-              <div className="likes">
-                <p>{song.likes.length} Likes</p>
-                <button 
-                  className="like-button"
-                  onClick={() => toggleLike(song._id)}
-                >
-                  {song.likes.includes(currentUser._id) ? 'Unlike' : 'Like'}
-                </button>
-                {currentUser?.isAdmin && (
+              <div className='buttons'>
+                <div className="likes">
+                  <p>{song.likes.length} Likes</p>
                   <button 
                     className="like-button"
-                    onClick={() => toggleAdminRecommendation(song._id)}>
-                    {song.isRecommended ? 'AdUnrec' : 'AdRec' }
+                    onClick={() => toggleLike(song._id)}
+                  >
+                    {song.likes.includes(currentUser._id) ? 'Unlike' : 'Like'}
                   </button>
-                )}
-              </div>
-              <div className='buttons'>
-                {isOwner || currentUser?.isAdmin ? (
+                  {currentUser?.isAdmin && (
+                    <button 
+                      className="like-button"
+                      onClick={() => toggleAdminRecommendation(song._id)}>
+                      {song.isRecommended ? 'AdUnrec' : 'AdRec' }
+                    </button>
+                  )}
+                </div>
+                
                   <>
-                    <Link to={`/songs/${song._id}/edit`}>
-                      <button className="button">
-                        Edit
-                      </button>
-                    </Link>
-                    <button className="button" onClick={() => handleDelete(song._id)}>Delete</button>
+                    <div className="dropdown-container">
+                      <button className="dropdown-toggle" onClick={toggleMenu}>⋮</button>
+                      {isOpen && (
+                        isOwner || currentUser?.isAdmin ? (
+                          <div className="dropdown-menu">
+                            <Link to={`/songs/${song._id}/edit`}>
+                              <button className="button">
+                                Edit
+                              </button>
+                            </Link>
+                            <button className="button" onClick={() => handleDelete(song._id)}>Delete</button>
+                          </div>
+                        ) : (
+                          <div className="dropdown-menu">
+                            <button className="button">Report</button>
+                          </div>
+                        )
+                      )}
+                    </div>
                   </>
-                ) : null}
               </div>
             </div>
 
