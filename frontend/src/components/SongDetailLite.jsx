@@ -19,8 +19,37 @@ const SongDetailLite =
   
   const currentUser = useSelector(selectCurrentUser)
   const [toggleLike] = useToggleLikeMutation()
+  const [isPlaying, setIsPlaying] = useState(true)
   const liked = song.likes.includes(currentUser._id)
-  const highlight = (() => song.highlight, [song.highlight])
+
+  const handlePlayPause = () => {
+    if (!audioRef.current) return
+
+    if (isPlaying) {
+      audioRef.current.pause()
+    } else {
+      audioRef.current.play()
+    }
+
+    setIsPlaying(!isPlaying)
+  }
+
+  useEffect(() => {
+    setIsPlaying(true)
+  }, [song])
+
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+
+    const handleEnded = () => setIsPlaying(false)
+    audio.addEventListener('ended', handleEnded)
+
+    return () => {
+      audio.removeEventListener('ended', handleEnded)
+    }
+
+  }, [audioRef])
 
   const handleLike = async () => {
     try {
@@ -71,7 +100,10 @@ const SongDetailLite =
             )}
             <p className='song-artist'>{song.genre}</p>
           </div>
-          <audio ref={audioRef} src={`http://localhost:3500/${song.audioFile}`} controls />
+          <audio ref={audioRef} src={`http://localhost:3500/${song.audioFile}`} hidden />
+          <div onClick={handlePlayPause} style={{ cursor: 'pointer', marginTop: '10px' }}>
+            {isPlaying ? '⏸' : '▶'}
+          </div>
           {miningMode && song.highlight && (
             <MiningProgressBar 
               highlight={song.highlight} 
