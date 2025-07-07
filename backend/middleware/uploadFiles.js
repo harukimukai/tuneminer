@@ -10,6 +10,8 @@ const storage = multer.diskStorage({
       cb(null, 'uploads/image/')
     } else if (file.fieldname === 'icon') {
       cb(null, 'uploads/icon/')
+    } else if (file.fieldname === 'coverImage') {
+      cb(null, 'uploads/coverImage/')
     } else {
       cb(new Error('Invalid field name'), false)
     }
@@ -20,8 +22,10 @@ const storage = multer.diskStorage({
       cb(null, `${timestamp}-audio${path.extname(file.originalname)}`)
     } else if (file.fieldname === 'imageFile') {
       cb(null, `${timestamp}-image${path.extname(file.originalname)}`)
-    }else if (file.fieldname === 'icon') {
+    } else if (file.fieldname === 'icon') {
       cb(null, `${timestamp}-icon${path.extname(file.originalname)}`)
+    } else if (file.fieldname === 'coverImage') {
+      cb(null, `${timestamp}-coverImage${path.extname(file.originalname)}`)
     }
   }
 })
@@ -48,6 +52,14 @@ const fileFilter = (req, file, cb) => {
     ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'].includes(file.mimetype)
   ) {
     console.log('file.fieldname === icon')
+    return cb(null, true)
+  }
+
+  if (
+    file.fieldname === 'coverImage' &&
+    ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'].includes(file.mimetype)
+  ) {
+    console.log('file.fieldname === coverImage')
     return cb(null, true)
   }
 

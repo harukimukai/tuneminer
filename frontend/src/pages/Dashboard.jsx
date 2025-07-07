@@ -18,22 +18,23 @@ const Dashboard = () => {
 
     if (isLoading) return <p>Loading...</p>
     if (isAdminSongsLoading) return <p>[Rec By Admin] Loading...</p>
-    if (!currentUser) return <p>No user <Link to="/login">Login</Link></p>
+    // if (!currentUser) return <p>No user <Link to="/login">Login</Link></p>
   
 
     return (
   <section className="dash-board_container">
-    <h2>Dashboard</h2>
-
+    
     <div className="section-block">
       <h3>Recommendations By Admin</h3>
       <SongList songs={adminSongs} />
     </div>
 
-    <div className="section-block">
-      <h3>Your Personalized Recommendations</h3>
-      <Recommendations userId={currentUser._id} />
-    </div>
+    {currentUser && 
+      <div className="section-block">
+        <h3>Your Personalized Recommendations</h3>
+        <Recommendations userId={currentUser._id} />
+      </div>
+    }
 
     <div className="section-block">
       <SongList songs={songs} />

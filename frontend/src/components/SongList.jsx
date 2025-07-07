@@ -17,8 +17,8 @@ const SongList = ({ songs }) => {
 
   // 1段5枚ずつ区切る（例）
   const chunked = [];
-  for (let i = 0; i < songs.length; i += 5) {
-    chunked.push(songs.slice(i, i + 5));
+  for (let i = 0; i < songs.length; i += 7) {
+    chunked.push(songs.slice(i, i + 7));
   }
 
   return (

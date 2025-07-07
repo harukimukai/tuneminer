@@ -5,23 +5,21 @@ const verifyJWT = require('../middleware/verifyJWT')
 const verifySelf = require('../middleware/verifySelf')
 const { upload } = require('../middleware/uploadFiles')
 
-router.use(verifyJWT)
-
 router.route('/')
     .get(usersController.getAllUsers)
 
 router.route('/:id')
     .get(usersController.getUserProfile)
-    .patch(verifySelf, 
+    .patch(verifyJWT, verifySelf, 
         upload.fields([
             { name: 'icon', maxCount: 1 }
         ]), 
         usersController.updateUser
     )
-    .delete(verifySelf, usersController.deleteUser)
+    .delete(verifyJWT, verifySelf, usersController.deleteUser)
 
 router.route('/:id/follow')
-    .post(usersController.followUser)
+    .post(verifyJWT, usersController.followUser)
 
 router.route('/:id/following')
     .get(usersController.getFollowingUsers)

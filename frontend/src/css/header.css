@@ -4,7 +4,7 @@
   position: fixed;
   display: flex;
   max-height: 200px;
-  z-index: 999; /* ← 追加 */
+  z-index: 999;
 }
 
 .header-background {

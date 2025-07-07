@@ -106,7 +106,7 @@ const GlobalAudioPlayer = () => {
   return (
     <audio
       ref={audioRef}
-      preload="auto" /* 🔥 先読みを促す */
+      preload="auto" /* 先読みを促す */
       src={`http://localhost:3500/${currentSong.audioUrl}`}
       onTimeUpdate={handleTimeUpdate}
       onLoadedMetadata={handleLoadedMetadata}

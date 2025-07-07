@@ -29,14 +29,14 @@ const CommentItem = ({ comment, onDelete, currentUser, onReply }) => {
         {currentUser?._id === comment.user._id && (
           <button onClick={() => onDelete(comment._id)}>delete</button>
         )}
-        {currentUser && (
+        {currentUser?._id && (
           <button onClick={() => setShowReplyForm((prev) => !prev)}>
             {showReplyForm ? 'Cancel' : 'Reply'}
           </button>
         )}
       </div>
 
-      {showReplyForm && (
+      {currentUser && showReplyForm && (
         <form onSubmit={handleReply}>
           <textarea
             style={{ backgroundColor: 'grey'}}

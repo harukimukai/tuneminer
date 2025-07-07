@@ -46,6 +46,8 @@ const CustomAudioPlayer = ({ song }) => {
     console.log('[CustomAudioPlayer] Dispatching togglePlay')
     dispatch(togglePlay())
 
+    if (!currentUser) return
+
     // 再生履歴などの処理
     const now = Date.now()
     const recentPlay = song.plays.find(p =>

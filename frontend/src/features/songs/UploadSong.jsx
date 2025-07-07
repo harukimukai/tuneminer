@@ -60,7 +60,7 @@ const UploadSong = () => {
       setImageFile(null)
       setHighlightStart('')
       setHighlightEnd('')
-      navigate('/dash')
+      navigate('/')
       alert('Uploaded a new song!')
     } catch (err) {
       console.error('Upload error:', err)

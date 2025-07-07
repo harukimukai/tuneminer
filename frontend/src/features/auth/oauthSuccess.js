@@ -24,7 +24,7 @@ const OAuthSuccess = () => {
             accessToken,
             user: data.user
           }))
-          navigate('/dash')
+          navigate('/')
         })
         .catch(err => {
           console.error('OAuth token error:', err)

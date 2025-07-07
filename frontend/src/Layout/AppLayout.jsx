@@ -21,7 +21,7 @@ const AppLayout = () => {
       {/* ハンバーガーボタン */}
       <button
         onClick={() => setSidebarOpen(true)}
-        className="p-2 text-white bg-black fixed top-2 left-2 z-50"
+        className="p-2 text-white bg-black fixed top-2 left-2 z-1000"
       >
         {/* 3本線アイコン */}
         <div className="space-y-1">

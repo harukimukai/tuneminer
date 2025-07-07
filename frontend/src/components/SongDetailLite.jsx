@@ -20,7 +20,7 @@ const SongDetailLite =
   const currentUser = useSelector(selectCurrentUser)
   const [toggleLike] = useToggleLikeMutation()
   const [isPlaying, setIsPlaying] = useState(true)
-  const liked = song.likes.includes(currentUser._id)
+  const liked = song.likes.includes(currentUser?._id)
 
   const handlePlayPause = () => {
     if (!audioRef.current) return

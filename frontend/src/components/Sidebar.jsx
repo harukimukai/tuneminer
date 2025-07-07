@@ -14,7 +14,13 @@ const Sidebar = ({ isOpen, onClose }) => {
       </button>
       <ul className="p-4 space-y-4">
         <li><a href="/dash">Dashboard</a></li>
-        <li><a href={`/users/${currentUser._id}`}>My Profile</a></li>
+        {currentUser && 
+          <li> 
+            <a href={`/users/${currentUser._id}`}>
+              My Profile
+            </a>
+          </li>
+        }
         <li><a href="/upload">Upload</a></li>
         <li><LogoutButton/></li>
       </ul>

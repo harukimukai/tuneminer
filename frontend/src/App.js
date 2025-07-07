@@ -31,6 +31,9 @@ import OAuthSuccess from './features/auth/oauthSuccess'
 import LoadingScreen from './components/LoadingScreen'
 import ResetPassword from './components/ResetPassword'
 import ForgotPassword from './components/ForgotPassword'
+import Settings from './features/users/Settings'
+import CreatePlaylist from './features/playlists/CreatePlaylist'
+import MyPlaylists from './features/playlists/MyPlaylists'
 
 const App = () => {
   useConversationSocket() // 🎯 アプリ起動したら常にsocket待機する！
@@ -73,42 +76,45 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />} />             {/* 任意 */}
+        {/* 認証関連 */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
 
-          <Route element={<PersistLogin />}>
+        {/* ログイン情報を保存したいページ */}
+        <Route element={<PersistLogin />}>
+          <Route element={<AppLayout />}>
+            {/* 公開ページ */}
+            <Route index element={<Dashboard />} />
+            <Route path="/songs" element={<SongList />} />
+            <Route path="/songs/modal/:id" element={
+              isModalPath ? (
+                <Modal>
+                  <SongDetail modalMode onClose={() => navigate(-1)} />
+                </Modal>
+              ) : null
+            } />
+            <Route path="/songs/mining" element={<MiningPage />} />
+            <Route path="/search-results" element={<SearchResults />} />
+            <Route path="/users/:id" element={<UserPage />} />
+
             <Route element={<RequireAuth />}>
-              <Route element={<AppLayout />}>
-                <Route path="/dash" element={<Dashboard />} />
-                <Route path="/admin-dash" element={<AdminDashboard />} />
-                <Route path="/mypage" element={<MyPage />} />
-                <Route path="/mypage/:id" element={<EditProfile />} />
-                <Route path="/users/:id" element={<UserPage />} />
-                <Route path="/upload" element={<UploadSong />} />
-                <Route path='/songs' element={<SongList />} />
-                <Route path="/songs/modal/:id" 
-                  element={
-                    isModalPath ? (
-                      <Modal>
-                        <SongDetail modalMode onClose={() => navigate(-1)} />
-                      </Modal>
-                    ) : null
-                  } 
-                />
-                <Route path="/songs/:id/edit" element={<EditSong />} />
-                <Route path="/search-results" element={<SearchResults />} />
-                <Route path="/play-history/:id" element={<PlayHistory />} />
-                <Route path="/songs/mining" element={<MiningPage />} />
-                <Route path="/mining-history" element={<MiningHistory />} />
-                <Route path="/messages/:id" element={<MessageLayout />} />
-              </Route>
+              <Route path="/admin-dash" element={<AdminDashboard />} />
+              <Route path="/mypage" element={<MyPage />} />
+              <Route path="/mypage/:id" element={<EditProfile />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/upload" element={<UploadSong />} />
+              <Route path="/songs/:id/edit" element={<EditSong />} />
+              <Route path="/play-history/:id" element={<PlayHistory />} />
+              <Route path="/mining-history" element={<MiningHistory />} />
+              <Route path="/messages/:id" element={<MessageLayout />} />
+              <Route path="/playlists/create" element={<CreatePlaylist />} />
+              <Route path="/playlists/mine" element={<MyPlaylists />} />
             </Route>
           </Route>
-
+        </Route>
       </Routes>
     </>
   )

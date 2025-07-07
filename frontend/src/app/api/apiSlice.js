@@ -29,6 +29,15 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     if (result?.error?.status === 403) {
         console.log('sending refresh token')
 
+        const state = api.getState()
+        const token = state.auth.token
+
+        // 未ログインなら refresh を試みない
+        if (!token) {
+            console.log('[baseQueryWithReauth] No token, not attempting refresh.')
+            return result
+        }
+
         // send refresh token to get new access token
         const refreshResult = await baseQuery('/auth/refresh', api, extraOptions) // args = '/auth/refresh'
 

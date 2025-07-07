@@ -50,11 +50,20 @@ const SongDetail = ({ modalMode = false, onClose }) => {
   if (isLoading) return <p>Loading song...</p>
   if (isError) return <p>{error?.data?.message || 'Failed to load song'}</p>
   if (!song) return <p>Song not found</p>
-  if (!currentUser) return <p>Current user not found</p>
+  // if (!currentUser) return <p>Current user not found</p>
 
   const isOwner = song.user._id === currentUser?._id
 
+  const handleLike = async(songId) => {
+    if (!currentUser) {
+      const confirm = window.confirm('You need to login tolike this song!')
+      if (confirm) {
+        return navigate('/login')
+      } else return
+    }
 
+    toggleLike(songId).unwrap()
+  }
 
   const handleDelete = async (id) => {
     console.log('delete id: ', id)
@@ -116,9 +125,9 @@ const SongDetail = ({ modalMode = false, onClose }) => {
                   <p>{song.likes.length} Likes</p>
                   <button 
                     className="like-button"
-                    onClick={() => toggleLike(song._id)}
+                    onClick={() => handleLike(song._id)}
                   >
-                    {song.likes.includes(currentUser._id) ? 'Unlike' : 'Like'}
+                    {song.likes.includes(currentUser?._id) ? 'Unlike' : 'Like'}
                   </button>
                   {currentUser?.isAdmin && (
                     <button 

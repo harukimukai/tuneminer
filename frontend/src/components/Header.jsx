@@ -9,13 +9,13 @@ import NowPlayingBar from './NowPlayingBar'
 const Header = () => {
   const currentUser = useSelector(selectCurrentUser)
 
-  if (!currentUser) {
-    return (
-      <header className="header">
-        <p style={{ color: 'white', padding: '10px' }}>Loading user info...</p>
-      </header>
-    )
-  }
+  // if (!currentUser) {
+  //   return (
+  //     <header className="header">
+  //       <p style={{ color: 'white', padding: '10px' }}>Loading user info...</p>
+  //     </header>
+  //   )
+  // }
   console.log(currentUser)
 
   return (
@@ -24,14 +24,19 @@ const Header = () => {
       <nav className="header-nav">
         <div className="header-left">
           <div className="header-head">
-            <Link to="/dash" >
+            <Link to="/" >
               <img src='http://localhost:3000/logo4.png' id="logo" alt="icon" />
             </Link>
-            <Link to="/dash" >
+            <Link to="/" >
               <h1 id='title'>TuneMiner</h1>
             </Link>
           </div>
-          <p className='header-welcome'>Welcome! {currentUser.username}</p>
+          {currentUser ? 
+            <p className='header-welcome'>
+              Welcome! {currentUser.username}
+            </p>
+          : <p className='header-welcome'>Welcome!</p>
+          }
           <div className="header-links">
               {currentUser && (
                 <Link to={`/users/${currentUser._id}`} className="header-button">
@@ -41,9 +46,11 @@ const Header = () => {
               <Link to='/songs/mining' className="header-button">
                 <button>Mining</button>
               </Link>
-              <Link to="/mining-history" className="header-button">
-                <button>Mining History</button>
-              </Link>
+              {currentUser && 
+                <Link to="/mining-history" className="header-button">
+                  <button>Mining History</button>
+                </Link>
+              }
           </div>
         </div>
         <div className="header-center">
@@ -51,27 +58,46 @@ const Header = () => {
           <p id='now-playing-bar'><NowPlayingBar/></p>
         </div>
         <div className="header-right">
-          <div className="header-buttons">
-            <p>
-              <Link to='/upload'>
-                <button className="header-button">Upload</button>
+          {currentUser ?
+            (<div className="header-buttons">
+              <p>
+                <Link to='/upload'>
+                  <button className="header-button">Upload</button>
+                </Link>
+              </p>
+              <Link to={'/settings'}>
+                <button className="header-button">Settings</button>
               </Link>
-            </p>
-            <p><LogoutButton/></p>
-          </div>
-          <div className="header-buttons-below">
-            <p>
-              <Link to={`/messages/${currentUser._id}`}>
-                <button className="header-button">Message</button>
+              <p><LogoutButton/></p>
+            </div>)
+          : (
+            <div className="header-buttons">
+              <Link to={`/login`}>
+                <button className="header-button">Login</button>
               </Link>
-            </p>
-            {currentUser.isAdmin === true &&
-            <p>
-              <Link to='/admin-dash'>
-                <button className="header-button">Admin</button>
-              </Link>
-            </p>}
-          </div>
+            </div>
+          )}
+          {currentUser && 
+            <div className="header-buttons-below">
+              <p>
+                <Link to={`/messages/${currentUser._id}`}>
+                  <button className="header-button">Message</button>
+                </Link>
+              </p>
+              <p>
+                <Link to='/playlists/create'>
+                  <button className="header-button">Playlist</button>
+                </Link>
+              </p>
+              {currentUser.isAdmin === true &&
+                <p>
+                  <Link to='/admin-dash'>
+                    <button className="header-button">Admin</button>
+                  </Link>
+                </p>
+              }
+            </div>
+          }
         </div>
       </nav>
     </header>

@@ -23,14 +23,21 @@ const UserPage = () => {
   if (!data) return <p>Loading user...</p>
   if (isLoading) return <p>Loading...</p>
   if (isError) return <p style={{ color: 'red' }}>{error?.data?.message}</p>
-  if (!currentUser) return <p>No currentUser</p>
+  // if (!currentUser) return <p>No currentUser</p>
 
 
   const { user, songs } = data
-  const sameUser = user._id === currentUser._id
-  const alreadyFollow = user.followers.includes(currentUser._id)
+  const sameUser = user._id === currentUser?._id
+  const alreadyFollow = user.followers.includes(currentUser?._id)
 
   const handleFollow = async () => {
+    if (!currentUser) {
+      const confirm = window.confirm('You need to login to follow this user')
+      if (confirm) {
+        navigate('/login')
+      } else return
+    }
+
     try {
       await followUser(user._id).unwrap()
       console.log('Followed/Unfollowed')
@@ -40,6 +47,8 @@ const UserPage = () => {
   }
 
   const handleStartConversation = async (recipientId) => {
+    if (!currentUser) return
+
     console.log('handleStartConversation', recipientId)
     try {
       const newConv = await createConversation(recipientId).unwrap()

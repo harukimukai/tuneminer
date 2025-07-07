@@ -31,7 +31,7 @@ const Login = () => {
       setUsername('')
       setPwd('')
       setPersist(true)
-      navigate('/dash') // ← ログイン後に遷移したいページへ
+      navigate('/') // ← ログイン後に遷移したいページへ
     } catch (err) {
       console.error('Login failed:', err)
       setErrorMsg(err?.data?.message || 'Login failed')

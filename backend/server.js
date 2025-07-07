@@ -93,10 +93,12 @@ app.use('/uploads', express.static('uploads'))
 app.use('/', require('./routes/root'))
 app.use('/auth', require('./routes/authRoutes'))
 
-app.use(verifyJWT); // このコードより下のコードに影響を与えるから、関係のないものはここより上に位置させる
-app.use('/users', require('./routes/userRoutes'))
 app.use('/songs', require('./routes/songRoutes'))
+app.use('/users', require('./routes/userRoutes'))
 app.use('/comments', require('./routes/commentRoutes'))
+app.use('/playlists', require('./routes/playlistRoutes'))
+
+app.use(verifyJWT); // このコードより下のコードに影響を与えるから、関係のないものはここより上に位置させる
 app.use('/mining-history', require('./routes/miningHistoryRoutes'))
 app.use('/play-history', require('./routes/playHistoryRoutes'))
 app.use('/conversations', require('./routes/conversationRoutes'))

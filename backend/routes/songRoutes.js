@@ -5,7 +5,6 @@ const songsController = require('../controller/songsController')
 const verifyJWT = require('../middleware/verifyJWT')
 const verifyAdmin = require('../middleware/verifyAdmin')
 
-router.use(verifyJWT)
 
 // multi files upload
 router.route('/')
@@ -14,17 +13,18 @@ router.route('/')
             { name: 'audioFile', maxCount: 1 },
             { name: 'imageFile', maxCount: 1 }
         ]),
+        verifyJWT,
         songsController.uploadSong
     )
     .get(songsController.getAllSongs)
 
 
 router.route('/user')
-    .get(songsController.getMySongs)
+    .get(verifyJWT, songsController.getMySongs)
 
 
 router.route('/liked')
-    .get(songsController.getLikedSongs)
+    .get(verifyJWT, songsController.getLikedSongs)
 
 router.route('/search-results')
     .get(songsController.searchSongs)
@@ -40,7 +40,7 @@ router.route('/admin-recommended')
 // ':id' を含むルートはここより下
 
 router.route('/admin-recommend/:songId')
-    .patch(verifyAdmin, songsController.toggleAdminRecommendation)
+    .patch(verifyJWT, verifyAdmin, songsController.toggleAdminRecommendation)
 
 router.route('/:id')
     .get(songsController.getOneSong)
@@ -49,18 +49,19 @@ router.route('/:id')
             { name: 'audioFile', maxCount: 1 },
             { name: 'imageFile', maxCount: 1 }
         ]),
+        verifyJWT,
         songsController.updateSong
     )
-    .delete(songsController.deleteSong)
+    .delete(verifyJWT, songsController.deleteSong)
     
 router.route('/:id/like')
-    .patch(songsController.toogleLike)
+    .patch(verifyJWT, songsController.toogleLike)
 
 router.route('/:id/play')
     .post(songsController.playSong)
 
 router.route('/recommend/:id')
-    .get(songsController.getRecommendations)
+    .get(verifyJWT, songsController.getRecommendations)
 
 
 module.exports = router
