@@ -48,7 +48,8 @@ const handleLogin = asyncHandler(async (req, res) => {
             'UserInfo': {
                 'username': foundUser.username,
                 '_id': foundUser._id,
-                'isAdmin': foundUser.isAdmin
+                'isAdmin': foundUser.isAdmin,
+                'socials': foundUser.socials,
             }
         },
         process.env.ACCESS_TOKEN_SECRET,
@@ -76,7 +77,7 @@ const handleLogin = asyncHandler(async (req, res) => {
 
     // Send accessToken containing id, username, bio, icon
     // いずれマイページを消して普通のユーザーページから自分のアカウントのみ編集ボタンを表示させるようにするから、そのときはidとusernameのみにしていい気がする。
-    res.json({ accessToken, user: { _id: foundUser._id, username: foundUser.username, bio: foundUser.bio, icon: foundUser.icon, isAdmin: foundUser.isAdmin }  })
+    res.json({ accessToken, user: { _id: foundUser._id, username: foundUser.username, bio: foundUser.bio, icon: foundUser.icon, isAdmin: foundUser.isAdmin, socials: foundUser.socials }  })
 })
 
 const handleRefresh = (req, res) => {
@@ -108,7 +109,8 @@ const handleRefresh = (req, res) => {
                         '_id': foundUser._id,
                         'bio': foundUser.bio,
                         'icon': foundUser.icon,
-                        'isAdmin': foundUser.isAdmin
+                        'isAdmin': foundUser.isAdmin,
+                        'socials': foundUser.socials
                     }
                 },
                 process.env.ACCESS_TOKEN_SECRET,
@@ -124,7 +126,8 @@ const handleRefresh = (req, res) => {
                     username: foundUser.username,
                     bio: foundUser.bio,
                     icon: foundUser.icon,
-                    isAdmin: foundUser.isAdmin
+                    isAdmin: foundUser.isAdmin,
+                    socials: foundUser.socials
                 }
             })
         })

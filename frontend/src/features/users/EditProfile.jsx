@@ -24,6 +24,9 @@ const EditProfile = () => {
   })
   const [iconFile, setIconFile] = useState(null)
 
+
+  console.log('[Redux user]', user)
+  console.log('[Redux user.socials]', user.socials)
   const handleSubmit = async (e) => {
     e.preventDefault()
     const formData = new FormData()

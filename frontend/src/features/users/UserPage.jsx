@@ -8,6 +8,7 @@ import { selectCurrentUser } from '../auth/authSlice'
 import '../../css/userPage.css'
 import { useGetLikedSongsQuery } from '../songs/songApiSlice'
 import SocialLinks from '../../components/SocialLinks'
+import MyPlaylists from '../playlists/MyPlaylists'
 
 const UserPage = () => {
   const { id } = useParams()
@@ -129,6 +130,7 @@ const UserPage = () => {
       <SocialLinks socials={user.socials} />
       <button className={`tab-button ${viewMode === 'uploadedSongs' ? '' : 'active'}`} onClick={() => setViewMode('uploadedSongs')}>Uploaded Songs</button>
       <button className={`tab-button ${viewMode === 'likedSongs' ? '' : 'active'}`} onClick={() => setViewMode('likedSongs')}>Liked Songs</button>
+      <button className={`tab-button ${viewMode === 'myPlaylists' ? '' : 'active'}`} onClick={() => setViewMode('myPlaylists')}>My Playlists</button>
       {viewMode === 'uploadedSongs' ? (
         <div>
           {songs.length === 0 ? (
@@ -137,7 +139,7 @@ const UserPage = () => {
             <SongList songs={songs} />
           )}
         </div>
-      ) : (
+      ) : viewMode === 'likedSongs' ? (
         <div>
           {sameUser && (
             likedSongs.length === 0 ? (
@@ -147,6 +149,20 @@ const UserPage = () => {
             ) : (
               <div>
                 <SongList songs={likedSongs} />
+              </div>
+            )
+          )}
+        </div>
+      ) : (
+        <div>
+          {sameUser && (
+            likedSongs.length === 0 ? (
+              <div>
+                <p>No Playlists yet</p>
+              </div>
+            ) : (
+              <div>
+                <MyPlaylists />
               </div>
             )
           )}

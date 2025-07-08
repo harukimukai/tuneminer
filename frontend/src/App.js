@@ -34,6 +34,7 @@ import ForgotPassword from './components/ForgotPassword'
 import Settings from './features/users/Settings'
 import CreatePlaylist from './features/playlists/CreatePlaylist'
 import MyPlaylists from './features/playlists/MyPlaylists'
+import PlaylistDetail from './features/playlists/PlaylistDetail'
 
 const App = () => {
   useConversationSocket() // 🎯 アプリ起動したら常にsocket待機する！
@@ -112,6 +113,7 @@ const App = () => {
               <Route path="/messages/:id" element={<MessageLayout />} />
               <Route path="/playlists/create" element={<CreatePlaylist />} />
               <Route path="/playlists/mine" element={<MyPlaylists />} />
+              <Route path="/playlists/:id" element={<PlaylistDetail />} />
             </Route>
           </Route>
         </Route>
