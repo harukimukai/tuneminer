@@ -18,8 +18,24 @@ export const playlistApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Playlist'],
     }),
+    addSongPlaylist: builder.mutation({
+      query: ({playlistId, songId}) => ({
+        url: `/playlists/${playlistId}/add`,
+        method: 'PUT',
+        body: {songId},
+      }),
+      invalidatesTags: ['Playlist'],
+    }),
+    removeSongPlaylist: builder.mutation({
+      query: ({playlistId, songId}) => ({
+        url: `/playlists/${playlistId}/remove`,
+        method: 'PUT',
+        body: {songId},
+      }),
+      invalidatesTags: ['Playlist'],
+    }),
     getPlaylists: builder.query({
-      query: () => '/playlists', // 必要なら /playlists/mine に変更可能
+      query: () => '/playlists', 
       providesTags: ['Playlist'],
     }),
     getMyPlaylists: builder.query({
@@ -43,6 +59,8 @@ export const playlistApiSlice = apiSlice.injectEndpoints({
 export const {
   useCreatePlaylistMutation,
   useUpdatePlaylistMutation,
+  useAddSongPlaylistMutation,
+  useRemoveSongPlaylistMutation,
   useGetMyPlaylistsQuery,
   useGetPlaylistByIdQuery,
   useDeletePlaylistMutation

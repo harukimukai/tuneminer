@@ -7,6 +7,7 @@ import {
   useToggleLikeMutation, 
   useToggleAdminRecomMutation 
 } from '../features/songs/songApiSlice'
+import { useAddSongPlaylistMutation, useGetMyPlaylistsQuery } from '../features/playlists/playlistApiSlice'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../features/auth/authSlice'
 import { useEffect, useState } from 'react'
@@ -17,14 +18,19 @@ import '../css/modal.css'
 
 const SongDetail = ({ modalMode = false, onClose }) => {
   const { id } = useParams()
+  const currentUser = useSelector(selectCurrentUser)
+  const currentUserId = currentUser?._id
   const { data: song, isLoading, isError, error } = useGetSongByIdQuery(id)
+  const { data: myPlaylists = [] } = useGetMyPlaylistsQuery(currentUserId)
   const [toggleLike] = useToggleLikeMutation()
+  const [addSongPlaylist] = useAddSongPlaylistMutation()
   const [deleteSong] = useDeleteSongMutation()
   const [toggleAdminRecommendation] = useToggleAdminRecomMutation()
-  const currentUser = useSelector(selectCurrentUser)
   const [viewMode, setViewMode] = useState('lyrics')
-  const [isOpen, setIsOpen] = useState(false)
-  const toggleMenu = () => setIsOpen(prev => !prev)
+  const [isOpenMenu, setIsOpenMenu] = useState(false)
+  const [isOpenPlaylists, setIsOpenPlaylists] = useState(false)
+  const toggleMenu = () => setIsOpenMenu(prev => !prev)
+  const togglePlaylists = () => setIsOpenPlaylists(prev => !prev)
   const navigate = useNavigate()
 
   console.log('songId', id)
@@ -56,7 +62,7 @@ const SongDetail = ({ modalMode = false, onClose }) => {
 
   const handleLike = async(songId) => {
     if (!currentUser) {
-      const confirm = window.confirm('You need to login tolike this song!')
+      const confirm = window.confirm('You need to login to like this song!')
       if (confirm) {
         return navigate('/login')
       } else return
@@ -65,7 +71,7 @@ const SongDetail = ({ modalMode = false, onClose }) => {
     toggleLike(songId).unwrap()
   }
 
-  const handleDelete = async (id) => {
+  const handleDelete = async(id) => {
     console.log('delete id: ', id)
     const confirm = window.confirm('Are you sure deleting this song?')
     if (!confirm) return
@@ -81,6 +87,16 @@ const SongDetail = ({ modalMode = false, onClose }) => {
     }
   }
 
+  const handleAddSong = async(myPlaylistId, songId) => {
+    try {
+      await addSongPlaylist({playlistId: myPlaylistId, songId}).unwrap()
+      alert('This song is added!')
+    } catch (error) {
+      console.error(error)
+      alert('This song could not be added!')
+    }
+  }
+
   return (
     <div className={modalMode ? 'p-4' : 'p-8'}>
       <div className="modal-overlay">
@@ -93,6 +109,9 @@ const SongDetail = ({ modalMode = false, onClose }) => {
           <button className="modal-close" onClick={onClose}>✕</button>
           <div className="modal-content">
             <div className="modal-left">
+              {song.original ? 
+                (<p>Original</p>) : (<p>Cover</p>)
+              }
               <p className='createdAt'>
                 {song.releasedDate && <p>Released at : {new Date(song.releasedDate).toLocaleDateString()}</p>}
                 {song.createdAt && <p>Released at : {new Date(song.createdAt).toLocaleDateString()}</p>}
@@ -141,7 +160,7 @@ const SongDetail = ({ modalMode = false, onClose }) => {
                   <>
                     <div className="dropdown-container">
                       <button className="dropdown-toggle" onClick={toggleMenu}>⋮</button>
-                      {isOpen && (
+                      {isOpenMenu && (
                         isOwner || currentUser?.isAdmin ? (
                           <div className="dropdown-menu">
                             <Link to={`/songs/${song._id}/edit`}>
@@ -153,10 +172,31 @@ const SongDetail = ({ modalMode = false, onClose }) => {
                           </div>
                         ) : (
                           <div className="dropdown-menu">
-                            <button className="button">Report</button>
+                            <Link to={`/report/song/${song._id}`} onClick={() => console.log('Clicked report link', song._id)}>
+                              <button className="button">
+                                Report
+                              </button>
+                            </Link>
                           </div>
                         )
                       )}
+                    </div>
+                    <div className="dropdown-container">
+                      <button className="dropdown-toggle" onClick={togglePlaylists}>+</button>
+                        {isOpenPlaylists &&
+                          <div className="dropdown-menu">
+                            {myPlaylists.map((myPlaylist) => (
+                              <div key={myPlaylist._id}>
+                                <button
+                                  onClick={() => handleAddSong(myPlaylist._id, song._id)}
+                                >
+                                  <h3>{myPlaylist.title}</h3>
+                                  <p>{myPlaylist.songs.includes(song._id) ? '✅' : ''}</p>
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        }
                     </div>
                   </>
               </div>

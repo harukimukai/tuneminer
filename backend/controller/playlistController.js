@@ -22,8 +22,11 @@ const getPlaylistById = asyncHandler(async(req, res) => {
     const playlistId = req.params.id
 
     const playlist = await Playlist.findById(playlistId)
-        .populate('user', 'username icon')
-        .populate('songs')
+    .populate({
+      path: 'songs',
+      populate: { path: 'user', select: 'username icon' } // 曲の投稿者も表示したい場合
+    })
+    .populate('user', 'username icon') // プレイリストの作成者
 
     if (!playlist) return res.status(404).json({ message: 'Playlist not found' })
 
@@ -71,6 +74,52 @@ const updatePlaylist = asyncHandler(async(req, res) => {
     res.json(playlist)
 })
 
+const addSongPlaylist = asyncHandler(async(req, res) => {
+    console.log('addSongPlaylist Start')
+
+    const playlistId = req.params.id
+    if (!playlistId) return res.status(400).json({ message: 'No Playlist Id'})
+
+    const {songId} = req.body
+    if (!songId) return res.status(400).json({ message: 'No Song Id'})
+
+    const playlist = await Playlist.findById(playlistId)
+    if (!playlist) return res.status(404).json({ message: 'No playlist found'})
+
+    if (playlist.songs.includes(songId)) {
+        return res.status(400).json({ message: 'Song already in playlist' })
+    } 
+
+    playlist.songs.push(songId)
+    await playlist.save()
+
+    res.json(playlist)
+})
+
+const removeSongPlaylist = asyncHandler(async(req, res) => {
+    console.log('removeSongPlaylist Start')
+
+    const playlistId = req.params.id
+    if (!playlistId) return res.status(400).json({ message: 'No Playlist Id'})
+
+    const {songId} = req.body
+    if (!songId) return res.status(400).json({ message: 'No Song Id'})
+
+    const playlist = await Playlist.findById(playlistId)
+    if (!playlist) return res.status(404).json({ message: 'No playlist found'})
+
+    if (!playlist.songs.includes(songId)) {
+        return res.status(400).json({ message: 'Song does not exist in the playlist' })
+    } 
+
+    playlist.songs = playlist.songs.filter(
+        (id) => id.toString() !== songId.toString()
+    ) // songId に一致する ID を「除外」して、それ以外だけを songs に再代入
+    await playlist.save()
+
+    res.json(playlist)
+})
+
 const deletePlaylist = asyncHandler(async(req, res) => {
     const playlist = await Playlist.findById(req.params.id)
     if (!playlist) return res.status(401).json({ message: 'Playlist no found'})
@@ -87,5 +136,7 @@ module.exports = {
     getPlaylistById,
     createPlaylist,
     updatePlaylist,
+    addSongPlaylist,
+    removeSongPlaylist,
     deletePlaylist
 }

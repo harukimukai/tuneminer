@@ -11,13 +11,14 @@ const User = require('../model/User')
 
 // create new song
 const uploadSong = asyncHandler(async (req, res) => {
-    const { title, genre, lyrics, highlightStart, highlightEnd, hidden } = req.body
+    const { title, genre, lyrics, highlightStart, highlightEnd, hidden, original } = req.body
     const user = req._id // JWTでログイン済みのuser id
     if (
         !title || 
         !genre || 
         !req?.files || 
         hidden === undefined ||
+        original === undefined ||
         !req?.files?.audioFile || 
         !req?.files?.imageFile
     ) {
@@ -48,6 +49,7 @@ const uploadSong = asyncHandler(async (req, res) => {
         'audioFile': audioFile,
         'imageFile': imageFile,
         'hidden': hidden,
+        'original': original,
         'highlight': highlight // highlightは任意なのでundefinedでもOK
     })
 
@@ -129,6 +131,10 @@ const updateSong = asyncHandler(async (req, res) => {
 
     if (req.body?.hidden !== undefined) {
         song.hidden = req.body.hidden
+    }
+
+    if (req.body?.original !== undefined) {
+        song.original = req.body.original
     }      
 
     if (highlightStart) {

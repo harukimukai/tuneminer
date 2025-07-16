@@ -128,9 +128,12 @@ const UserPage = () => {
       <br />
       <>Bio: {user.bio}</> <br />
       <SocialLinks socials={user.socials} />
-      <button className={`tab-button ${viewMode === 'uploadedSongs' ? '' : 'active'}`} onClick={() => setViewMode('uploadedSongs')}>Uploaded Songs</button>
-      <button className={`tab-button ${viewMode === 'likedSongs' ? '' : 'active'}`} onClick={() => setViewMode('likedSongs')}>Liked Songs</button>
-      <button className={`tab-button ${viewMode === 'myPlaylists' ? '' : 'active'}`} onClick={() => setViewMode('myPlaylists')}>My Playlists</button>
+      <div className="tab-buttons">
+        <button className={`tab-button ${viewMode === 'uploadedSongs' ? '' : 'active'}`} onClick={() => setViewMode('uploadedSongs')}>Uploaded Songs</button>
+        <button className={`tab-button ${viewMode === 'likedSongs' ? '' : 'active'}`} onClick={() => setViewMode('likedSongs')}>Liked Songs</button>
+        <button className={`tab-button ${viewMode === 'myPlaylists' ? '' : 'active'}`} onClick={() => setViewMode('myPlaylists')}>My Playlists</button>
+      </div>
+
       {viewMode === 'uploadedSongs' ? (
         <div>
           {songs.length === 0 ? (

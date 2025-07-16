@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const helmet = require('helmet')
 const http = require('http')
 const { Server } = require('socket.io')
 const app = express();
@@ -16,8 +17,16 @@ const credentials = require('./middleware/credentials');
 const { sendMessage } = require('./controller/messageController')
 const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn');
+const xss = require('xss-clean');
+const { apiLimiter } = require('./middleware/rareLimit');
 const PORT = process.env.PORT || 3500;
 
+// 修正したらキャッシュを消してから確認！！
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+)
 
 // --- ここからサーバー立ち上げ
 const server = http.createServer(app)
@@ -86,8 +95,14 @@ app.use(express.json());
 //middleware for cookies
 app.use(cookieParser());
 
+// Anti-XSS
+app.use(xss())
+
 // uploads フォルダ内のファイルが Web 上でアクセス可能になる
 app.use('/uploads', express.static('uploads'))
+
+// アクセスリミッター
+// app.use(apiLimiter)
 
 // routes
 app.use('/', require('./routes/root'))
@@ -97,6 +112,8 @@ app.use('/songs', require('./routes/songRoutes'))
 app.use('/users', require('./routes/userRoutes'))
 app.use('/comments', require('./routes/commentRoutes'))
 app.use('/playlists', require('./routes/playlistRoutes'))
+app.use('/mining-like', require('./routes/miningLikeRoutes'))
+app.use('/report', require('./routes/reportRoutes'))
 
 app.use(verifyJWT); // このコードより下のコードに影響を与えるから、関係のないものはここより上に位置させる
 app.use('/mining-history', require('./routes/miningHistoryRoutes'))

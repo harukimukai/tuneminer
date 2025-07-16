@@ -111,7 +111,7 @@ const handleRefresh = (req, res) => {
                         'icon': foundUser.icon,
                         'isAdmin': foundUser.isAdmin,
                         'socials': foundUser.socials
-                    }
+                    } // currentUser = useSelect(selectCurrentUser)で持ってこれるユーザー情報
                 },
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: '15m' }

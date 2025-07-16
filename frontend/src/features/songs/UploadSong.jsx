@@ -12,6 +12,7 @@ const UploadSong = () => {
   const [genre, setGenre] = useState('')
   const [lyrics, setLyrics] = useState('')
   const [hidden, setHidden] = useState(false)
+  const [original, setOriginal] = useState(false)
   const [audioFile, setAudioFile] = useState(null)
   const [imageFile, setImageFile] = useState(null)
   const [previewUrl, setPreviewUrl] = useState(null)
@@ -43,6 +44,7 @@ const UploadSong = () => {
     formData.append('genre', genre)
     formData.append('lyrics', lyrics)
     formData.append('hidden', hidden)
+    formData.append('original', original)
     formData.append('audioFile', audioFile)
     formData.append('imageFile', imageFile)
     formData.append('highlightStart', highlightStart)
@@ -56,6 +58,7 @@ const UploadSong = () => {
       setGenre('')
       setLyrics('')
       setHidden(false)
+      setOriginal(false)
       setAudioFile(null)
       setImageFile(null)
       setHighlightStart('')
@@ -118,6 +121,14 @@ const UploadSong = () => {
               onChange={(e) => setHidden(e.target.checked)}
             />
             <label>Private</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              checked={original}
+              onChange={(e) => setOriginal(e.target.checked)}
+            />
+            <label>Original</label>
           </div>
         </div>
       </div>

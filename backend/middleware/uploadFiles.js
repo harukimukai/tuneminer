@@ -1,7 +1,15 @@
 const multer = require('multer')
 const path = require('path')
 
-// 1つの storage 設定にまとめる
+// 許可された拡張子とMIMEタイプ
+const ALLOWED_IMAGE_TYPES = ['jpg', 'jpeg', 'png', 'webp']
+const ALLOWED_AUDIO_TYPES = ['mp3']
+
+// 拡張子チェック用
+const getExtension = (filename) => {
+  return path.extname(filename).toLowerCase().replace('.', '')
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     if (file.fieldname === 'audioFile') {
@@ -18,58 +26,38 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const timestamp = Date.now()
-    if (file.fieldname === 'audioFile') {
-      cb(null, `${timestamp}-audio${path.extname(file.originalname)}`)
-    } else if (file.fieldname === 'imageFile') {
-      cb(null, `${timestamp}-image${path.extname(file.originalname)}`)
-    } else if (file.fieldname === 'icon') {
-      cb(null, `${timestamp}-icon${path.extname(file.originalname)}`)
-    } else if (file.fieldname === 'coverImage') {
-      cb(null, `${timestamp}-coverImage${path.extname(file.originalname)}`)
-    }
+    const ext = path.extname(file.originalname)
+    cb(null, `${timestamp}-${file.fieldname}${ext}`)
   }
 })
 
-// fileFilterも1つにまとめる
 const fileFilter = (req, file, cb) => {
-  console.log('file received:', file)
+  const ext = getExtension(file.originalname)
+  const mimetype = file.mimetype
+
+  if (file.fieldname === 'audioFile') {
+    if (mimetype === 'audio/mpeg' && ALLOWED_AUDIO_TYPES.includes(ext)) {
+      return cb(null, true)
+    }
+  }
+
   if (
-    file.fieldname === 'audioFile' &&
-    file.mimetype === 'audio/mpeg'
+    ['imageFile', 'icon', 'coverImage'].includes(file.fieldname) &&
+    mimetype.startsWith('image/') &&
+    ALLOWED_IMAGE_TYPES.includes(ext)
   ) {
     return cb(null, true)
   }
 
-  if (
-    file.fieldname === 'imageFile' &&
-    ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'].includes(file.mimetype)
-  ) {
-    return cb(null, true)
-  }
-
-  if (
-    file.fieldname === 'icon' &&
-    ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'].includes(file.mimetype)
-  ) {
-    console.log('file.fieldname === icon')
-    return cb(null, true)
-  }
-
-  if (
-    file.fieldname === 'coverImage' &&
-    ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'].includes(file.mimetype)
-  ) {
-    console.log('file.fieldname === coverImage')
-    return cb(null, true)
-  }
-
-  cb(new Error(`Invalid file type for field "${file.fieldname}"`), false)
+  cb(new Error(`Invalid file type or extension for field "${file.fieldname}"`), false)
 }
 
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 } // 全体で最大10MBまで（必要なら調整OK）
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 最大10MB
+  }
 })
 
 module.exports = { upload }

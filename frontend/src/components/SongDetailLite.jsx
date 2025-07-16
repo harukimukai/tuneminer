@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../features/auth/authSlice'
-import { useToggleLikeMutation } from '../features/songs/songApiSlice'
 import { Link } from 'react-router-dom'
 import '../css/modal.css'
 import MiningProgressBar from './MiningProgressBar'
+import { useAddMiningLikeMutation } from '../features/mining/miningApiSlice'
+import MiningLikeButton from '../features/mining/MiningLikeButton'
 
 const SongDetailLite = 
   ({ 
@@ -18,7 +19,7 @@ const SongDetailLite =
   }) => {
   
   const currentUser = useSelector(selectCurrentUser)
-  const [toggleLike] = useToggleLikeMutation()
+  const [addMiningLike] = useAddMiningLikeMutation()
   const [isPlaying, setIsPlaying] = useState(true)
   const liked = song.likes.includes(currentUser?._id)
 
@@ -51,10 +52,10 @@ const SongDetailLite =
 
   }, [audioRef])
 
-  const handleLike = async () => {
+  const handleMiningLike = async(songId) => {
     try {
-      await toggleLike(song._id).unwrap()
-      onLikeToggle(song._id, liked)
+      await addMiningLike(songId).unwrap()
+      onLikeToggle(songId, liked)
     } catch (err) {
       console.error(err)
     }
@@ -101,15 +102,16 @@ const SongDetailLite =
             <p className='song-artist'>{song.genre}</p>
           </div>
           <audio ref={audioRef} src={`http://localhost:3500/${song.audioFile}`} hidden />
-          <div onClick={handlePlayPause} style={{ cursor: 'pointer', marginTop: '10px' }}>
+          <button onClick={handlePlayPause} style={{ cursor: 'pointer', marginTop: '10px' }}>
             {isPlaying ? '⏸' : '▶'}
-          </div>
+          </button>
           {miningMode && song.highlight && (
             <MiningProgressBar 
               highlight={song.highlight} 
               audioRef={audioRef}
             />
           )}
+          <MiningLikeButton songId = {song._id}/>
         </div>
       </div>
       {/* {!song.likes.includes(currentUser._id) &&

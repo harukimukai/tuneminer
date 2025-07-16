@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const verifyJWT = (req, res, next) => {
+    console.log('[verifyJWT] start')
     const authHeader = req.headers.authorization || req.headers.Authorization;
     if (!authHeader?.startsWith('Bearer ')) return res.sendStatus(401);
     //console.log(authHeader); // Bearer token
@@ -15,7 +16,9 @@ const verifyJWT = (req, res, next) => {
             req.isAdmin = decoded.UserInfo.isAdmin
             next()
         }
-    );
+    )
+
+    console.log('[verifyJWT] Done')
 }
 
 module.exports = verifyJWT;

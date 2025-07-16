@@ -19,6 +19,7 @@ const EditSong = () => {
   const [genre, setGenre] = useState('')
   const [lyrics, setLyrics] = useState('')
   const [hidden, setHidden] = useState(false)
+  const [original, setOriginal] = useState(false)
   const [audioFile, setAudioFile] = useState(null)
   const [imageFile, setImageFile] = useState(null)
   const [highlightStart, setHighlightStart] = useState('')
@@ -45,6 +46,12 @@ const EditSong = () => {
     }
   }, [song])
 
+  useEffect(() => {
+    if (song?.original) {
+      setOriginal(true)
+    }
+  }, [song])
+
   const onClose = () => {
     navigate('-1')
   }
@@ -56,6 +63,7 @@ const EditSong = () => {
     formData.append('genre', genre)
     formData.append('lyrics', lyrics)
     formData.append('hidden', hidden)
+    formData.append('original', original)
     formData.append('highlightStart', highlightStart)
     formData.append('highlightEnd', highlightEnd)
     if (audioFile) formData.append('audioFile', audioFile)
@@ -121,6 +129,14 @@ const EditSong = () => {
                     onChange={(e) => setHidden(e.target.checked)}
                   />
                     Private
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={original}
+                    onChange={(e) => setOriginal(e.target.checked)}
+                  />
+                    Original
                 </label>
                 <button type="submit" disabled={isLoading}>
                   {isLoading ? 'Updating...' : 'Update'}

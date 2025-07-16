@@ -13,11 +13,37 @@ export const miningApiSlice = apiSlice.injectEndpoints({
     getMyMiningHistory: builder.query({
       query: () => '/mining-history',
       providesTags: ['MiningHistory']
-    })
+    }),
+    getMiningLikesBySong: builder.query({
+      query: (songId) => `/mining-like/${songId}/by-song`,
+      providesTags: [{type: 'MiningHistory'}]
+    }),
+    getMiningLikesByUser: builder.query({
+      query: (userId) => `/mining-like/${userId}/by-user`,
+      providesTags: ['MiningHistory']
+    }),
+    addMiningLike: builder.mutation({
+      query: (songId) => ({
+        url: `/mining-like/${songId}`,
+        method: 'POST'
+      }),
+      invalidatesTags: ['MiningLike']
+    }),
+    removeMiningLike: builder.mutation({
+      query: (songId) => ({
+        url: `/miningLike/${songId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['MiningLike']
+    }),
   })
 })
 
 export const {
   useRecordMiningMutation,
-  useGetMyMiningHistoryQuery
+  useGetMyMiningHistoryQuery,
+  useGetMiningLikesBySongQuery,
+  useGetMiningLikesByUserQuery,
+  useAddMiningLikeMutation,
+  useRemoveMiningLikeMutation
 } = miningApiSlice

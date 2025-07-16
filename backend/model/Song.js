@@ -23,6 +23,10 @@ const songSchema = new Schema({
         type: String,
         required: true
     },
+    original: {
+        type: Boolean,
+        required: true
+    },
     lyrics: String,
     plays: [{
         user: {
