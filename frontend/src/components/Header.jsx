@@ -47,9 +47,14 @@ const Header = () => {
                 <button>Mining</button>
               </Link>
               {currentUser && 
-                <Link to="/mining-history" className="header-button">
-                  <button>Mining History</button>
-                </Link>
+                <>
+                  <Link to="/mining-history" className="header-button">
+                    <button>Mining History</button>
+                  </Link>
+                  <Link to="/notifications" className="header-button">
+                    <button>Notifications</button>
+                  </Link>
+                </>
               }
           </div>
         </div>

@@ -104,6 +104,9 @@ app.use('/uploads', express.static('uploads'))
 // アクセスリミッター
 // app.use(apiLimiter)
 
+
+require('./listeners/notificationListener')
+
 // routes
 app.use('/', require('./routes/root'))
 app.use('/auth', require('./routes/authRoutes'))
@@ -120,6 +123,7 @@ app.use('/mining-history', require('./routes/miningHistoryRoutes'))
 app.use('/play-history', require('./routes/playHistoryRoutes'))
 app.use('/conversations', require('./routes/conversationRoutes'))
 app.use('/messages', require('./routes/messageRoutes'))
+app.use('/notifications', require('./routes/notificationRoutes'))
 
 app.use((err, req, res, next) => {
     if (err instanceof multer.MulterError || err.message.includes('Only')) {

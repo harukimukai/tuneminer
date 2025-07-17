@@ -1,5 +1,8 @@
 const asyncHandler = require('express-async-handler')
 const Comment = require('../model/Comment')
+const eventBus = require('../utils/eventBus')
+const Song = require('../model/Song')
+const User = require('../model/User')
 
 // get comments
 const getCommentsBySong = asyncHandler(async (req, res) => {
@@ -36,6 +39,20 @@ const createComment = asyncHandler(async (req, res) => {
     })
 
     const populated = await newComment.populate('user', 'username icon')
+
+    const song = await Song.findById(songId)
+    const user = await User.findById(userId)
+
+    if (String(song.user._id) !== String(userId)) {
+         eventBus.emit('commentCreated', {
+            recipientId: song.user._id,
+            senderId: userId,
+            songId,
+            content: parent
+                ? `@${user.username} replyed your comment on '${song.title}'!`
+                : `@${user.username} commented your song '${song.title}'!`
+        })
+    }
 
     res.status(201).json(populated)
 }) 

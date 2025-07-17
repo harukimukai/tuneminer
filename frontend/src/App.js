@@ -37,6 +37,7 @@ import MyPlaylists from './features/playlists/MyPlaylists'
 import PlaylistDetail from './features/playlists/PlaylistDetail'
 import EditPlaylist from './features/playlists/EditPlaylist'
 import ReportSong from './features/report/ReportSong'
+import NotificationList from './features/notifications/NotificationList'
 
 const App = () => {
   useConversationSocket() // 🎯 アプリ起動したら常にsocket待機する！
@@ -118,6 +119,7 @@ const App = () => {
               <Route path="/playlists/:id" element={<PlaylistDetail />} />
               <Route path="/playlists/:id/edit" element={<EditPlaylist />} />
               <Route path="/report/song/:songId" element={<ReportSong />} />
+              <Route path="/notifications" element={<NotificationList />} />
             </Route>
           </Route>
         </Route>
