@@ -4,6 +4,7 @@ const User = require('../model/User')
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcrypt')
 const Song = require('../model/Song')
+const eventBus = require('../utils/eventBus')
 
 
 const getAllUsers = asyncHandler(async (req, res) => {
@@ -135,6 +136,11 @@ const followUser = asyncHandler(async (req, res) => {
         targetUser.followers.push(currentUserId)
         await currentUser.save()
         await targetUser.save()
+        eventBus.emit('follow', {
+            recipientId: targetUser._id,
+            senderId: currentUser._id,
+            content: `@${currentUser.username} followed you!`
+        })
         console.log(`followed: ${targetUser.username}`)
         return res.json({ message: `followed: ${targetUser.username}`})
     }

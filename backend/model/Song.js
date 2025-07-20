@@ -25,6 +25,7 @@ const songSchema = new Schema({
     },
     original: {
         type: Boolean,
+        defalt: false,
         required: true
     },
     lyrics: String,

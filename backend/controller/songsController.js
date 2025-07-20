@@ -8,6 +8,7 @@ const asyncHandler = require('express-async-handler')
 const deleteUploadedFiles = require('../utils/deleteUploadedFiles')
 const fs = require('fs')
 const User = require('../model/User')
+const eventBus = require('../utils/eventBus')
 
 // create new song
 const uploadSong = asyncHandler(async (req, res) => {
@@ -182,17 +183,27 @@ const toogleLike = asyncHandler(async (req, res) => {
 
     const userId = req._id
     if (!userId) return res.status(404).json({ message: 'userId is not found'})
+    
+    const user = await User.findById(userId)
+    if (!user) return res.status(404).json({ mesage: 'no user found'})
 
-    const index = song.likes.indexOf(userId)
-    if (index > -1) {
+    if (song.likes.includes(userId)) {
         // already liked -> unlike
-        song.likes.splice(index, 1)
+        console.log('unlike: ', song.original)
+        song.likes.pull(userId)
+        await song.save()
     } else {
         // not liked yet -> like
+        console.log('like')
         song.likes.push(userId)
+        await song.save()
+        eventBus.emit('like', {
+            recipientId: song.user._id,
+            senderId: userId,
+            songId: song._id,
+            content: `@${user.username} liked your song ${song.title}!`
+        })
     }
-
-    await song.save()
 
     res.json({ message: 'Like toggled', likes: song.likes.length})
 })

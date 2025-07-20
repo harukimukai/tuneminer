@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { connectSocket } from './features/messages/socketSlice'
+import { connectSocket } from './socket/socket'
 import './index.css'
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import Login from './features/auth/Login'
@@ -26,7 +26,7 @@ import AdminDashboard from './pages/AdminDashboard'
 import SongList from './components/SongList'
 import Modal from './components/Modal'
 import SongDetail from './components/SongDetail'
-import { selectAuthChecked, setChecked, setCredentials } from './features/auth/authSlice'
+import { selectAuthChecked, selectCurrentUser, setChecked, setCredentials } from './features/auth/authSlice'
 import OAuthSuccess from './features/auth/oauthSuccess'
 import LoadingScreen from './components/LoadingScreen'
 import ResetPassword from './components/ResetPassword'
@@ -38,6 +38,8 @@ import PlaylistDetail from './features/playlists/PlaylistDetail'
 import EditPlaylist from './features/playlists/EditPlaylist'
 import ReportSong from './features/report/ReportSong'
 import NotificationList from './features/notifications/NotificationList'
+import { initNotificationListener } from './features/notifications/notificationListener'
+import { store } from './app/store'
 
 const App = () => {
   useConversationSocket() // 🎯 アプリ起動したら常にsocket待機する！
@@ -47,6 +49,7 @@ const App = () => {
   const location = useLocation()
   const background = location.state?.background
   const navigate = useNavigate()
+  const currentUser = useSelector(selectCurrentUser)
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -69,13 +72,27 @@ const App = () => {
     fetchUser();
   }, []);  
 
-  useEffect(() => {
-    dispatch(connectSocket())
-  }, [dispatch])
+useEffect(() => {
+  if (currentUser) {
+    connectSocket()
+    initNotificationListener(dispatch)
+  }
+}, [currentUser, dispatch])
+
 
   if (!checked) return <LoadingScreen />
 
   const isModalPath = location.pathname.startsWith('/songs/modal/')
+
+  const originalDispatch = store.dispatch;
+  store.dispatch = (action) => {
+    if (typeof action !== 'object' && typeof action !== 'function') {
+      console.error('❌ dispatch に非オブジェクトが渡された:', action);
+    }
+    return originalDispatch(action);
+  }
+
+
 
   return (
     <>

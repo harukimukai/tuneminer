@@ -88,11 +88,19 @@
   gap: 8px;
 }
 
+.header__third-row {
+  display: flex;
+}
+
 .header-links {
   display: flex;
   padding-left: 10px;
   gap: 8px; /* 要素間のスペース */
   padding-bottom: 10px;
+}
+
+.notification_bell {
+  margin: 10px
 }
 
 .header-button {

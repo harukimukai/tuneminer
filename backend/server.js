@@ -19,6 +19,7 @@ const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn');
 const xss = require('xss-clean');
 const { apiLimiter } = require('./middleware/rareLimit');
+const initializeSocket = require('./socket');
 const PORT = process.env.PORT || 3500;
 
 // 修正したらキャッシュを消してから確認！！
@@ -40,39 +41,41 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const io = new Server(server, {
-  cors: {
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST'],
-    credentials: true,
-  }
-})  
+initializeSocket(server)
 
-io.on('connection', (socket) => {
-  console.log('New client connected', socket.id);
+// const io = new Server(server, {
+//   cors: {
+//     origin: 'http://localhost:3000',
+//     methods: ['GET', 'POST'],
+//     credentials: true,
+//   }
+// })  
 
-  socket.on('sendMessage', async (savedMessage) => {
-    console.log('★ sendMessage socket event fired', savedMessage)
+// io.on('connection', (socket) => {
+//   console.log('New client connected', socket.id);
 
-    try {
-      // 自分以外にbroadcast
-      console.log('★ inside try block')
-      socket.broadcast.emit('receiveMessage', savedMessage);
-      console.log('receiveMessage', savedMessage)
+//   socket.on('sendMessage', async (savedMessage) => {
+//     console.log('★ sendMessage socket event fired', savedMessage)
 
-      // 送った本人にも即返しておきたいならここでemitしてもOK
-      socket.emit('messageSent', savedMessage);
+//     try {
+//       // 自分以外にbroadcast
+//       console.log('★ inside try block')
+//       socket.broadcast.emit('receiveMessage', savedMessage);
+//       console.log('receiveMessage', savedMessage)
 
-    } catch (error) {
-      console.error('Error sending message:', error.message);
-      socket.emit('errorMessage', { message: error.message });
-    }
-  });
+//       // 送った本人にも即返しておきたいならここでemitしてもOK
+//       socket.emit('messageSent', savedMessage);
 
-  socket.on('disconnect', () => {
-    console.log('Client disconnected', socket.id);
-  });
-});
+//     } catch (error) {
+//       console.error('Error sending message:', error.message);
+//       socket.emit('errorMessage', { message: error.message });
+//     }
+//   });
+
+//   socket.on('disconnect', () => {
+//     console.log('Client disconnected', socket.id);
+//   });
+// });
 
 //Connect to mongoDB
 connectDB();
@@ -103,9 +106,6 @@ app.use('/uploads', express.static('uploads'))
 
 // アクセスリミッター
 // app.use(apiLimiter)
-
-
-require('./listeners/notificationListener')
 
 // routes
 app.use('/', require('./routes/root'))

@@ -1,21 +1,31 @@
-import { Link } from 'react-router-dom'
+import { Link, useLoaderData, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../features/auth/authSlice'
 import SearchForm from '../features/songs/SearchForm'
 import LogoutButton from '../features/auth/LogoutButton'
 import '../css/header.css'
 import NowPlayingBar from './NowPlayingBar'
+import { NotificationBell } from '../features/notifications/NotificationBell'
+import { useEffect, useRef, useState } from 'react'
+import { NotificationDropdown } from '../features/notifications/NotificationDropdown'
 
 const Header = () => {
   const currentUser = useSelector(selectCurrentUser)
+  const [showDropdown, setShowDropdown] = useState(false)
+  const location = useLocation()
+  const bellRef = useRef()
 
-  // if (!currentUser) {
-  //   return (
-  //     <header className="header">
-  //       <p style={{ color: 'white', padding: '10px' }}>Loading user info...</p>
-  //     </header>
-  //   )
-  // }
+  useEffect(() => {
+    setShowDropdown(false)
+  }, [location])
+
+  if (!currentUser) {
+    return (
+      <header className="header">
+        <p style={{ color: 'white', padding: '10px' }}>Loading user info...</p>
+      </header>
+    )
+  }
   console.log(currentUser)
 
   return (
@@ -37,7 +47,8 @@ const Header = () => {
             </p>
           : <p className='header-welcome'>Welcome!</p>
           }
-          <div className="header-links">
+          <div className='header__third-row'>
+            <div className="header-links">
               {currentUser && (
                 <Link to={`/users/${currentUser._id}`} className="header-button">
                 <button>My Page</button>
@@ -51,12 +62,16 @@ const Header = () => {
                   <Link to="/mining-history" className="header-button">
                     <button>Mining History</button>
                   </Link>
-                  <Link to="/notifications" className="header-button">
-                    <button>Notifications</button>
-                  </Link>
                 </>
               }
+            </div>
+            {currentUser &&
+              <div ref={bellRef} className='notification_bell'>
+                <NotificationBell onClick={() => setShowDropdown(prev => !prev)}/>
+              </div>
+            }
           </div>
+          {currentUser && showDropdown && <NotificationDropdown />}
         </div>
         <div className="header-center">
           <p id='search-form'><SearchForm /></p>
