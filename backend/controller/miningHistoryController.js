@@ -4,7 +4,8 @@ const MiningHistory = require('../model/MiningHistory')
 // record Mining
 const recordMining = asyncHandler(async (req, res) => {
     console.log('recordMining Start')
-    const userId = req._id
+    const userId = req._id ?? null
+    if (userId === null) return 
     const { songId } = req.body
     if (!songId) return res.status(404).json({ message: 'SongId is required'})
 

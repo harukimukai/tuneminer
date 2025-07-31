@@ -10,6 +10,7 @@ import {
 const GlobalAudioPlayer = () => {
   const { currentSong, isPlaying, seekTime, volume, pausedSnapshot } = useSelector(selectNowPlaying)
   const isMiningActive = useSelector(state => state.ui.isMiningActive)
+  const isPrivateMode = useSelector(state => state.ui.isPrivateMode)
   const dispatch = useDispatch()
   const audioRef = useRef(null)
 
@@ -67,13 +68,19 @@ const GlobalAudioPlayer = () => {
 
       dispatch(setSeekTime(null))
     }
-  }, [seekTime, isPlaying])
+  }, [seekTime, isPlaying, dispatch])
 
   useEffect(() => {
     if (!audioRef.current) return
 
     if (isMiningActive) {
       console.log('[GlobalAudio] ⛏ マイニング中 → 強制停止')
+      audioRef.current.pause()
+      return
+    }
+
+    if (isPrivateMode) {
+      console.log('[GlobalAudio] 🛑 isPrivate → 強制停止')
       audioRef.current.pause()
       return
     }
@@ -87,7 +94,7 @@ const GlobalAudioPlayer = () => {
       console.log('[GlobalAudio] ⏸ 停止')
       audioRef.current.pause()
     }
-  }, [isPlaying, isMiningActive])
+  }, [isPlaying, isMiningActive, isPrivateMode])
 
   const handleTimeUpdate = () => {
     dispatch(setCurrentTime(audioRef.current.currentTime))

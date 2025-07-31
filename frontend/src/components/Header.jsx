@@ -19,13 +19,13 @@ const Header = () => {
     setShowDropdown(false)
   }, [location])
 
-  if (!currentUser) {
-    return (
-      <header className="header">
-        <p style={{ color: 'white', padding: '10px' }}>Loading user info...</p>
-      </header>
-    )
-  }
+  // if (!currentUser) {
+  //   return (
+  //     <header className="header">
+  //       <p style={{ color: 'white', padding: '10px' }}>Loading user info...</p>
+  //     </header>
+  //   )
+  // }
   console.log(currentUser)
 
   return (

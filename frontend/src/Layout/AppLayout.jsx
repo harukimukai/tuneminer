@@ -3,6 +3,7 @@ import Header from '../components/Header'
 import Sidebar from '../components/Sidebar'
 import { Outlet } from 'react-router-dom'
 import GlobalAudioPlayer from '../features/player/GlobalAudioPlayer'
+import PrivateGlobalAudioPlayer from '../features/player/private/PrivateGlobalAudioPlayer'
 import { useSelector } from 'react-redux'
 import { selectAuthChecked } from '../features/auth/authSlice'
 import LoadingScreen from '../components/LoadingScreen'
@@ -36,6 +37,7 @@ const AppLayout = () => {
       <main className="pt-[195px] pl-[15px]">
         <Outlet/>
         <GlobalAudioPlayer /> {/* ←これが必要 */}
+        <PrivateGlobalAudioPlayer /> {/* ←これが必要 */}
       </main>
     </>
   )

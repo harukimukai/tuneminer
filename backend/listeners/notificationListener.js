@@ -82,6 +82,31 @@ module.exports = (io, activeUsers) => {
       console.error('通知作成エラー(comment) :', err.message)
     }
   })
+
+  eventBus.on('addSongPlaylist', async({ recipientId, senderId, content, playlistId }) => {
+    console.log('📣 like イベント受信:', { recipientId, senderId, content, playlistId });
+    try {
+      const notification = await Notification.create({
+        recipient: recipientId,
+        sender: senderId,
+        type: 'addSongList',
+        content,
+        link: `/playlists/${playlistId}`
+      })
+
+      console.log('✅ 通知作成完了:', notification);
+
+      // Socket で通知を送る
+      const recipientSocketId = activeUsers.get(recipientId.toString())
+      console.log('📡 通知対象のSocket ID:', recipientSocketId);
+      if (recipientSocketId){
+        io.to(recipientSocketId).emit('newNotification', notification) // 必要に応じて null 安全演算子
+        console.log('📤 通知をSocketで送信');
+      }
+    } catch (err) {
+      console.error('通知作成エラー(comment) :', err.message)
+    }
+  })
 }
 
 // 今後他のイベントも追加可能:

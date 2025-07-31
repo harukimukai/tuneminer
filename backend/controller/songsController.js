@@ -182,6 +182,7 @@ const toogleLike = asyncHandler(async (req, res) => {
     if (!song) return res.status(404).json({ message: 'The song is not found'})
 
     const userId = req._id
+    console.log(userId)
     if (!userId) return res.status(404).json({ message: 'userId is not found'})
     
     const user = await User.findById(userId)
@@ -253,11 +254,12 @@ const searchSongs = asyncHandler(async (req, res) => {
 const playSong = asyncHandler(async (req, res) => {
     console.log('Play Song process Start')
     const { id } = req.params // songId
-    const userId = req._id
-    if (!id) return res.status(404).json({ message: 'No song ID found from params'})
-    if (!userId) return res.status(404).json({ message: 'No userId found from cookie'})
+    const userId = req._id ?? null
     console.log('songId: ', id)
     console.log('userId: ', userId)
+    if (userId === null) return
+    if (!id) return res.status(404).json({ message: 'No song ID found from params'})
+    if (!userId) return res.status(404).json({ message: 'No userId found from cookie'})
 
     const ONE_HOUR = 60 * 60 * 1000 // 1 hour
     const now = Date.now()

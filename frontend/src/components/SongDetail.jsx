@@ -29,9 +29,15 @@ const SongDetail = ({ modalMode = false, onClose }) => {
   const [viewMode, setViewMode] = useState('lyrics')
   const [isOpenMenu, setIsOpenMenu] = useState(false)
   const [isOpenPlaylists, setIsOpenPlaylists] = useState(false)
-  const toggleMenu = () => setIsOpenMenu(prev => !prev)
-  const togglePlaylists = () => setIsOpenPlaylists(prev => !prev)
   const navigate = useNavigate()
+  const toggleMenu = () => {
+    if (isOpenPlaylists) setIsOpenPlaylists(false)
+    setIsOpenMenu(prev => !prev)
+  }
+  const togglePlaylists = () => {
+    if (isOpenMenu) setIsOpenMenu(false)
+    setIsOpenPlaylists(prev => !prev)
+  }
 
   console.log('songId', id)
 
@@ -159,7 +165,12 @@ const SongDetail = ({ modalMode = false, onClose }) => {
                 
                   <>
                     <div className="dropdown-container">
-                      <button className="dropdown-toggle" onClick={toggleMenu}>⋮</button>
+                      <button 
+                        className="dropdown-toggle" 
+                        onClick={toggleMenu}
+                      >
+                        ⋮
+                      </button>
                       {isOpenMenu && (
                         isOwner || currentUser?.isAdmin ? (
                           <div className="dropdown-menu">

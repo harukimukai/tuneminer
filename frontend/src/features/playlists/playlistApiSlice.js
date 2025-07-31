@@ -11,10 +11,10 @@ export const playlistApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['Playlist'],
     }),
     updatePlaylist: builder.mutation({
-      query: (data, playlistId) => ({
-        url: `/playlists/${playlistId}`,
+      query: ({formData, id}) => ({
+        url: `/playlists/${id}`,
         method: 'PATCH',
-        body: data,
+        body: formData
       }),
       invalidatesTags: ['Playlist'],
     }),

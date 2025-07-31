@@ -19,7 +19,8 @@ router.put('/:id/add', verifyJWT, playlistController.addSongPlaylist) // PUTとP
 router.put('/:id/remove', verifyJWT, playlistController.removeSongPlaylist)
 
 router.get('/:id', playlistController.getPlaylistById)
-router.put('/:id', verifyJWT, playlistController.updatePlaylist)
+// formDataを使ってんのにファイルが含まれていない場合、upload.none()が必要
+router.patch('/:id', verifyJWT, upload.none(), playlistController.updatePlaylist)
 router.delete('/:id', verifyJWT, playlistController.deletePlaylist)
 
 module.exports = router

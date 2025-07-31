@@ -2,6 +2,8 @@ const Playlist = require('../model/Playlist')
 const User = require('../model/User')
 const asyncHandler = require('express-async-handler')
 const deleteUploadedFiles = require('../utils/deleteUploadedFiles')
+const eventBus = require('../utils/eventBus')
+const Song = require('../model/Song')
 
 const getPlaylists = asyncHandler(async(req, res) => {
     const playlists = await Playlist.find({ isPublic: true }).populate('user', 'username icon')
@@ -64,12 +66,12 @@ const createPlaylist = asyncHandler(async(req, res) => {
 })
 
 const updatePlaylist = asyncHandler(async(req, res) => {
-    const { title, description, songs, isPublic } = req.body
+    console.log('updatePlaylist start', req.body)
     const playlist = await Playlist.findById(req.params.id)
     if (!playlist) return res.status(404).json({ message: 'Not found' })
-    if (playlist.user.toString() !== req.userId) return res.status(403).json({ message: 'Forbidden' })
+    if (playlist.user.toString() !== req._id) return res.status(403).json({ message: 'Forbidden' })
     
-    Object.assign(playlist, { title, description, songs, isPublic })
+    Object.assign(playlist, { title: req.body.title, description: req.body.description, isPublic: req.body.isPublic })
     await playlist.save()
     res.json(playlist)
 })
@@ -83,6 +85,9 @@ const addSongPlaylist = asyncHandler(async(req, res) => {
     const {songId} = req.body
     if (!songId) return res.status(400).json({ message: 'No Song Id'})
 
+    const song = await Song.findById(songId)
+    if (!song) return res.status(404).json({ message: 'No song found'})
+
     const playlist = await Playlist.findById(playlistId)
     if (!playlist) return res.status(404).json({ message: 'No playlist found'})
 
@@ -92,6 +97,16 @@ const addSongPlaylist = asyncHandler(async(req, res) => {
 
     playlist.songs.push(songId)
     await playlist.save()
+
+    if (playlist.isPublic) {
+        const currentUser = await User.findById(req._id)
+        eventBus.emit('addSongPlaylist', {
+            recipientId: song.user._id,
+            senderId: currentUser._id,
+            playlistId: playlist._id,
+            content: `@${currentUser.username} added your song '${song.title}' to their playlist '${playlist.title}'`
+        })
+    }
 
     res.json(playlist)
 })

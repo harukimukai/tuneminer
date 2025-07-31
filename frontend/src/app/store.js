@@ -3,6 +3,7 @@ import { apiSlice } from './api/apiSlice'
 import { setupListeners } from "@reduxjs/toolkit/query"
 import authReducer from '../features/auth/authSlice'
 import nowPlayingReducer from "../features/player/nowPlayingSlice"
+import privateAudioReducer from "../features/player/private/privateAudioSlice"
 import messageReducer from '../features/messages/messageSlice'
 import socketReducer from "../features/messages/socketSlice"
 import uiReducer from "../features/mining/uiSlice"
@@ -16,6 +17,7 @@ export const store = configureStore({
     [genreApi.reducerPath]: genreApi.reducer,
     auth: authReducer,
     nowPlaying: nowPlayingReducer,
+    privateAudio: privateAudioReducer,
     message: messageReducer,
     socket: socketReducer,
     notifications: notificationReducer,

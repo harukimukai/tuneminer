@@ -16,11 +16,11 @@ const getAllUsers = asyncHandler(async (req, res) => {
 
 const getUserProfile = asyncHandler(async (req, res) => {
     const { id } = req.params
-    const userId = req._id
+    const userId = req._id ?? null
     if (!id) return res.status(400).json({ message: 'User ID required'})
 
     const user = await User.findById(id).exec()
-    if (!user) return res.status(400).json({ message: `User ID ${req.params.id} not found`})
+    if (!user) return res.status(400).json({ message: `User ${req.params.id} not found`})
 
     if (userId === id) {
         const songs = await Song.find({ user: id }).lean()

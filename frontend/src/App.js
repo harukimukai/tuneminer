@@ -126,8 +126,10 @@ useEffect(() => {
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/mypage/:id" element={<EditProfile />} />
               <Route path="/settings" element={<Settings />} />
+
               <Route path="/upload" element={<UploadSong />} />
               <Route path="/songs/:id/edit" element={<EditSong />} />
+
               <Route path="/play-history/:id" element={<PlayHistory />} />
               <Route path="/mining-history" element={<MiningHistory />} />
               <Route path="/messages/:id" element={<MessageLayout />} />

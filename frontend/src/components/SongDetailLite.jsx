@@ -111,7 +111,7 @@ const SongDetailLite =
               audioRef={audioRef}
             />
           )}
-          <MiningLikeButton songId = {song._id}/>
+          {currentUser &&  <MiningLikeButton songId = {song._id}/>}
         </div>
       </div>
       {/* {!song.likes.includes(currentUser._id) &&

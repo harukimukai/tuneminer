@@ -146,6 +146,7 @@
   height: 35px;
   border-radius: 9999px;
   object-fit: cover;
+  filter: blur(0.6px) contrast(0.95) brightness(1.05)
 }
 
 .likes {

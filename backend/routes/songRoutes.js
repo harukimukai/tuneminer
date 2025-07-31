@@ -31,7 +31,7 @@ router.route('/search-results')
 
 
 router.route('/mining')
-    .get(songsController.getHighlightedSongs)
+    .get(verifyJWT, songsController.getHighlightedSongs)
 
 router.route('/admin-recommended')
     .get(songsController.getAdminRec)
@@ -58,7 +58,7 @@ router.route('/:id/like')
     .patch(verifyJWT, songsController.toogleLike)
 
 router.route('/:id/play')
-    .post(songsController.playSong)
+    .post(verifyJWT, songsController.playSong)
 
 router.route('/recommend/:id')
     .get(verifyJWT, songsController.getRecommendations)
