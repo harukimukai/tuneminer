@@ -11,10 +11,10 @@ export const reportApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['ReportSong']
     }),
     createReportUser: builder.mutation({
-      query: ({ reportedId, data}) => ({
+      query: ({userId, data}) => ({
         url: `/report/user`,
         method: 'POST',
-        body: {reportedId, data}
+        body: {reportedId: userId, data}
       }),
       invalidatesTags: ['ReportUser']
     }),

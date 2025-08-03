@@ -28,15 +28,17 @@ const createReportSong = asyncHandler(async(req, res) => {
 })
 
 const createReportUser = asyncHandler(async(req, res) => {
+    console.log('createReportUser Start')
     const reporterId = req._id
-    const { reportedId, content } = req.body
+    const { reportedId, data } = req.body
+    const content = data.content
     if (!reporterId) return res.status(401).json({ message: 'No reporterId'})
     if (!reportedId) return res.status(401).json({ message: 'No reportedId'})
     if (!content) return res.status(401).json({ message: 'No content'})
     
     const reporter = await User.findById(reporterId)
     if (!reporter) return res.status(404).json({ message: 'Reporter not found'})
-    const reportedUser = await User.findById(reportedUserId)
+    const reportedUser = await User.findById(reportedId)
     if (!reportedUser) return res.status(404).json({ message: 'ReportedUser not found'})
     
     const reportUser = await ReportUser.create({

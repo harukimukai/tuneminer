@@ -40,6 +40,7 @@ import ReportSong from './features/report/ReportSong'
 import NotificationList from './features/notifications/NotificationList'
 import { initNotificationListener } from './features/notifications/notificationListener'
 import { store } from './app/store'
+import ReportUser from './features/report/ReportUser'
 
 const App = () => {
   useConversationSocket() // 🎯 アプリ起動したら常にsocket待機する！
@@ -138,6 +139,7 @@ useEffect(() => {
               <Route path="/playlists/:id" element={<PlaylistDetail />} />
               <Route path="/playlists/:id/edit" element={<EditPlaylist />} />
               <Route path="/report/song/:songId" element={<ReportSong />} />
+              <Route path="/report/user/:userId" element={<ReportUser />} />
               <Route path="/notifications" element={<NotificationList />} />
             </Route>
           </Route>

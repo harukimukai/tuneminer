@@ -19,6 +19,7 @@ const UserPage = () => {
   const currentUser = useSelector(selectCurrentUser)
   const navigate = useNavigate()
   const [viewMode, setViewMode] = useState('uploadedSongs')
+  const [isOpenMenu, setIsOpenMenu] = useState(false)
   console.log(currentUser)
 
   if (!data) return <p>Loading user...</p>
@@ -30,6 +31,10 @@ const UserPage = () => {
   const { user, songs } = data
   const sameUser = user._id === currentUser?._id
   const alreadyFollow = user.followers.includes(currentUser?._id)
+
+  const toggleMenu = () => {
+    setIsOpenMenu(prev => !prev)
+  }
 
   const handleFollow = async () => {
     if (!currentUser) {
@@ -122,6 +127,25 @@ const UserPage = () => {
           <Link to={`/play-history/${user._id}`}>
               <button className='user-page-button'>History</button>
           </ Link>
+        )}
+        {!sameUser && (
+          <div className="dropdown-container">
+            <button 
+              className="dropdown-toggle" 
+              onClick={toggleMenu}
+            >
+              ⋮
+            </button>
+            {isOpenMenu && (
+              <div className="dropdown-menu">
+                <Link to={`/report/user/${user._id}`} onClick={() => console.log('Clicked report link', user._id)}>
+                  <button className="button">
+                    Report
+                  </button>
+                </Link>
+              </div>
+            )}
+          </div>
         )}
       </div>
       <>Followers: {user.followers.length} Following: {user.following.length}</>
