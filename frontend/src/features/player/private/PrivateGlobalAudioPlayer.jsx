@@ -9,6 +9,7 @@ import {
 } from './privateAudioSlice'
 import { setPrivateMode } from '../../mining/uiSlice'
 import { pauseAndSaveSnapshot, resumeFromSnapshot } from '../nowPlayingActions'
+import { API_BASE_URL } from '../../../config/constants'
 
 const PrivateAudioPlayer = () => {
   const { currentPrivateSong, privateIsPlaying, privateSeekTime } = useSelector(selectPrivateAudio)
@@ -72,7 +73,7 @@ const PrivateAudioPlayer = () => {
   }, [privateIsPlaying])
 
   const getAudioSrc = (url) => {
-    return url.startsWith('blob:') ? url : `http://localhost:3500/${url}`
+    return url.startsWith('blob:') ? url : `${API_BASE_URL}/${url}`
   }
 
   const handleTimeUpdate = () => {

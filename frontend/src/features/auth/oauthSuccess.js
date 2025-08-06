@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setCredentials } from './authSlice'
+import { API_BASE_URL } from '../../config/constants'
 
 const OAuthSuccess = () => {
   const dispatch = useDispatch()
@@ -13,7 +14,7 @@ const OAuthSuccess = () => {
 
     if (accessToken) {
       // ユーザー情報取得（/auth/me 相当）
-      fetch('http://localhost:3500/auth/me', {
+      fetch(`${API_BASE_URL}/auth/me`, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         }

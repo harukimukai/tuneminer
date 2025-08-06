@@ -22,10 +22,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: (result, error, id) => [{ type: 'User', id}]
     }),
     getFollowingUsers: builder.query({
-      query: (id) => `/users/${id}/following`
+      query: (id) => `/users/${id}/following`,
+      providesTags: ['Followers']
     }),
     getFollowers: builder.query({
-      query: (id) => `/users/${id}/followers`
+      query: (id) => `/users/${id}/followers`,
+      providesTags: ['Followings']
     })
   })
 })

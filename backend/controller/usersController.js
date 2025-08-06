@@ -149,20 +149,20 @@ const followUser = asyncHandler(async (req, res) => {
 // following list
 const getFollowingUsers = async (req, res) => {
     const { id } = req.params
-    const user = await User.findById(id).populate('following', 'username icon')
+    const user = await User.findById(id).populate('following', 'username bio icon')
     if(!user) return res.status(404).json({ message: 'User not found'})
 
     res.json(user.following)
 }
 
 // followers list
-const getFollowers = async (req, res) => {
+const getFollowers = asyncHandler(async (req, res) => {
     const { id } = req.params
-    const user = await User.findById(id).populate('followers', 'username icon')
+    const user = await User.findById(id).populate('followers', 'username bio icon')
     if(!user) return res.status(404).json({ message: 'User not found'})
 
     res.json(user.followers)
-}
+})
 
 module.exports = {
     getAllUsers,

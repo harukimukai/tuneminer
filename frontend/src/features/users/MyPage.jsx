@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../auth/authSlice'
 import SongList from '../../components/SongList'
 import { useGetUserProfileQuery } from './usersApiSlice'
+import { API_BASE_URL } from '../../config/constants'
 
 const MyPage = () => {
 
@@ -41,7 +42,7 @@ const MyPage = () => {
       <h2>My Page 🎵</h2>
         <>@{user.username}</>
         {user.icon && (
-          <img src={`http://localhost:3500/${user.icon}`} alt="icon" width="120" />
+          <img src={`${API_BASE_URL}/${user.icon}`} alt="icon" width="120" />
         )}
         {!user.icon && (
           <p>No user icon yet</p>

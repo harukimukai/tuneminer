@@ -6,6 +6,7 @@ import '../css/modal.css'
 import MiningProgressBar from './MiningProgressBar'
 import { useAddMiningLikeMutation } from '../features/mining/miningApiSlice'
 import MiningLikeButton from '../features/mining/MiningLikeButton'
+import { API_BASE_URL, CLIENT_BASE_URL } from '../config/constants'
 
 const SongDetailLite = 
   ({ 
@@ -81,7 +82,7 @@ const SongDetailLite =
           {song.imageFile && (
             <div className='song-modal-lite-image-box'>
               <img 
-                src={`http://localhost:3500/${song.imageFile}`} 
+                src={`${API_BASE_URL}/${song.imageFile}`} 
                 alt={song.title}
                 className='song-modal-lite-image'
               />
@@ -92,16 +93,16 @@ const SongDetailLite =
             {song.user?._id && (
                 <Link to={`/users/${song.user._id}`} className='song-artist'>
                   {song.user.icon ? (
-                    <img src={`http://localhost:3500/${song.user.icon}`} alt="icon" />
+                    <img src={`${API_BASE_URL}/${song.user.icon}`} alt="icon" />
                   ) : (
-                    <img src='http://localhost:3000/default_user_icon.jpg' alt="icon" />
+                    <img src={`${CLIENT_BASE_URL}/default_user_icon.jpg`} alt="icon" />
                   )}
                   <span>@{song.user.username}</span>
                 </Link>
             )}
             <p className='song-artist'>{song.genre}</p>
           </div>
-          <audio ref={audioRef} src={`http://localhost:3500/${song.audioFile}`} hidden />
+          <audio ref={audioRef} src={`${API_BASE_URL}/${song.audioFile}`} hidden />
           <button onClick={handlePlayPause} style={{ cursor: 'pointer', marginTop: '10px' }}>
             {isPlaying ? '⏸' : '▶'}
           </button>

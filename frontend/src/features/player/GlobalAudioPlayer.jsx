@@ -6,6 +6,7 @@ import {
   setDuration,
   setSeekTime,
 } from './nowPlayingSlice'
+import { API_BASE_URL } from '../../config/constants'
 
 const GlobalAudioPlayer = () => {
   const { currentSong, isPlaying, seekTime, volume, pausedSnapshot } = useSelector(selectNowPlaying)
@@ -114,7 +115,7 @@ const GlobalAudioPlayer = () => {
     <audio
       ref={audioRef}
       preload="auto" /* 先読みを促す */
-      src={`http://localhost:3500/${currentSong.audioUrl}`}
+      src={`${API_BASE_URL}/${currentSong.audioUrl}`}
       onTimeUpdate={handleTimeUpdate}
       onLoadedMetadata={handleLoadedMetadata}
     />

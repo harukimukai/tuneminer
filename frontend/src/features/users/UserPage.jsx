@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { useFollowUserMutation, useGetFollowersQuery, useGetFollowingUsersQuery, useGetUserProfileQuery } from './usersApiSlice'
+import { useFollowUserMutation, useGetUserProfileQuery } from './usersApiSlice'
 import { useCreateConversationMutation } from '../messages/conversationApiSlice'
 import SongList from '../../components/SongList'
 import { useSelector } from 'react-redux'
@@ -9,6 +9,7 @@ import '../../css/userPage.css'
 import { useGetLikedSongsQuery } from '../songs/songApiSlice'
 import SocialLinks from '../../components/SocialLinks'
 import MyPlaylists from '../playlists/MyPlaylists'
+import { API_BASE_URL, CLIENT_BASE_URL } from '../../config/constants'
 
 const UserPage = () => {
   const { id } = useParams()
@@ -70,13 +71,13 @@ const UserPage = () => {
       <div className='user-page_user-info'>
         {user.icon ? (
             <img 
-              src={`http://localhost:3500/${user.icon}`} 
+              src={`${API_BASE_URL}/${user.icon}`} 
               alt="icon" 
               className='user-page_user-icon'
             />
         ) : (
             <img 
-              src='http://localhost:3000/default_user_icon.jpg' 
+              src={`${CLIENT_BASE_URL}/default_user_icon.jpg`} 
               alt="icon" 
               className='user-page_user-icon'
             />
@@ -148,7 +149,14 @@ const UserPage = () => {
           </div>
         )}
       </div>
-      <>Followers: {user.followers.length} Following: {user.following.length}</>
+      <div className='follow__length'>
+        <Link to={`/followers-list/${user._id}`}>
+          Followers: {user.followers.length}
+        </Link> 
+        <Link to={`/followings-list/${user._id}`}>
+          Following: {user.following.length}
+        </Link>
+      </div>
       <br />
       <>Bio: {user.bio}</> <br />
       <SocialLinks socials={user.socials} />

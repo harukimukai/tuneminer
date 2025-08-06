@@ -1,6 +1,7 @@
 // src/features/socket/socketSlice.js
 import { createSlice } from '@reduxjs/toolkit'
 import { io } from 'socket.io-client'
+import { API_BASE_URL } from '../../config/constants'
 
 const initialState = {
   socket: null,
@@ -12,7 +13,7 @@ const socketSlice = createSlice({
   reducers: {
     connectSocket: (state) => {
       if (!state.socket) {
-        const newSocket = io('http://localhost:3500', {
+        const newSocket = io(`${API_BASE_URL}`, {
           withCredentials: true,
         })
         state.socket = newSocket

@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useRemoveSongPlaylistMutation, useGetPlaylistByIdQuery } from './playlistApiSlice'
+import { API_BASE_URL } from '../../config/constants'
 
 const PlaylistDetail = () => {
   const { id } = useParams()
@@ -39,7 +40,7 @@ const PlaylistDetail = () => {
         {playlist.songs.map((song) => (
           <div key={song._id}>
             <button onClick={() => handleOpenModal(song._id)}>
-              <img src={`http://localhost:3500/${song.imageFile}`} alt={song.title} width={80} />
+              <img src={`${API_BASE_URL}/${song.imageFile}`} alt={song.title} width={80} />
               <p>{song.title}</p>
             </button>
             <p>by {song.user?.username}</p>

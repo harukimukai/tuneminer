@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { setCredentials } from './authSlice'
 import usePersist from '../../hooks/usePersist'
 import '../../css/login.css'
+import { API_BASE_URL } from '../../config/constants'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -18,7 +19,7 @@ const Login = () => {
   const [errorMsg, setErrorMsg] = useState(null)
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:3500/auth/google';
+    window.location.href = `${API_BASE_URL}/auth/google`
   };  
 
   const handleSubmit = async (e) => {

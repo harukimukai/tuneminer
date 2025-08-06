@@ -3,6 +3,7 @@ import { useGetMyPlaylistsQuery, useGetPlaylistByIdQuery } from './playlistApiSl
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../auth/authSlice'
 import { Link, useNavigate } from 'react-router-dom'
+import { API_BASE_URL } from '../../config/constants'
 
 const MyPlaylists = () => {
   const currentUser = useSelector(selectCurrentUser)
@@ -31,7 +32,7 @@ const MyPlaylists = () => {
                 onClick={() => handleOpenPlaylist(playlist._id)}
               >
                 <img
-                  src={`http://localhost:3500/${playlist.coverImage}`}
+                  src={`${API_BASE_URL}/${playlist.coverImage}`}
                   alt={playlist.title}
                   width="100"
                 />

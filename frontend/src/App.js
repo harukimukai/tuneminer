@@ -41,6 +41,9 @@ import NotificationList from './features/notifications/NotificationList'
 import { initNotificationListener } from './features/notifications/notificationListener'
 import { store } from './app/store'
 import ReportUser from './features/report/ReportUser'
+import FollowersList from './features/users/FollowersList'
+import FollowingsList from './features/users/FollowingsList'
+import { API_BASE_URL } from './config/constants'
 
 const App = () => {
   useConversationSocket() // 🎯 アプリ起動したら常にsocket待機する！
@@ -55,7 +58,7 @@ const App = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch('http://localhost:3500/auth/me', {
+        const res = await fetch(`${API_BASE_URL}/auth/me`, {
           credentials: 'include'
         })
         const data = await res.json()
@@ -131,6 +134,8 @@ useEffect(() => {
               <Route path="/upload" element={<UploadSong />} />
               <Route path="/songs/:id/edit" element={<EditSong />} />
 
+              <Route path="/followers-list/:id" element={<FollowersList />} />
+              <Route path="/followings-list/:id" element={<FollowingsList />} />
               <Route path="/play-history/:id" element={<PlayHistory />} />
               <Route path="/mining-history" element={<MiningHistory />} />
               <Route path="/messages/:id" element={<MessageLayout />} />

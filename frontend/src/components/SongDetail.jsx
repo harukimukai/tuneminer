@@ -15,6 +15,7 @@ import CommentSection from '../features/comments/CommentSection'
 import CustomAudioPlayer from './CustomAudioPlayer'
 import Waveform from './Waveform'
 import '../css/modal.css'
+import { API_BASE_URL, CLIENT_BASE_URL } from '../config/constants'
 
 const SongDetail = ({ modalMode = false, onClose }) => {
   const { id } = useParams()
@@ -125,7 +126,7 @@ const SongDetail = ({ modalMode = false, onClose }) => {
               {song.imageFile && (
                 <div className='song-modal-image-box'>
                   <img 
-                    src={`http://localhost:3500/${song.imageFile}`} 
+                    src={`${API_BASE_URL}/${song.imageFile}`} 
                     alt={song.title}
                     className="song-modal-image"
                   />
@@ -136,9 +137,9 @@ const SongDetail = ({ modalMode = false, onClose }) => {
                 {song.user?._id && (
                     <Link to={`/users/${song.user._id}`} className='song-artist'>
                       {song.user.icon ? (
-                        <img src={`http://localhost:3500/${song.user.icon}`} alt="icon" />  
+                        <img src={`${API_BASE_URL}/${song.user.icon}`} alt="icon" />  
                       ) : (
-                        <img src='http://localhost:3000/default_user_icon.jpg' alt="icon" />
+                        <img src={`${CLIENT_BASE_URL}/default_user_icon.jpg`} alt="icon" />
                       )}
                       <span>@{song.user.username}</span>
                     </Link>
@@ -229,7 +230,7 @@ const SongDetail = ({ modalMode = false, onClose }) => {
               </div>
               <p className='plays'>{song.plays?.length ? <p>{song.plays.length} Plays</p> : <p>0 Plays</p>}</p>
               <Waveform
-                audioUrl={`http://localhost:3500/${song.audioFile}`}
+                audioUrl={`${API_BASE_URL}/${song.audioFile}`}
                 songId={song._id}
               />
               <CustomAudioPlayer

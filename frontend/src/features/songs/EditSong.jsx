@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../auth/authSlice'
 import Waveform from '../../components/Waveform'
 import CustomAudioPlayer from '../../components/CustomAudioPlayer'
+import { API_BASE_URL, CLIENT_BASE_URL } from '../../config/constants'
 
 const EditSong = () => {
   const { id } = useParams()
@@ -95,7 +96,7 @@ const EditSong = () => {
                 {song.imageFile && (
                   <div className='song-modal-image-box'>
                     <img 
-                      src={`http://localhost:3500/${song.imageFile}`} 
+                      src={`${API_BASE_URL}/${song.imageFile}`} 
                       alt={song.title}
                       className="song-modal-image"
                     />
@@ -108,9 +109,9 @@ const EditSong = () => {
                   {song.user?._id && (
                       <Link to={`/users/${song.user._id}`} className='song-artist'>
                         {song.user.icon ? (
-                          <img src={`http://localhost:3500/${song.user.icon}`} alt="icon" />  
+                          <img src={`${API_BASE_URL}/${song.user.icon}`} alt="icon" />  
                         ) : (
-                          <img src='http://localhost:3000/default_user_icon.jpg' alt="icon" />
+                          <img src={`${CLIENT_BASE_URL}/default_user_icon.jpg`} alt="icon" />
                         )}
                         <span>@{song.user.username}</span>
                       </Link>
@@ -155,7 +156,7 @@ const EditSong = () => {
                   </label>
                 </div>
                 <Waveform
-                  audioUrl={`http://localhost:3500/${song.audioFile}`}
+                  audioUrl={`${API_BASE_URL}/${song.audioFile}`}
                   songId={song._id}
                 />
                 <label>Diamond Time(secs)</label>

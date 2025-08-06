@@ -6,6 +6,7 @@ import Modal from './Modal'
 import SongDetail from './SongDetail'
 import '../css/nowPlayingBar.css'
 import VolumeControl from './VolumeControl'
+import { API_BASE_URL, CLIENT_BASE_URL } from '../config/constants'
 
 const NowPlayingBar = () => {
   const [selectedSongId, setSelectedSongId] = useState(null)
@@ -56,7 +57,7 @@ const NowPlayingBar = () => {
     content = (
       <div className="now-playing-bar">
         <img 
-          src='http://localhost:3000/logo4.png' 
+          src={`${CLIENT_BASE_URL}/logo4.png`}
           alt="artwork" 
           className="now-playing-image"
         />
@@ -74,7 +75,7 @@ const NowPlayingBar = () => {
           onClick={() => handleOpenModal(currentSong._id)}
         >
           <img 
-            src={`http://localhost:3500/${currentSong.imageUrl}`} 
+            src={`${API_BASE_URL}/${currentSong.imageUrl}`} 
             alt="artwork" 
             className="now-playing-image"
           />

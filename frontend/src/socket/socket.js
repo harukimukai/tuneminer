@@ -1,5 +1,6 @@
 import { io } from 'socket.io-client'
 import { selectCurrentUser } from '../features/auth/authSlice'
+import { API_BASE_URL } from '../config/constants'
 
 let socket = null
 let storeRef = null
@@ -22,7 +23,7 @@ export const connectSocket = () => {
   if (currentUser && currentUser._id) {
     if (socket) socket.disconnect()
 
-    socket = io('http://localhost:3500', {
+    socket = io(`${API_BASE_URL}`, {
       query: { userId: currentUser._id },
       withCredentials: true,
     })

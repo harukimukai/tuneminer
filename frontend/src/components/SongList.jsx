@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config/constants'
 import '../css/songList.css'
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 
@@ -35,7 +36,7 @@ const SongList = ({ songs }) => {
                     onClick={() => handleOpenModal(song._id)}
                   >
                     <img
-                      src={`http://localhost:3500/${song.imageFile}`}
+                      src={`${API_BASE_URL}/${song.imageFile}`}
                       alt={song.title}
                       className='song-image'
                     />

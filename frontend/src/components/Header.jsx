@@ -8,6 +8,7 @@ import NowPlayingBar from './NowPlayingBar'
 import { NotificationBell } from '../features/notifications/NotificationBell'
 import { useEffect, useRef, useState } from 'react'
 import { NotificationDropdown } from '../features/notifications/NotificationDropdown'
+import { CLIENT_BASE_URL } from '../config/constants'
 
 const Header = () => {
   const currentUser = useSelector(selectCurrentUser)
@@ -35,7 +36,7 @@ const Header = () => {
         <div className="header-left">
           <div className="header-head">
             <Link to="/" >
-              <img src='http://localhost:3000/logo4.png' id="logo" alt="icon" />
+              <img src={`${CLIENT_BASE_URL}/logo4.png`} id="logo" alt="icon" />
             </Link>
             <Link to="/" >
               <h1 id='title'>TuneMiner</h1>
