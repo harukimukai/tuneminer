@@ -9,8 +9,6 @@ const getMiningLikesBySong = asyncHandler(async(req, res) => {
 
     const miningLikesBySong = await MiningLike.find({ song: songId }).populate('user', 'username icon')
 
-    console.log('miningLikesBySong: ', miningLikesBySong)
-
     res.json(miningLikesBySong)
 })
 
@@ -26,7 +24,6 @@ const getMiningLikesByUser = asyncHandler(async(req, res) => {
 const addMiningLike = asyncHandler(async(req, res) => {
     const userId = req._id
     const songId = req.params.id
-    console.log(songId)
     if (!userId) return res.status(401).json({ message: '[addMiningLike] No userId'})
     if (!songId) return res.status(401).json({ message: '[addMiningLike] No songId'})
 

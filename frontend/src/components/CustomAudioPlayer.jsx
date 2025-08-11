@@ -29,10 +29,7 @@ const CustomAudioPlayer = ({ song }) => {
   }  
 
   const handlePlayClick = async () => {
-    console.log('[CustomAudioPlayer] Play button clicked')
-    // 曲を切り替えるときは setNowPlaying
     if (!isCurrentSong) {
-      console.log('[CustomAudioPlayer] Dispatching setNowPlaying')
       dispatch(setNowPlaying({
         _id: song._id,
         title: song.title,
@@ -42,8 +39,7 @@ const CustomAudioPlayer = ({ song }) => {
         imageUrl: song.imageFile
       }))
     }
-    
-    console.log('[CustomAudioPlayer] Dispatching togglePlay')
+
     dispatch(togglePlay())
 
     if (!currentUser) return

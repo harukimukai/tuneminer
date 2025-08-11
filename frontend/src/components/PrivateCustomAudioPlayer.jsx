@@ -20,7 +20,6 @@ const PrivateCustomAudioPlayer = ({ song }) => {
 
   const handlePlayClick = () => {
     if (!isCurrentSong) {
-      console.log('[PrivateCustomAudioPlayer] Dispatching setNowPlaying')
       dispatch(setCurrentPrivateSong({
         _id: song._id,
         title: 'プレビュー中',
@@ -30,7 +29,6 @@ const PrivateCustomAudioPlayer = ({ song }) => {
         imageUrl: '' // 画像なし
       }))
     }
-    console.log('[PrivateCustomAudioPlayer] Dispatching togglePlay')
     dispatch(privateTogglePlay())
   }
 

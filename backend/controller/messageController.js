@@ -22,9 +22,7 @@ const getMessagesByConversationId = asyncHandler(async (req, res) => {
 
 // メッセージ送信
 const sendMessage = asyncHandler(async (req, res) => {
-  console.log('sendMessage start')
   const { conversationId, senderId, text } = req.body
-  console.log('req.body', req.body)
 
   if (!conversationId) {
     return res.status(400).json({ message: 'Missing convId' })
@@ -40,8 +38,6 @@ const sendMessage = asyncHandler(async (req, res) => {
       content: text,
     })
 
-    console.log('[messageController]message: ', message)
-
     const conversation = await Conversation.findByIdAndUpdate(conversationId, {
       lastMessage: {
         text,
@@ -51,8 +47,6 @@ const sendMessage = asyncHandler(async (req, res) => {
     })
 
     const senderUser = await User.findById(senderId).select('username icon')
-
-    console.log('sendMessage Done')
 
     res.status(201).json({
       _id: message._id,

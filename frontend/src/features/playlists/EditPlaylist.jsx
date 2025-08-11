@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useGetPlaylistByIdQuery, useUpdatePlaylistMutation } from './playlistApiSlice'
 
@@ -28,7 +28,6 @@ const EditPlaylist = () => {
 
   const handleSubmit = async(e) => {
     e.preventDefault()
-    console.log(title, description, isPublic)
     const formData = new FormData()
     formData.append('title', title)
     formData.append('description', description)

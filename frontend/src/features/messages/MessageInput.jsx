@@ -13,15 +13,12 @@ const MessageInput = ({ conversationId }) => {
   const currentUser = useSelector(selectCurrentUser) // ← これを追加！
 
   const handleSubmit = async (e) => {
-    console.log('handleSubmit')
     e.preventDefault()
     if (!text.trim()) {
-      return console.log('!text')
+      return 
     }
 
-    console.log('before try/catch')
     try {
-      console.log('after try/catch')
       const savedMessage = await sendMessage({ 
         conversationId, 
         senderId: currentUser._id, 
@@ -29,11 +26,7 @@ const MessageInput = ({ conversationId }) => {
       }).unwrap()
       setText('')
 
-      console.log('savedMessage', savedMessage)
-
-      // 🎯 メッセージ送ったら socket.io にも流す！
       if (socket) {
-        console.log('socket.emit')
         socket.emit('sendMessage', {
           ...savedMessage,
           sender: {
@@ -45,7 +38,6 @@ const MessageInput = ({ conversationId }) => {
       }
 
       // 送信成功したあとに入れる！
-      console.log('dispatch start')
       dispatch(
         conversationApiSlice.util.updateQueryData(
           'getAllConversations',

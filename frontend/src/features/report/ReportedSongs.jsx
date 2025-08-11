@@ -1,6 +1,5 @@
-import React from 'react'
 import { useGetSongReportsQuery } from './reportApiSlice'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const ReportedSongs = () => {
   const {data: reportedSongs = [] } = useGetSongReportsQuery()
@@ -8,7 +7,6 @@ const ReportedSongs = () => {
   const location = useLocation()
 
   const handleOpenModal = (id) => {
-    console.log('handleOpenModal')
     navigate(`/songs/modal/${id}`, { state: { background: location } }) // URLだけ変更
   }
 

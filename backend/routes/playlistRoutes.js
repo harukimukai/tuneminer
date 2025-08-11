@@ -4,11 +4,6 @@ const playlistController = require('../controller/playlistController')
 const verifyJWT = require('../middleware/verifyJWT')
 const { upload } = require('../middleware/uploadFiles')
 
-// router.use((req, res, next) => {
-//   console.log(`[Router] ${req.method} ${req.originalUrl}`)
-//   next()
-// })
-
 // 公開プレイリスト閲覧
 router.get('/', playlistController.getPlaylists)
 

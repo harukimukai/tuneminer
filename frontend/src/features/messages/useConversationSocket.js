@@ -11,9 +11,7 @@ const useConversationSocket = () => {
     if (!socket) return;
 
     const handleReceiveMessage = (message) => {
-      console.log('[Socket] (Conversation) Message received:', message);
 
-      // ConversationListだけ更新する！
       dispatch(
         conversationApiSlice.util.updateQueryData(
           'getAllConversations',

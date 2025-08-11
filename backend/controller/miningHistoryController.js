@@ -3,7 +3,6 @@ const MiningHistory = require('../model/MiningHistory')
 
 // record Mining
 const recordMining = asyncHandler(async (req, res) => {
-    console.log('recordMining Start')
     const userId = req._id ?? null
     if (userId === null) return 
     const { songId } = req.body
@@ -29,7 +28,6 @@ const recordMining = asyncHandler(async (req, res) => {
 
 // get miningHistory
 const getMyMiningHistory = asyncHandler(async (req, res) => {
-    console.log('getMyMiningHistory Start')
     const userId = req._id
 
     const history = await MiningHistory.find({ user: userId })

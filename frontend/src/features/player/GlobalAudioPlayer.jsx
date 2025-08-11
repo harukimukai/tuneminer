@@ -18,13 +18,10 @@ const GlobalAudioPlayer = () => {
   // 🔄 曲が切り替わったら audio を手動で load（先読み）
   useEffect(() => {
     if (audioRef.current && currentSong) {
-      console.log('[Audio] calling .load() for:', currentSong.title)
       audioRef.current.load()
 
-      // 🔸 pausedSnapshot がある場合は、そこから再生開始する
       if (pausedSnapshot?.song?._id === currentSong._id && pausedSnapshot?.currentTime != null) {
         audioRef.current.onloadedmetadata = () => {
-          console.log('[Audio] Resuming from snapshot time:', pausedSnapshot.currentTime)
           audioRef.current.currentTime = pausedSnapshot.currentTime
         }
       }
@@ -34,16 +31,11 @@ const GlobalAudioPlayer = () => {
   useEffect(() => {
     if (!audioRef.current) return
 
-    console.log('[Audio] isPlaying:', isPlaying)
-    console.log('[Audio] currentSong:', currentSong)
-
     if (isPlaying) {
-      console.log('[GlobalAudio] ▶ 再生')
       audioRef.current.play().catch(err => {
         console.warn('[GlobalAudio] play失敗:', err)
       })
     } else {
-      console.log('[GlobalAudio] ⏸ 停止')
       audioRef.current.pause()
     }
   }, [isPlaying, currentSong])
@@ -51,14 +43,12 @@ const GlobalAudioPlayer = () => {
   useEffect(() => {
     if (audioRef.current && volume !== undefined) {
       audioRef.current.volume = volume
-      console.log('[Audio] Volume set to:', volume)
     }
   }, [volume])
 
   useEffect(() => {
     if (seekTime !== null && audioRef.current) {
-      console.log('[GlobalAudioPlayer] seeking to:', seekTime)
-      audioRef.current.pause() // 🔸 先に止めてから
+      audioRef.current.pause()
       audioRef.current.currentTime = seekTime
 
       if (isPlaying) {
@@ -75,24 +65,20 @@ const GlobalAudioPlayer = () => {
     if (!audioRef.current) return
 
     if (isMiningActive) {
-      console.log('[GlobalAudio] ⛏ マイニング中 → 強制停止')
       audioRef.current.pause()
       return
     }
 
     if (isPrivateMode) {
-      console.log('[GlobalAudio] 🛑 isPrivate → 強制停止')
       audioRef.current.pause()
       return
     }
 
     if (isPlaying) {
-      console.log('[GlobalAudio] ▶ 再生')
       audioRef.current.play().catch(err => {
-        console.warn('[GlobalAudio] play失敗:', err)
+        console.warn('[GlobalAudio] failed to play:', err)
       })
     } else {
-      console.log('[GlobalAudio] ⏸ 停止')
       audioRef.current.pause()
     }
   }, [isPlaying, isMiningActive, isPrivateMode])
@@ -102,12 +88,10 @@ const GlobalAudioPlayer = () => {
   }
 
   const handleLoadedMetadata = () => {
-    console.log('[Audio] Metadata loaded')
     dispatch(setDuration(audioRef.current.duration))
   }
 
   if (!currentSong) {
-    console.log('[Audio] No currentSong → null audio')
     return null
   }
 

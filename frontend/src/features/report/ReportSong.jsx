@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useCreateReportSongMutation } from './reportApiSlice'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -7,10 +7,6 @@ const ReportSong = () => {
   const [content, setContent] = useState('')
   const {songId} = useParams()
   const navigate = useNavigate()
-
-  useEffect(() => {
-    console.log('ReportSong mounted. songId:', songId)
-  }, [])
 
   const handleSubmit = async(e) => {
     e.preventDefault()

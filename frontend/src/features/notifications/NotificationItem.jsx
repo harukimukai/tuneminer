@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -10,9 +9,7 @@ export const NotificationItem = ({allNotification}) => {
   const id = allNotification._id
   const [markAsRead] = useMarkAsReadMutation()
   const location = useLocation()
-  const { sender, content, link, isRead, createdAt } = allNotification
-  
-  console.log(allNotification)
+  const { content, link, isRead, createdAt } = allNotification
 
   return (
     <Link

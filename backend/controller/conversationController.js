@@ -61,7 +61,6 @@ const findConversationWithUser = asyncHandler(async (req, res) => {
 })
 
 const getUnreadCounts = asyncHandler(async (req, res) => {
-    console.log('getUnreadCounts start')
     const userId = req._id
 
     const unreadCounts = await Message.aggregate([
@@ -82,8 +81,7 @@ const getUnreadCounts = asyncHandler(async (req, res) => {
     unreadCounts.forEach(item => {
         countsMap[item._id.toString()] = item.count
     })
-
-    console.log('countsMap', countsMap)
+    
     res.json(countsMap)
 })
 

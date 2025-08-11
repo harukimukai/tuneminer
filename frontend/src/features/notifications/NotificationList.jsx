@@ -15,8 +15,6 @@ const NotificationList = () => {
   // 結合（API + Socket）
   const allNotifications = [...notificationsFromSocket, ...notifications]
 
-  console.log('allNotifications: ', allNotifications)
-
   return (
     <div>
       <h2>Notifications</h2>

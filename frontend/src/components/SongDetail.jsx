@@ -40,14 +40,6 @@ const SongDetail = ({ modalMode = false, onClose }) => {
     setIsOpenPlaylists(prev => !prev)
   }
 
-  console.log('songId', id)
-
-  // SongDetail.jsx や他のモーダルファイルの先頭に追加
-  useEffect(() => {
-    console.log('[Modal] SongDetail mounted')
-    return () => console.log('[Modal] SongDetail unmounted')
-  }, [])
-
   useEffect(() => {
     if (modalMode) {
       document.body.classList.add('no-scroll');
@@ -79,10 +71,8 @@ const SongDetail = ({ modalMode = false, onClose }) => {
   }
 
   const handleDelete = async(id) => {
-    console.log('delete id: ', id)
     const confirm = window.confirm('Are you sure deleting this song?')
     if (!confirm) return
-    console.log('delete id: ', id)
 
     try {
         await deleteSong(id).unwrap()
@@ -119,10 +109,10 @@ const SongDetail = ({ modalMode = false, onClose }) => {
               {song.original ? 
                 (<p>Original</p>) : (<p>Cover</p>)
               }
-              <p className='createdAt'>
-                {song.releasedDate && <p>Released at : {new Date(song.releasedDate).toLocaleDateString()}</p>}
-                {song.createdAt && <p>Released at : {new Date(song.createdAt).toLocaleDateString()}</p>}
-              </p>
+              <div className='createdAt'>
+                {song.releasedDate && <p>Released at: {new Date(song.releasedDate).toLocaleDateString()}</p>}
+                {song.createdAt && <p>Released at: {new Date(song.createdAt).toLocaleDateString()}</p>}
+              </div>
               {song.imageFile && (
                 <div className='song-modal-image-box'>
                   <img 
@@ -184,7 +174,7 @@ const SongDetail = ({ modalMode = false, onClose }) => {
                           </div>
                         ) : (
                           <div className="dropdown-menu">
-                            <Link to={`/report/song/${song._id}`} onClick={() => console.log('Clicked report link', song._id)}>
+                            <Link to={`/report/song/${song._id}`}>
                               <button className="button">
                                 Report
                               </button>
@@ -228,7 +218,7 @@ const SongDetail = ({ modalMode = false, onClose }) => {
                   )}
                 </div>
               </div>
-              <p className='plays'>{song.plays?.length ? <p>{song.plays.length} Plays</p> : <p>0 Plays</p>}</p>
+              <div className='plays'>{song.plays?.length ? <p>{song.plays.length} Plays</p> : <p>0 Plays</p>}</div>
               <Waveform
                 audioUrl={`${API_BASE_URL}/${song.audioFile}`}
                 songId={song._id}

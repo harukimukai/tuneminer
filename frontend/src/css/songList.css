@@ -1,4 +1,3 @@
-
 .record-shelf-wall {
   background-color: var(--tm-surface);
   padding: 2rem 1rem;
@@ -16,38 +15,56 @@
   left: 0;
   height: 16px;
   width: 100%;
-  background-image: url('/public/images/wood_board2.jpg'); /* ←パスに注意 */
+  background-image: url('/public/images/wood_board2.jpg');
   background-size: cover;
-  filter: brightness(0.7);
   background-position: center;
+  filter: brightness(0.7);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.575);
   border-radius: 4px;
-  z-index: 100;
+  z-index: 50;            /* 棚板は後ろへ */
 }
 
 .record-row {
   display: flex;
+  flex-wrap: wrap;        /* 画面幅が狭いときに折り返す */
   gap: 1.5rem;
   padding: 11px;
   justify-content: center;
-  z-index: 2;
   position: relative;
+  z-index: 1;             /* カードを前面に */
 }
 
+/* カードの見た目とサイズ（親で正方形を確定させる） */
 .record-card {
-  width: 300px;
+  width: clamp(150px, 20vw, 260px); /* 最小200px、理想20vw、最大260px */
+  min-width: 150px;      /* ← これで200px未満に縮まなくなる */
+  aspect-ratio: 1 / 1;      /* 正方形を維持 */
   border-radius: 8px;
   text-align: center;
   transition: transform 0.2s;
 }
 
-.record-card img {
-  width: 100%;          /* ← 明示的に正方形に近づける */
-  object-fit: cover;       /* ← はみ出さずに埋める */
+/* buttonの既定スタイルで画像が縮まないようにリセット */
+.record-card > button {
+  all: unset;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* 画像は親いっぱいに拡大（64pxでも確実に大きく） */
+.record-card > button > img.song-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;          /* 64px系のmax制約がどこかにあっても上書き */
+  max-height: none;
+  object-fit: cover;        /* はみ出さずに枠を埋める */
   border-radius: 6px;
-  aspect-ratio: 1;
   box-shadow: 8px 8px 1px rgba(0, 0, 0, 0.459);
-  filter: blur(0.6px) contrast(0.95) brightness(1.05)
+  filter: blur(0.5px) contrast(0.95) brightness(1.05);
+  image-rendering: pixelated;
 }
 
 .record-card:hover {

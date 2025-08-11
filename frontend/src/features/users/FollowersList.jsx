@@ -1,6 +1,7 @@
 import React from 'react'
 import { useGetFollowersQuery } from './usersApiSlice'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import { API_BASE_URL, CLIENT_BASE_URL } from '../../config/constants'
 
 const FollowersList = () => {
   const { id } = useParams()
@@ -14,8 +15,23 @@ const FollowersList = () => {
       <div>
         {followers.map((f) => (
           <div key={f._id}>
-            <h2>{f.icon}</h2>
-            <h2>{f.username}</h2>
+            <Link to={`/users/${f._id}`}>
+              {f.icon ? (
+                <img 
+                  src={`${API_BASE_URL}/${f.icon}`} 
+                  alt="icon" 
+                  className='user-page_user-icon'
+                />
+              ) : (
+                <img 
+                  src={`${CLIENT_BASE_URL}/default_user_icon.jpg`} 
+                  alt="icon" 
+                  className='user-page_user-icon'
+                />
+              )}
+              <h2>{f.username}</h2>
+              <p>{f.bio}</p>
+            </Link>
           </div>
         ))}
       </div>

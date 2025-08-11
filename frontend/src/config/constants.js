@@ -4,14 +4,6 @@ export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localh
 // Client Base URL (フロントエンドのURL)
 export const CLIENT_BASE_URL = process.env.REACT_APP_CLIENT_BASE_URL || 'http://localhost:3000'
 
-// 開発環境での設定確認用ログ
-if (process.env.NODE_ENV === 'development') {
-  console.log('🔗 Environment Configuration:')
-  console.log('   API_BASE_URL:', API_BASE_URL)
-  console.log('   CLIENT_BASE_URL:', CLIENT_BASE_URL)
-  console.log('   NODE_ENV:', process.env.NODE_ENV)
-}
-
 // よく使う API エンドポイント
 export const API_ENDPOINTS = {
   SONGS: `${API_BASE_URL}/songs`,

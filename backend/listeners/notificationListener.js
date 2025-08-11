@@ -9,7 +9,9 @@ module.exports = (io, activeUsers) => {
   isNotificationListenerInitialized = true
 
   eventBus.on('commentCreated', async({ recipientId, senderId, songId, content }) => {
-    console.log('📣 commentCreated イベント受信:', { recipientId, senderId, songId, content });
+    if (recipientId.toString() === senderId.toString()) {
+      return
+    }
     try {
       const notification = await Notification.create({
         recipient: recipientId,
@@ -19,22 +21,19 @@ module.exports = (io, activeUsers) => {
         link: `/songs/modal/${songId}`
       })
 
-      console.log('✅ 通知作成完了:', notification);
-
-      // Socket で通知を送る
       const recipientSocketId = activeUsers.get(recipientId.toString())
-      console.log('📡 通知対象のSocket ID:', recipientSocketId);
       if (recipientSocketId){
-        io.to(recipientSocketId).emit('newNotification', notification); // 必要に応じて null 安全演算子
-        console.log('📤 通知をSocketで送信');
+        io.to(recipientSocketId).emit('newNotification', notification); 
       }
     } catch (err) {
-      console.error('通知作成エラー(comment) :', err.message)
+      console.error('Error (commentNotification) :', err.message)
     }
   })
 
   eventBus.on('follow', async({ recipientId, senderId, content }) => {
-    console.log('📣 follow イベント受信:', { recipientId, senderId, content });
+    if (recipientId.toString() === senderId.toString()) {
+      return
+    }
     try {
       const notification = await Notification.create({
         recipient: recipientId,
@@ -44,22 +43,20 @@ module.exports = (io, activeUsers) => {
         link: `/users/${senderId}`
       })
 
-      console.log('✅ 通知作成完了:', notification);
-
       // Socket で通知を送る
       const recipientSocketId = activeUsers.get(recipientId.toString())
-      console.log('📡 通知対象のSocket ID:', recipientSocketId);
       if (recipientSocketId){
-        io.to(recipientSocketId).emit('newNotification', notification); // 必要に応じて null 安全演算子
-        console.log('📤 通知をSocketで送信');
+        io.to(recipientSocketId).emit('newNotification', notification);
       }
     } catch (err) {
-      console.error('通知作成エラー(comment) :', err.message)
+      console.error('Error (followNotification) :', err.message)
     }
   })
 
   eventBus.on('like', async({ recipientId, senderId, content, songId }) => {
-    console.log('📣 like イベント受信:', { recipientId, senderId, content, songId });
+    if (recipientId.toString() === senderId.toString()) {
+      return
+    }
     try {
       const notification = await Notification.create({
         recipient: recipientId,
@@ -69,22 +66,19 @@ module.exports = (io, activeUsers) => {
         link: `/songs/modal/${songId}`
       })
 
-      console.log('✅ 通知作成完了:', notification);
-
-      // Socket で通知を送る
       const recipientSocketId = activeUsers.get(recipientId.toString())
-      console.log('📡 通知対象のSocket ID:', recipientSocketId);
       if (recipientSocketId){
-        io.to(recipientSocketId).emit('newNotification', notification) // 必要に応じて null 安全演算子
-        console.log('📤 通知をSocketで送信');
+        io.to(recipientSocketId).emit('newNotification', notification)
       }
     } catch (err) {
-      console.error('通知作成エラー(comment) :', err.message)
+      console.error('Error (likeNotification) :', err.message)
     }
   })
 
   eventBus.on('addSongPlaylist', async({ recipientId, senderId, content, playlistId }) => {
-    console.log('📣 like イベント受信:', { recipientId, senderId, content, playlistId });
+    if (recipientId.toString() === senderId.toString()) {
+      return
+    }
     try {
       const notification = await Notification.create({
         recipient: recipientId,
@@ -94,17 +88,12 @@ module.exports = (io, activeUsers) => {
         link: `/playlists/${playlistId}`
       })
 
-      console.log('✅ 通知作成完了:', notification);
-
-      // Socket で通知を送る
       const recipientSocketId = activeUsers.get(recipientId.toString())
-      console.log('📡 通知対象のSocket ID:', recipientSocketId);
       if (recipientSocketId){
-        io.to(recipientSocketId).emit('newNotification', notification) // 必要に応じて null 安全演算子
-        console.log('📤 通知をSocketで送信');
+        io.to(recipientSocketId).emit('newNotification', notification) 
       }
     } catch (err) {
-      console.error('通知作成エラー(comment) :', err.message)
+      console.error('Error (playlistNotification) :', err.message)
     }
   })
 }

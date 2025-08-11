@@ -17,13 +17,11 @@ const socketSlice = createSlice({
           withCredentials: true,
         })
         state.socket = newSocket
-        console.log('[SocketSlice] Socket connected:', newSocket.id)
       }
     },
     disconnectSocket: (state) => {
       if (state.socket) {
         state.socket.disconnect()
-        console.log('[SocketSlice] Socket disconnected')
         state.socket = null
       }
     }

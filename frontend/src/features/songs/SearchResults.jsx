@@ -15,8 +15,6 @@ const SearchResults = () => {
     error 
   } = useSearchSongsQuery(queryParams)
 
-  console.log(results)
-
   if (isLoading) return <p>Searching...</p>
   if (isError) return <p style={{ color: 'red' }}>{error?.data?.message || 'Searching error'}</p>
 

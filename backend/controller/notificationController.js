@@ -10,7 +10,6 @@ const getNotifications = asyncHandler(async(req, res) => {
 })
 
 const markAsRead = asyncHandler(async(req, res) => {
-    console.log('markAsRead Start', req.params.id)
     const notification = await Notification.findById(req.params.id)
     if (!notification) return res.status(404).json({ message: 'Not found' })
     

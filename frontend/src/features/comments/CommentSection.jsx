@@ -102,7 +102,6 @@ const CommentSection = ({ songId }) => {
   }
 
   const threadedComments = buildCommentTree(comments)
-  console.log('🪵 threadedComments:', threadedComments)
 
   return (
     <section>

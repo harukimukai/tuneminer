@@ -7,7 +7,6 @@ const ReportedUsers = () => {
   const navigate = useNavigate()
 
   const handleOpenUserPage = (id) => {
-    console.log('handleOpenUserPage')
     navigate(`/users/${id}`)
   }
 

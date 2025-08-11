@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useGetMiningSongsQuery } from '../songs/songApiSlice'
 import SongDetailLite from '../../components/SongDetailLite'
 import { useDispatch, useSelector } from 'react-redux'
@@ -53,9 +53,8 @@ const MiningPage = () => {
         audio.currentTime = start
         setCurrentTime(start)
         await audio.play()
-        console.log('[▶] 再生開始 from', start)
       } catch (err) {
-        console.error('[❌] audio.play() 失敗:', err)
+        console.error('[❌] audio.play() Failed:', err)
       }
     }
 
@@ -64,9 +63,7 @@ const MiningPage = () => {
         const now = audio.currentTime
         setCurrentTime(now)
 
-        // 🔥 end 時間を超えていたら次へ
         if (now >= end) {
-          console.log('[⏩] highlight.end 到達 → 次の曲へ')
           audio.pause()
           audio.currentTime = 0
           if (index >= songs.length - 1) {
@@ -82,12 +79,10 @@ const MiningPage = () => {
     }
 
     const onPlay = async() => {
-      console.log('[✅] 再生開始 → 時間監視と自動停止をセット')
-            
       try {
         await recordMiningRef.current(song._id).unwrap()
       } catch (err) {
-        console.error('[❌] recordMining失敗:', err)
+        console.error('[❌] recordMining failed:', err)
       }
 
       rafRef.current = requestAnimationFrame(updateCurrentTime)

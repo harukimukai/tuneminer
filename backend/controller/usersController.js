@@ -38,7 +38,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
 })
 
 const updateUser = asyncHandler(async (req, res) => {
-    console.log('updateUser Start')
     const { id } = req.params
     if (!id) return res.status(400).json({ message: 'User ID required'})
 
@@ -69,14 +68,11 @@ const updateUser = asyncHandler(async (req, res) => {
         }
     }
     if (req.files?.icon) {
-        console.log('req.file: ', req.files.icon)
-        // 古いファイルが存在すれば削除
         if (user.icon) {
             fs.unlink(user.icon, (err) => {
                 if (err) console.warn('Failed to delete the old icon:', err.message)
             })
         }
-        // 新しいファイルを保存
         user.icon = req.files.icon[0].path
     }
     
@@ -99,8 +95,6 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 // follow/unfollow
 const followUser = asyncHandler(async (req, res) => {
-    console.log('followUser process START')
-
     const targetUserId = req.params.id
     const currentUserId = req._id // from JWT
     if (!targetUserId) {
@@ -129,7 +123,6 @@ const followUser = asyncHandler(async (req, res) => {
         targetUser.followers.pull(currentUserId)
         await currentUser.save()
         await targetUser.save()
-        console.log(`unfollowed: ${targetUser.username}`)
         return res.json({ message: `unfollowed: ${targetUser.username}`})
     } else {
         currentUser.following.push(targetUserId)
@@ -141,7 +134,6 @@ const followUser = asyncHandler(async (req, res) => {
             senderId: currentUser._id,
             content: `@${currentUser.username} followed you!`
         })
-        console.log(`followed: ${targetUser.username}`)
         return res.json({ message: `followed: ${targetUser.username}`})
     }
 })

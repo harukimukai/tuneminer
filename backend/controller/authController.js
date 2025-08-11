@@ -10,8 +10,6 @@ const sendEmail = require('../utils/sendEmail')
 //pwd, passwordの混在注意
 
 const handleRegister = asyncHandler(async (req, res) => {
-    console.log('Register request')
-
     const {username, email, pwd} = req.body
     if (!username || !email || !pwd) return res.send('Username, Email and password are required!')
 
@@ -29,17 +27,13 @@ const handleRegister = asyncHandler(async (req, res) => {
 })
 
 const handleLogin = asyncHandler(async (req, res) => {
-    console.log('Login request')
-
     const { username, pwd } = req.body
     if (!username || !pwd) return res.status(401).json({ message: 'Username or password is missing!'})
-    console.log('username: ', username)
 
     const foundUser = await User.findOne({ username }).exec()
     if (!foundUser) return res.status(401).json({ message: 'The username is not used'})
 
     const pwdMatch = await bcrypt.compare(pwd, foundUser.pwd)
-    console.log(pwdMatch)
     if(!pwdMatch) return res.status(401).json({ message: 'Wrong Password'})
 
     // token
@@ -56,15 +50,12 @@ const handleLogin = asyncHandler(async (req, res) => {
         { expiresIn: '15m' }
     )
 
-    console.log(`accessToken: ${accessToken}`)
 
     const refreshToken = jwt.sign(
         { 'username': foundUser.username},
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: '7d' }
     )
-
-    console.log(`refreshToken: ${refreshToken}`)
 
     res.cookie('jwt', refreshToken, {
         httpOnly: true,
@@ -73,24 +64,16 @@ const handleLogin = asyncHandler(async (req, res) => {
         maxAge: 7 * 60 * 60 * 24 * 1000
     })
 
-    console.log('Cookie! Login process DONE')
-
     // Send accessToken containing id, username, bio, icon
     // いずれマイページを消して普通のユーザーページから自分のアカウントのみ編集ボタンを表示させるようにするから、そのときはidとusernameのみにしていい気がする。
     res.json({ accessToken, user: { _id: foundUser._id, username: foundUser.username, bio: foundUser.bio, icon: foundUser.icon, isAdmin: foundUser.isAdmin, socials: foundUser.socials }  })
 })
 
 const handleRefresh = (req, res) => {
-    console.log('refreshToken request')
-
     const cookies = req.cookies
     if (!cookies?.jwt) return res.status(401).json({ message: 'No cookies!'})
 
-    console.log(`Cookies: ${cookies}`)
-
     const refreshToken = cookies.jwt
-
-    console.log(`refreshToken: ${refreshToken}`)
 
     jwt.verify(
         refreshToken,
@@ -117,8 +100,6 @@ const handleRefresh = (req, res) => {
                 { expiresIn: '15m' }
             )
 
-            console.log(`accessToken: ${accessToken}`)
-
             res.json({ 
                 accessToken,
                 user: {
@@ -133,16 +114,11 @@ const handleRefresh = (req, res) => {
         })
     )
 
-    console.log('refreshToken process DONE')
-
 }
 
 const handleLogout = (req, res) => {
-    console.log('Logout request')
-
     const cookies = req.cookies
     if (!cookies?.jwt) return res.status(204).json({ message: 'No cookies'})
-    console.log(`cookies: ${cookies}`)
 
     res.clearCookie('jwt', {
         httpOnly: true,
@@ -151,7 +127,6 @@ const handleLogout = (req, res) => {
     })
 
     res.json({ message: 'Cookie cleared'})
-    console.log('Logout Process DONE')
 }
 
 
@@ -176,21 +151,15 @@ const forgotPassword = async (req, res) => {
 };
 
 const resetPassword = asyncHandler(async (req, res) => {
-    console.log('resetPassword Start')
     const { token } = req.params;
     const { password } = req.body;
-    console.log('New Password:', password)
     const user = await User.findOne({ resetPasswordToken: token, resetPasswordTokenExpires: { $gt: Date.now() } });
-    console.log('user: ', user)
     if (!user) return res.status(400).json({ message: 'Token is invalid or expired' });
 
     user.pwd = await bcrypt.hash(password, 10);
-    console.log('user.password: ', user.password)
     user.resetPasswordToken = undefined;
     user.resetPasswordTokenExpires = undefined;
     await user.save()
-
-    console.log('New Pwd: ', user)
 
     res.json({ message: 'Updated Password' });
 })

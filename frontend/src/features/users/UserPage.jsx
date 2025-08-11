@@ -21,7 +21,6 @@ const UserPage = () => {
   const navigate = useNavigate()
   const [viewMode, setViewMode] = useState('uploadedSongs')
   const [isOpenMenu, setIsOpenMenu] = useState(false)
-  console.log(currentUser)
 
   if (!data) return <p>Loading user...</p>
   if (isLoading) return <p>Loading...</p>
@@ -47,7 +46,6 @@ const UserPage = () => {
 
     try {
       await followUser(user._id).unwrap()
-      console.log('Followed/Unfollowed')
     } catch (err) {
       console.error('failed to follow/unfollow:', err)
     }
@@ -56,11 +54,9 @@ const UserPage = () => {
   const handleStartConversation = async (recipientId) => {
     if (!currentUser) return
 
-    console.log('handleStartConversation', recipientId)
     try {
       const newConv = await createConversation(recipientId).unwrap()
-      console.log('[UserProfile] New conversation created:', newConv)
-      navigate(`/messages/${newConv._id}`) // メッセージ画面へ遷移
+      navigate(`/messages/${newConv._id}`)
     } catch (err) {
       console.error('Failed to start conversation:', err)
     }
@@ -85,10 +81,10 @@ const UserPage = () => {
         <div>
           <p className='user-page_username'>@{user.username}</p>
           {user.createdAt && 
-            <p>Join: {new Date(user.createdAt).toLocaleDateString()}</p>
+            <p>Joined: {new Date(user.createdAt).toLocaleDateString()}</p>
           }
           {user.startedDate && 
-            <p>Join: {new Date(user.startedDate).toLocaleDateString()}</p>
+            <p>Joined: {new Date(user.startedDate).toLocaleDateString()}</p>
           }
         </div>
       </div>
@@ -139,7 +135,7 @@ const UserPage = () => {
             </button>
             {isOpenMenu && (
               <div className="dropdown-menu">
-                <Link to={`/report/user/${user._id}`} onClick={() => console.log('Clicked report link', user._id)}>
+                <Link to={`/report/user/${user._id}`}>
                   <button className="button">
                     Report
                   </button>

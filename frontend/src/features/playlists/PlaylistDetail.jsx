@@ -12,7 +12,6 @@ const PlaylistDetail = () => {
   if (isLoading) return <p>Loading...</p>
 
   const handleOpenModal = (songId) => {
-    console.log('handleOpenModal')
     navigate(`/songs/modal/${songId}`, { state: { background: location } }) // URLだけ変更
   }
 
@@ -36,11 +35,11 @@ const PlaylistDetail = () => {
       <Link to={`/playlists/${playlist._id}/edit`}>
         <button>Edit</button>
       </Link>
-      <div>
+      <div style={{ display: 'flex', gap: '8px' }}>
         {playlist.songs.map((song) => (
           <div key={song._id}>
             <button onClick={() => handleOpenModal(song._id)}>
-              <img src={`${API_BASE_URL}/${song.imageFile}`} alt={song.title} width={80} />
+              <img src={`${API_BASE_URL}/${song.imageFile}`} alt={song.title} style={{height: '250px', aspectRatio: '1/1', objectFit: 'cover' , borderRadius: '8px'}} />
               <p>{song.title}</p>
             </button>
             <p>by {song.user?.username}</p>

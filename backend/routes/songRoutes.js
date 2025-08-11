@@ -31,7 +31,7 @@ router.route('/search-results')
 
 
 router.route('/mining')
-    .get(verifyJWT, songsController.getHighlightedSongs)
+    .get(songsController.getHighlightedSongs)
 
 router.route('/admin-recommended')
     .get(songsController.getAdminRec)

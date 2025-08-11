@@ -6,9 +6,7 @@ const User = require('../model/User')
 
 // get comments
 const getCommentsBySong = asyncHandler(async (req, res) => {
-    console.log('get comment Start')
     const { songId } = req.params
-    console.log('songId: ', songId)
   
     const comments = await Comment.find({ song: songId })
       .populate('user', 'username icon')
@@ -18,7 +16,6 @@ const getCommentsBySong = asyncHandler(async (req, res) => {
 
 // create a comment
 const createComment = asyncHandler(async (req, res) => {
-    console.log('create comment Start')
     const userId = req._id
     const { songId, content, parent } = req.body
     if (!songId || !content) return res.status(404).json({ message: 'SongId and content are required!'})
@@ -59,7 +56,6 @@ const createComment = asyncHandler(async (req, res) => {
 
 // delete a comment
 const deleteComment = asyncHandler(async (req, res) => {
-    console.log('deleteComment Start')
     const userId = req._id
     const { id } = req.params
 

@@ -43,40 +43,6 @@ app.use(passport.session());
 
 initializeSocket(server)
 
-// const io = new Server(server, {
-//   cors: {
-//     origin: 'http://localhost:3000',
-//     methods: ['GET', 'POST'],
-//     credentials: true,
-//   }
-// })  
-
-// io.on('connection', (socket) => {
-//   console.log('New client connected', socket.id);
-
-//   socket.on('sendMessage', async (savedMessage) => {
-//     console.log('★ sendMessage socket event fired', savedMessage)
-
-//     try {
-//       // 自分以外にbroadcast
-//       console.log('★ inside try block')
-//       socket.broadcast.emit('receiveMessage', savedMessage);
-//       console.log('receiveMessage', savedMessage)
-
-//       // 送った本人にも即返しておきたいならここでemitしてもOK
-//       socket.emit('messageSent', savedMessage);
-
-//     } catch (error) {
-//       console.error('Error sending message:', error.message);
-//       socket.emit('errorMessage', { message: error.message });
-//     }
-//   });
-
-//   socket.on('disconnect', () => {
-//     console.log('Client disconnected', socket.id);
-//   });
-// });
-
 //Connect to mongoDB
 connectDB();
 
@@ -147,6 +113,5 @@ app.all('*', (req, res) => {
 
 
 mongoose.connection.once('open', () => {
-    console.log('Connected to MongoDB');
-    server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    server.listen(PORT);
 })

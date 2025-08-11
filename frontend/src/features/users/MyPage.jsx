@@ -12,7 +12,6 @@ import { API_BASE_URL } from '../../config/constants'
 const MyPage = () => {
 
   const currentUser = useSelector(selectCurrentUser)
-  console.log('Current user from Redux:', currentUser)
 
   // data: user ではダメ。何故ならdataはuserとsongsの二つ持っているから直では無理
   const { 
@@ -34,8 +33,6 @@ const MyPage = () => {
   if (!user) return <p>Loading user...</p>
   if (isLoading) return <p>Loading...</p>
   if (isError) return <p>Error: {error?.data?.message || 'Failed to Load'}</p>
-
-  console.log('user:', user)
 
   return (
     <section>

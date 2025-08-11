@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../features/auth/authSlice'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import '../css/modal.css'
 import MiningProgressBar from './MiningProgressBar'
 import { useAddMiningLikeMutation } from '../features/mining/miningApiSlice'
@@ -23,6 +23,7 @@ const SongDetailLite =
   const [addMiningLike] = useAddMiningLikeMutation()
   const [isPlaying, setIsPlaying] = useState(true)
   const liked = song.likes.includes(currentUser?._id)
+  const navigate = useNavigate()
 
   const handlePlayPause = () => {
     if (!audioRef.current) return
@@ -62,10 +63,15 @@ const SongDetailLite =
     }
   }
 
+  const handleModalLiteClose = () => {
+    navigate(-1)
+  }
+
   return (
     <div className="modal-overlay">
       {index !== 0 && <button onClick={onPrev}>Previous</button>}
       <div className="modal-lite-container">
+        <button className="modal-close" onClick={handleModalLiteClose}>✕</button>
         <div>
           <p className='createdAt'>
             {song.releasedDate && 

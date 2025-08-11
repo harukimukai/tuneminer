@@ -6,7 +6,6 @@ export const initNotificationListener = (dispatch) => {
   if (!socket) return
 
   socket.on('newNotification', (notification) => {
-    console.log('📨 新しい通知:', notification)
     dispatch(addNotification(notification))
   })
 }

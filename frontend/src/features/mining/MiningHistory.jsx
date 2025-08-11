@@ -13,13 +13,10 @@ const MiningHistory = () => {
   if (isError) return <p style={{ color: 'red' }}>{error?.data?.message || 'Failed to load history'}</p>
   if (!history?.length) return <p>No mining history yet.</p>
 
-  console.log(history)
-
   return (
     <section>
       <h2>Your Mining History</h2>
       <SongList songs={history} />
-      {/* またはカスタムカードで個別表示 */}
     </section>
   )
 }

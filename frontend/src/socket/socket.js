@@ -18,8 +18,6 @@ export const connectSocket = () => {
   const state = storeRef.getState()
   const currentUser = selectCurrentUser(state)
 
-  console.log('🧪 [connectSocket] currentUser:', currentUser)
-
   if (currentUser && currentUser._id) {
     if (socket) socket.disconnect()
 
@@ -27,8 +25,6 @@ export const connectSocket = () => {
       query: { userId: currentUser._id },
       withCredentials: true,
     })
-
-    console.log('✅ socket connected with userId:', currentUser._id)
   } else {
     console.log('❌ currentUser is missing or invalid')
   }

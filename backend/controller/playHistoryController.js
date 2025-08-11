@@ -2,7 +2,6 @@ const asyncHandler = require('express-async-handler')
 const PlayHistory = require('../model/PlayHistory')
 
 const recordPlayHistory = asyncHandler(async (req, res) => {
-    console.log('recordPlayHistory Start')
     const userId = req._id
     const { songId } = req.params
     if (!userId || !songId) {
@@ -26,7 +25,6 @@ const recordPlayHistory = asyncHandler(async (req, res) => {
 })
 
 const getPlayHistory = asyncHandler(async (req, res) => {
-    console.log('getPlayHistory Start')
     const { userId } = req.params
     if (!userId) return res.status(400).json({ message: 'UserId required' })
 

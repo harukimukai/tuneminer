@@ -6,7 +6,6 @@ import { selectCurrentUser } from '../auth/authSlice'
 const ConversationList = ({ onSelectConversation }) => {
   const { data: conversations, isLoading, error } = useGetAllConversationsQuery()
   const { data: unreadCounts = {} } = useGetUnreadCountsQuery()
-  console.log('unreadCounts: ', unreadCounts)
   const currentUser = useSelector(selectCurrentUser)
 
   if (isLoading) return <p>Loading conversations...</p>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectNowPlaying, togglePlay } from '../features/player/nowPlayingSlice'
@@ -46,7 +46,6 @@ const NowPlayingBar = () => {
   }, [title]) // ← 曲タイトルが変わったときに再実行される
 
   const handleOpenModal = (id) => {
-    console.log('handleOpenModal')
     navigate(`/songs/modal/${id}`, { state: { background: location } }) // URLだけ変更
   }
 

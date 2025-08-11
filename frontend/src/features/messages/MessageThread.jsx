@@ -31,14 +31,12 @@ const MessageThread = ({ conversationId }) => {
   // 🎯 conversationIdが切り替わったら、手動でrefetchする
   useEffect(() => {
     if (conversationId) {
-      console.log('[MessageThread] Conversation changed, refetching...');
       refetch();
     }
   }, [conversationId, refetch])
 
   useEffect(() => {
     if (conversationId) {
-      console.log('[MessageThread] Marking messages as read:', conversationId);
       markMessagesAsRead(conversationId);
     }
   }, [conversationId, markMessagesAsRead])

@@ -28,7 +28,6 @@ const createReportSong = asyncHandler(async(req, res) => {
 })
 
 const createReportUser = asyncHandler(async(req, res) => {
-    console.log('createReportUser Start')
     const reporterId = req._id
     const { reportedId, data } = req.body
     const content = data.content

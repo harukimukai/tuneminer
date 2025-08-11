@@ -20,15 +20,6 @@ const Header = () => {
     setShowDropdown(false)
   }, [location])
 
-  // if (!currentUser) {
-  //   return (
-  //     <header className="header">
-  //       <p style={{ color: 'white', padding: '10px' }}>Loading user info...</p>
-  //     </header>
-  //   )
-  // }
-  console.log(currentUser)
-
   return (
     <header className="header">
       <div className="header-background" />
@@ -72,11 +63,11 @@ const Header = () => {
               </div>
             }
           </div>
-          {currentUser && showDropdown && <NotificationDropdown />}
+          {currentUser && showDropdown && <div className='notification-dropdown'><NotificationDropdown /></div>}
         </div>
         <div className="header-center">
-          <p id='search-form'><SearchForm /></p>
-          <p id='now-playing-bar'><NowPlayingBar/></p>
+          <div id='search-form'><SearchForm /></div>
+          <div id='now-playing-bar'><NowPlayingBar/></div>
         </div>
         <div className="header-right">
           {currentUser ?

@@ -59,7 +59,6 @@ const uploadSong = asyncHandler(async (req, res) => {
 
 // get all songs
 const getAllSongs = asyncHandler(async (req, res) => {
-    console.log('Get songs Start')
     const currentUser = req._id
     const songs = await Song.find()
                         .populate('user', 'username icon')
@@ -99,7 +98,6 @@ const getMySongs = asyncHandler(async (req, res) => {
 
 // update song
 const updateSong = asyncHandler(async (req, res) => {
-    console.log('updateSong Start')
     const { id } = req.params
     const { title, genre, lyrics, highlightStart, highlightEnd } = req.body
     if (!id) return res.status(404).json({ message: 'Song ID is required!'})
@@ -152,7 +150,6 @@ const updateSong = asyncHandler(async (req, res) => {
 
 // delete song
 const deleteSong = asyncHandler(async (req, res) => {
-    console.log('DeleteDong start')
     const { id } = req.params
     if (!id) return res.status(400).json({ message: 'Song ID is required!' })
 
@@ -177,25 +174,19 @@ const deleteSong = asyncHandler(async (req, res) => {
 
 // Like songs
 const toogleLike = asyncHandler(async (req, res) => {
-    console.log('toggleLike Start')
     const song = await Song.findById(req.params.id)
     if (!song) return res.status(404).json({ message: 'The song is not found'})
 
     const userId = req._id
-    console.log(userId)
     if (!userId) return res.status(404).json({ message: 'userId is not found'})
     
     const user = await User.findById(userId)
     if (!user) return res.status(404).json({ mesage: 'no user found'})
 
     if (song.likes.includes(userId)) {
-        // already liked -> unlike
-        console.log('unlike: ', song.original)
         song.likes.pull(userId)
         await song.save()
     } else {
-        // not liked yet -> like
-        console.log('like')
         song.likes.push(userId)
         await song.save()
         eventBus.emit('like', {
@@ -222,8 +213,6 @@ const getLikedSongs = asyncHandler(async (req, res) => {
 
 // search songs 現状はartistとsong titleのみ柔軟検索
 const searchSongs = asyncHandler(async (req, res) => {
-    console.log('Search songs process START')
-    console.log('req.query: ', req.query)
     const { title, genre, artist} = req.query
 
     let query = {}
@@ -252,11 +241,8 @@ const searchSongs = asyncHandler(async (req, res) => {
 
 // playSong
 const playSong = asyncHandler(async (req, res) => {
-    console.log('Play Song process Start')
     const { id } = req.params // songId
     const userId = req._id ?? null
-    console.log('songId: ', id)
-    console.log('userId: ', userId)
     if (userId === null) return
     if (!id) return res.status(404).json({ message: 'No song ID found from params'})
     if (!userId) return res.status(404).json({ message: 'No userId found from cookie'})
@@ -266,16 +252,12 @@ const playSong = asyncHandler(async (req, res) => {
 
     const song = await Song.findById(id)
     if (!song) return res.status(404).json({ message: 'No song found'})
-    console.log('song: ', song)
 
     const recentPlay = song.plays.find(p => {
-        console.log(now, p.timestamp, now - new Date(p.timestamp).getTime())
-        console.log('song.plays:', song.plays.map(p => p))
         return (
             String(p.user) === String(userId) && now - new Date(p.timestamp).getTime() < ONE_HOUR
         )
     })
-    console.log('recentPlay: ',recentPlay)
 
     if (!recentPlay) {
             song.plays.push({ user: userId }) //timestampは自動で入る
@@ -296,7 +278,6 @@ const getRecommendations = asyncHandler(async (req, res) => {
 
     const userHistorySongs = await Song.find({ 'plays.user': id, hidden: false }).lean()
     if (!userHistorySongs) return res.status(200).json([]) // empty array
-    console.log(userHistorySongs)
 
     const genreCount = {}
     const artistCount = {}
@@ -330,7 +311,6 @@ const getRecommendations = asyncHandler(async (req, res) => {
 
 // mining songs
 const getHighlightedSongs = asyncHandler(async (req, res) => {
-    console.log('Mining Start')
     const songs = await Song.find({
         highlight: { $exists: true},
         'highlight.start': { $ne: null},
@@ -345,13 +325,11 @@ const getHighlightedSongs = asyncHandler(async (req, res) => {
 })
 
 const toggleAdminRecommendation = asyncHandler(async (req, res) => {
-    console.log('toggleAdminRec Start')
     const { songId } = req.params // songRouteのルート内にあるidの書き方に合わせる。
     if (!songId) return res.status(404).json({ message: 'songId required'})
 
     const song = await Song.findById(songId)
     if (!song) return res.status(404).json({ message: 'No song found'})
-    console.log(song.isRecommended)
 
     song.isRecommended = !song.isRecommended
     await song.save()
@@ -360,7 +338,6 @@ const toggleAdminRecommendation = asyncHandler(async (req, res) => {
 })
 
 const getAdminRec = asyncHandler(async (req, res) => {
-    console.log('getAdminRec Start')
     const songs = await Song.find({ isRecommended: true })
         .populate('user', 'username icon')
 

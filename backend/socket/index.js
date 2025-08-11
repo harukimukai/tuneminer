@@ -15,17 +15,12 @@ const initializeSocket = (server) => {
   });
 
   io.on('connection', (socket) => {
-    console.log('🔌 New client connected', socket.id);
-
-    console.log('chatHandlers')
     chatHandlers(io, socket);
-    console.log('notificationHandlers')
     notificationHandlers(io, socket, activeUsers);
     
 
 
     socket.on('disconnect', () => {
-      console.log('❌ Client disconnected', socket.id);
     });
   });
 

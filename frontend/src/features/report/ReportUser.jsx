@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useCreateReportUserMutation } from './reportApiSlice'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -7,10 +7,6 @@ const ReportUser = () => {
   const [content, setContent] = useState('')
   const {userId} = useParams()
   const navigate = useNavigate()
-
-  useEffect(() => {
-    console.log('ReportUser mounted. userId:', userId)
-  }, [])
 
   const handleSubmit = async(e) => {
     e.preventDefault()

@@ -27,11 +27,8 @@ router.route('/logout')
 
 router.get('/me', verifyJWT, async (req, res) => {
     try {
-        console.log('[Server] /auth/me hit. req._id =', req._id)
-
         const user = await User.findById(req._id).select('-password')
         if (!user) {
-            console.log('[Server] User not found')
             return res.status(404).json({ message: 'User not found' })
         }
         res.json(user)
@@ -64,15 +61,11 @@ router.get('/google/callback',
         { expiresIn: '15m' }
     )
 
-    console.log(`accessToken: ${accessToken}`)
-
     const refreshToken = jwt.sign(
         { 'username': user.username},
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: '7d' }
     )
-
-    console.log(`refreshToken: ${refreshToken}`)
 
     res.cookie('jwt', refreshToken, {
         httpOnly: true,
@@ -80,8 +73,6 @@ router.get('/google/callback',
         sameSite: 'LAX', // dev version
         maxAge: 7 * 60 * 60 * 24 * 1000
     })
-
-    console.log('Cookie! Login process DONE')
 
     res.redirect(`http://localhost:3000/oauth-success?accessToken=${accessToken}`)
   }

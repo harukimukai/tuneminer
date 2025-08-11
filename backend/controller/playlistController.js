@@ -40,7 +40,6 @@ const getPlaylistById = asyncHandler(async(req, res) => {
 })
 
 const createPlaylist = asyncHandler(async(req, res) => {
-    console.log(req.body)
     const {title, description, isPublic} = req.body
     const userId = req._id
 
@@ -66,7 +65,6 @@ const createPlaylist = asyncHandler(async(req, res) => {
 })
 
 const updatePlaylist = asyncHandler(async(req, res) => {
-    console.log('updatePlaylist start', req.body)
     const playlist = await Playlist.findById(req.params.id)
     if (!playlist) return res.status(404).json({ message: 'Not found' })
     if (playlist.user.toString() !== req._id) return res.status(403).json({ message: 'Forbidden' })
@@ -77,7 +75,6 @@ const updatePlaylist = asyncHandler(async(req, res) => {
 })
 
 const addSongPlaylist = asyncHandler(async(req, res) => {
-    console.log('addSongPlaylist Start')
 
     const playlistId = req.params.id
     if (!playlistId) return res.status(400).json({ message: 'No Playlist Id'})
@@ -112,8 +109,6 @@ const addSongPlaylist = asyncHandler(async(req, res) => {
 })
 
 const removeSongPlaylist = asyncHandler(async(req, res) => {
-    console.log('removeSongPlaylist Start')
-
     const playlistId = req.params.id
     if (!playlistId) return res.status(400).json({ message: 'No Playlist Id'})
 

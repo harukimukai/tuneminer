@@ -11,20 +11,14 @@ const MiningLikeButton = ({ songId }) => {
   const [removeMiningLike] = useRemoveMiningLikeMutation()
   const [isLiked, setIsLiked] = useState(false)
 
-  console.log('miningLikes:', miningLikes)
-
   useEffect(() => {
-    console.log('miningLikes:', miningLikes)
-    console.log('currentUser:', currentUser)
 
-    if (!miningLikes || !Array.isArray(miningLikes)) return console.log('could not get miningLikes')
+    if (!miningLikes || !Array.isArray(miningLikes)) return 
 
     if (miningLikes.some((miningLike) => miningLike.user._id.toString() === currentUser._id.toString())) {
       setIsLiked(true)
-      console.log('setIsLiked(true)')
     } else {
       setIsLiked(false)
-       console.log('setIsLiked(false)')
     }
   }, [miningLikes, currentUser])
 

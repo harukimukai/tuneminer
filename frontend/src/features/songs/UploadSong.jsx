@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useUploadSongMutation } from './songApiSlice'
 import { useNavigate } from 'react-router-dom'
 import '../../css/upload.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectCurrentUser } from '../auth/authSlice'
-import { usePredictGenreMutation } from './genreApi'
+// import { usePredictGenreMutation } from './genreApi'
 import PrivateCustomAudioPlayer from '../../components/PrivateCustomAudioPlayer'
 import { setPrivateMode } from '../mining/uiSlice'
 import { pauseAndSaveSnapshot, resumeFromSnapshot } from '../player/nowPlayingActions'
@@ -24,13 +24,12 @@ const UploadSong = () => {
   const [previewUrl, setPreviewUrl] = useState(null)
   const [highlightStart, setHighlightStart] = useState('')
   const [highlightEnd, setHighlightEnd] = useState('')
-  const [message, setMessage] = useState(null)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [uploadSong, { isLoading, isError, error }] = useUploadSongMutation()
-  const [predictGenre] = usePredictGenreMutation()
+  const [uploadSong, { isLoading }] = useUploadSongMutation()
+  // const [predictGenre] = usePredictGenreMutation()
 
   // PrivateGlobalAudioPlayerじゃダメ。この画面に遷移したときにsetPrivateMode(true)にしないといけない。Applayout.jsで常に監視してるPrivateGlobalAudioPlayerにこれを記述すると、常に isPrivate === true になってしまう。
   useEffect(() => {
@@ -46,28 +45,19 @@ const UploadSong = () => {
     dispatch(setPrivateIsPlaying(false))  
   }, [dispatch, audioFile])
 
-  const handleFileChange = async (file) => {
-    // try {
-    //   const result = await predictGenre(file).unwrap()
-    //   console.log('ジャンル予測結果:', result.genre)
-    //   setGenre(result.genre)  // ← 自動的にジャンル欄にセット！
-    // } catch (err) {
-    //   console.error('ジャンル予測失敗:', err)
-    // }
-    if (file) {
-      setAudioPreviewUrl(URL.createObjectURL(file))
-    } else {
-      console.log("Canceled selecting a file.");
-    }
-  }  
+  // const handleFileChange = async (file) => {
+  //    try {
+  //      const result = await predictGenre(file).unwrap()
+  //      console.log('ジャンル予測結果:', result.genre)
+  //      setGenre(result.genre)  // ← 自動的にジャンル欄にセット！
+  //    } catch (err) {
+  //      console.error('ジャンル予測失敗:', err)
+  //    }
+  // }  
 
   const handleAudioChange = (e) => {
     const file = e.target.files[0]
-    console.log('file: ', file)
-    // ❗キャンセルされたら無視して return（audioFileは維持）
     if (!file) {
-      console.log("キャンセルされたのでaudioFileは維持されます")
-      console.log('audioFile: ', audioFile)
       return
     }
     setAudioFile(file)
@@ -91,9 +81,7 @@ const UploadSong = () => {
     formData.append('highlightEnd', highlightEnd)
 
     try {
-      const response = await uploadSong(formData).unwrap()
-      console.log('Upload success:', response)
-      setMessage('Uploaded!')
+      await uploadSong(formData).unwrap()
       setTitle('')
       setGenre('')
       setLyrics('')
@@ -107,7 +95,7 @@ const UploadSong = () => {
       alert('Uploaded a new song!')
     } catch (err) {
       console.error('Upload error:', err)
-      setMessage('Failed to upload your song')
+      alert('Failed to upload your song!')
     }
   }
 

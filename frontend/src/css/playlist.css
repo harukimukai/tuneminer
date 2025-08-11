@@ -1,0 +1,32 @@
+.img_container {
+  position: relative;      /* 子要素を絶対配置の基準にする */
+  display: inline-block;   /* 画像のサイズに合わせて幅を自動調整 */
+}
+
+.img_container img {
+  display: block;          /* 下の余白を消す */
+  width: 100%;
+  height: auto;
+}
+
+.img_container .title {
+  position: absolute;      /* コンテナ内で絶対配置 */
+  top: 0%;                /* 垂直中央 */
+  left: 0%;               /* 水平中央 */
+  color: rgb(255, 255, 255);            /* テキスト色 */
+  font-size: 1.5rem;
+  text-shadow: 0 0 5px rgba(0,0,0,0.7); /* 背景が見えにくい場合の影 */
+  pointer-events: none;    /* クリックイベントを透過させる */
+  margin: 4px;
+}
+
+.img_container .isPublic {
+  position: absolute;      /* コンテナ内で絶対配置 */
+  bottom: 0%;                /* 垂直中央 */
+  right: 0%;               /* 水平中央 */
+  color: rgb(180, 180, 180);            /* テキスト色 */
+  font-size: 1.0rem;
+  background-color: rgba(19, 19, 19, 0.363);
+  border-radius: 15px;
+  pointer-events: none;  
+}

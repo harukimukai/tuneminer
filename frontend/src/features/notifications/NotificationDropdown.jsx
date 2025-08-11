@@ -6,10 +6,8 @@ import { Link } from 'react-router-dom'
 
 export const NotificationDropdown = () => {
   const { data: notifications = [], isLoading, error } = useGetNotificationsQuery()
-  const notificationsFromSocket = useSelector(state => state.notifications.list) // 👈 Socket追加分
+  const notificationsFromSocket = useSelector(state => state.notifications.list)
   const allNotifications = [...notificationsFromSocket, ...notifications]
-
-  console.log('allNotifications', allNotifications)
 
   if (isLoading) return <p>Loading...</p>
   if (error) return <p>{error}</p>

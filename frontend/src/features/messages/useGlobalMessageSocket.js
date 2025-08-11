@@ -15,9 +15,6 @@ const useGlobalMessageSocket = () => {
     const handleReceiveMessage = (message) => {
       if (message.sender._id === currentUser._id) return;
 
-      console.log('[GlobalSocket] 新着メッセージ:', message);
-
-      // ✅ 未読数カウントを増やす
       dispatch(
         conversationApiSlice.util.updateQueryData(
           'getUnreadCounts',
